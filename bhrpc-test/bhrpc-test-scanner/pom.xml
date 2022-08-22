@@ -14,12 +14,6 @@
     <dependencies>
         <dependency>
             <groupId>io.binghe.rpc</groupId>
-            <artifactId>bhrpc-annotation</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.binghe.rpc</groupId>
             <artifactId>bhrpc-common</artifactId>
             <version>${project.version}</version>
         </dependency>
