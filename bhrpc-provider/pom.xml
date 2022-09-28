@@ -9,18 +9,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bhrpc-test</artifactId>
+    <artifactId>bhrpc-provider</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>bhrpc-test-scanner</module>
-        <module>bhrpc-test-provider</module>
+        <module>bhrpc-provider-common</module>
+        <module>bhrpc-provider-native</module>
     </modules>
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <groupId>io.binghe.rpc</groupId>
+            <artifactId>bhrpc-common</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

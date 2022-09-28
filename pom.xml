@@ -12,6 +12,7 @@
         <module>bhrpc-annotation</module>
         <module>bhrpc-common</module>
         <module>bhrpc-test</module>
+        <module>bhrpc-provider</module>
     </modules>
 
     <properties>
