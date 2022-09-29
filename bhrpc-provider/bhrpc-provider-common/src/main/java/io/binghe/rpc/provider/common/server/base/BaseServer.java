@@ -77,7 +77,7 @@ public class BaseServer implements Server {
                     .option(ChannelOption.SO_BACKLOG,128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
             ChannelFuture future = bootstrap.bind(host, port).sync();
-            logger.info("Server started on port {}", port);
+            logger.info("Server started on {}:{}", host, port);
             future.channel().closeFuture().sync();
         }catch (Exception e){
             logger.error("RPC Server start error", e);

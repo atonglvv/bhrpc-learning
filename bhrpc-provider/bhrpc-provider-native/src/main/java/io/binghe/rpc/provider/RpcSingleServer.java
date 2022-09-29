@@ -33,7 +33,7 @@ public class RpcSingleServer extends BaseServer {
         //调用父类构造方法
         super(serverAddress);
         try {
-            this.handlerMap = RpcServiceScanner.doScannerWithRpcServiceAnnotationFilterAndRegistryService(host, port, scanPackage);
+            this.handlerMap = RpcServiceScanner.doScannerWithRpcServiceAnnotationFilterAndRegistryService(scanPackage);
         } catch (Exception e) {
             logger.error("RPC Server init error", e);
         }
