@@ -13,6 +13,8 @@
         <module>bhrpc-common</module>
         <module>bhrpc-test</module>
         <module>bhrpc-provider</module>
+        <module>bhrpc-protocol</module>
+        <module>bhrpc-constants</module>
     </modules>
 
     <properties>

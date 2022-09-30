@@ -12,14 +12,41 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * @author binghe
- * @description
- * @version 1.0.0
  */
+package io.binghe.rpc.protocol.base;
+
+import java.io.Serializable;
+
 /**
- * @author binghe
- * @description
+ * @author binghe(公众号：冰河技术)
  * @version 1.0.0
+ * @description 消息体基础类
  */
-package io.binghe.rpc.common;
+public class RpcMessage implements Serializable {
+
+    /**
+     * 是否单向发送
+     */
+    private boolean oneway;
+
+    /**
+     * 是否异步调用
+     */
+    private boolean async;
+
+    public boolean getOneway() {
+        return oneway;
+    }
+
+    public void setOneway(boolean oneway) {
+        this.oneway = oneway;
+    }
+
+    public boolean getAsync() {
+        return async;
+    }
+
+    public void setAsync(boolean async) {
+        this.async = async;
+    }
+}
