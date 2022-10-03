@@ -128,4 +128,15 @@ bhrpc框架支持如下功能：
 6.多SDK建设  
 7.其他暂时还未想到的扩展  
 
- 
+# 文章合集
+
+* [这次我设计了一款TPS百万级别的分布式、高性能、可扩展的RPC框架](https://mp.weixin.qq.com/s/5HOUg49X0xQmkQjMiWnaIg)
+* [《RPC手撸专栏》第1章：开篇，从零开始手撸一个能在实际场景使用的高性能RPC框架](https://articles.zsxq.com/id_6gfgwev2uw0p.html)
+* [《RPC手撸专栏》第2章：高性能分布式RPC框架整体架构设计](https://articles.zsxq.com/id_xvd5up1u16nx.html)
+* [《RPC手撸专栏》第3章：RPC服务核心注解的设计与实现](https://articles.zsxq.com/id_zr6w6dvgdc95.html)
+* [《RPC手撸专栏》第4章：实现RPC服务核心注解的扫描与解析](https://articles.zsxq.com/id_bal2cnmw3jbi.html)
+* [《RPC手撸专栏》第5章：服务提供者收发消息基础功能实现](https://articles.zsxq.com/id_df11g9wmm8ad.html)
+* [《RPC手撸专栏》第6章：自定义网络传输协议的实现](https://articles.zsxq.com/id_qgntsrvlljea.html)
+* [《RPC手撸专栏》第7章：自定义网络编解码的实现](https://articles.zsxq.com/id_5wqs9pshkwep.html)
+* [《RPC手撸专栏》第8章：模拟服务消费者与服务提供者之间的数据交互](https://articles.zsxq.com/id_cd0dpx73a4uk.html)
+
