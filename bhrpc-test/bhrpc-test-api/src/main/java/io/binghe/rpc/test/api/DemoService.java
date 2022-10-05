@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.binghe.rpc.test.provider.service;
+package io.binghe.rpc.test.api;
 
 /**
- * @author binghe
+ * @author binghe (公众号：冰河技术)
  * @version 1.0.0
- * @description 测试@RpcService注解的扫描
+ * @description 测试服务接口
  */
 public interface DemoService {
-    
+
+    String hello(String name);
 }
