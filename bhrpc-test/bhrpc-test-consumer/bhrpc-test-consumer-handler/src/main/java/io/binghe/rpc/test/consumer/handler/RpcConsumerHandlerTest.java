@@ -1,0 +1,53 @@
+/**
+ * Copyright 2020-9999 the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.binghe.rpc.test.consumer.handler;
+
+import io.binghe.rpc.consumer.common.RpcConsumer;
+import io.binghe.rpc.protocol.RpcProtocol;
+import io.binghe.rpc.protocol.header.RpcHeaderFactory;
+import io.binghe.rpc.protocol.request.RpcRequest;
+
+/**
+ * @author binghe(公众号：冰河技术)
+ * @version 1.0.0
+ * @description 测试服务消费者
+ */
+public class RpcConsumerHandlerTest {
+
+    public static void main(String[] args) throws Exception {
+        RpcConsumer consumer = RpcConsumer.getInstance();
+        consumer.sendRequest(getRpcRequestProtocol());
+        Thread.sleep(2000);
+        consumer.close();
+    }
+
+    private static RpcProtocol<RpcRequest> getRpcRequestProtocol(){
+        //模拟发送数据
+        RpcProtocol<RpcRequest> protocol = new RpcProtocol<RpcRequest>();
+        protocol.setHeader(RpcHeaderFactory.getRequestHeader("jdk"));
+        RpcRequest request = new RpcRequest();
+        request.setClassName("io.binghe.rpc.test.api.DemoService");
+        request.setGroup("binghe");
+        request.setMethodName("hello");
+        request.setParameters(new Object[]{"binghe"});
+        request.setParameterTypes(new Class[]{String.class});
+        request.setVersion("1.0.0");
+        request.setAsync(false);
+        request.setOneway(false);
+        protocol.setBody(request);
+        return protocol;
+    }
+}
