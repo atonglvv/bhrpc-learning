@@ -145,3 +145,4 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第12章：实现服务消费者与服务提供者直接通信](https://articles.zsxq.com/id_wpfhwa85newn.html)
 * [《RPC手撸专栏》第13章：服务消费者异步转同步直接获取返回结果](https://articles.zsxq.com/id_dfzr8j7xsn7e.html)
 * [《RPC手撸专栏》第14章：服务消费者异步转同步的自定义Future与AQS实现](https://articles.zsxq.com/id_6v8wcbaaitg4.html)
+* [《RPC手撸专栏》第15章：服务消费者同步、异步、单向调用的实现](https://articles.zsxq.com/id_oixsibgwepmu.html)
