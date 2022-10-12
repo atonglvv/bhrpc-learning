@@ -15,6 +15,7 @@
  */
 package io.binghe.rpc.consumer.common;
 
+import io.binghe.rpc.common.threadpool.ClientThreadPool;
 import io.binghe.rpc.consumer.common.future.RPCFuture;
 import io.binghe.rpc.consumer.common.handler.RpcConsumerHandler;
 import io.binghe.rpc.consumer.common.initializer.RpcConsumerInitializer;
@@ -67,6 +68,7 @@ public class RpcConsumer {
 
     public void close(){
         eventLoopGroup.shutdownGracefully();
+        ClientThreadPool.shutdown();
     }
 
     //修改返回数据的类型
