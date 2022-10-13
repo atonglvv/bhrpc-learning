@@ -17,7 +17,7 @@ package io.binghe.rpc.consumer.common.handler;
 
 import com.alibaba.fastjson.JSONObject;
 import io.binghe.rpc.consumer.common.context.RpcContext;
-import io.binghe.rpc.consumer.common.future.RPCFuture;
+import io.binghe.rpc.proxy.api.future.RPCFuture;
 import io.binghe.rpc.protocol.RpcProtocol;
 import io.binghe.rpc.protocol.header.RpcHeader;
 import io.binghe.rpc.protocol.request.RpcRequest;

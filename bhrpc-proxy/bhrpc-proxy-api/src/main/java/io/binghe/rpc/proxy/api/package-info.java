@@ -12,23 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-package io.binghe.rpc.consumer.common.callback;
-
-/**
- * @author binghe(公众号：冰河技术)
+ *
+ * @author binghe(公众号 ： 冰河技术)
+ * @description
  * @version 1.0.0
- * @description 异步回调接口
  */
-public interface AsyncRPCCallback {
-
-    /**
-     * 成功后的回调方法
-     */
-    void onSuccess(Object result);
-
-    /**
-     * 异常的回调方法
-     */
-    void onException(Exception e);
-}
+/**
+ * @author binghe(公众号 ： 冰河技术)
+ * @description
+ * @version 1.0.0
+ */
+package io.binghe.rpc.proxy.api;

@@ -18,6 +18,7 @@
         <module>bhrpc-codec</module>
         <module>bhrpc-serialization</module>
         <module>bhrpc-consumer</module>
+        <module>bhrpc-proxy</module>
     </modules>
 
     <properties>

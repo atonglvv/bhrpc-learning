@@ -16,9 +16,9 @@
 package io.binghe.rpc.test.consumer.handler;
 
 import io.binghe.rpc.consumer.common.RpcConsumer;
-import io.binghe.rpc.consumer.common.callback.AsyncRPCCallback;
+import io.binghe.rpc.proxy.api.callback.AsyncRPCCallback;
 import io.binghe.rpc.consumer.common.context.RpcContext;
-import io.binghe.rpc.consumer.common.future.RPCFuture;
+import io.binghe.rpc.proxy.api.future.RPCFuture;
 import io.binghe.rpc.protocol.RpcProtocol;
 import io.binghe.rpc.protocol.header.RpcHeaderFactory;
 import io.binghe.rpc.protocol.request.RpcRequest;
