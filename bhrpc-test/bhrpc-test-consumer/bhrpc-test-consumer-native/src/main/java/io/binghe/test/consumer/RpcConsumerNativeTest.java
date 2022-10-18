@@ -16,7 +16,10 @@
 package io.binghe.test.consumer;
 
 import io.binghe.rpc.consumer.RpcClient;
+import io.binghe.rpc.proxy.api.async.IAsyncObjectProxy;
+import io.binghe.rpc.proxy.api.future.RPCFuture;
 import io.binghe.rpc.test.api.DemoService;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +37,24 @@ public class RpcConsumerNativeTest {
         DemoService demoService = rpcClient.create(DemoService.class);
         String result = demoService.hello("binghe");
         LOGGER.info("返回的结果数据===>>> " + result);
+        rpcClient.shutdown();
+    }
+
+    @Test
+    public void testInterfaceRpc(){
+        RpcClient rpcClient = new RpcClient("1.0.0", "binghe", "jdk", 3000, false, false);
+        DemoService demoService = rpcClient.create(DemoService.class);
+        String result = demoService.hello("binghe");
+        LOGGER.info("返回的结果数据===>>> " + result);
+        rpcClient.shutdown();
+    }
+
+    @Test
+    public void testAsyncInterfaceRpc() throws Exception {
+        RpcClient rpcClient = new RpcClient("1.0.0", "binghe", "jdk", 3000, false, false);
+        IAsyncObjectProxy demoService = rpcClient.createAsync(DemoService.class);
+        RPCFuture future = demoService.call("hello", "binghe");
+        LOGGER.info("返回的结果数据===>>> " + future.get());
         rpcClient.shutdown();
     }
 }
