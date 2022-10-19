@@ -12,14 +12,26 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * @author binghe(公众号 ： 冰河技术)
- * @description
- * @version 1.0.0
- */
-/**
- * @author binghe(公众号 ： 冰河技术)
- * @description
- * @version 1.0.0
  */
 package io.binghe.rpc.proxy.api;
+
+
+import io.binghe.rpc.proxy.api.config.ProxyConfig;
+
+/**
+ * @author binghe(公众号：冰河技术)
+ * @version 1.0.0
+ * @description 代理工厂接口
+ */
+public interface ProxyFactory {
+
+    /**
+     * 获取代理对象
+     */
+    <T> T getProxy(Class<T> clazz);
+
+    /**
+     * 默认初始化方法
+     */
+    default <T> void init(ProxyConfig<T> proxyConfig){}
+}
