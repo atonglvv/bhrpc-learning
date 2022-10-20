@@ -9,22 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bhrpc-test</artifactId>
+    <artifactId>bhrpc-registry</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>bhrpc-test-scanner</module>
-        <module>bhrpc-test-provider</module>
-        <module>bhrpc-test-consumer</module>
-        <module>bhrpc-test-api</module>
-        <module>bhrpc-test-registry</module>
+        <module>bhrpc-registry-api</module>
+        <module>bhrpc-registry-zookeeper</module>
     </modules>
-
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-        </dependency>
-    </dependencies>
-
 </project>

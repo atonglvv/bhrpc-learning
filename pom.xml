@@ -19,6 +19,7 @@
         <module>bhrpc-serialization</module>
         <module>bhrpc-consumer</module>
         <module>bhrpc-proxy</module>
+        <module>bhrpc-registry</module>
     </modules>
 
     <properties>
