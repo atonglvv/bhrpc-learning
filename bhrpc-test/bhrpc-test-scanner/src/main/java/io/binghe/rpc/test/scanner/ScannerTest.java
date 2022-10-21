@@ -16,8 +16,8 @@
 package io.binghe.rpc.test.scanner;
 
 import io.binghe.rpc.common.scanner.reference.RpcReferenceScanner;
-import io.binghe.rpc.common.scanner.server.RpcServiceScanner;
 import io.binghe.rpc.common.scanner.ClassScanner;
+import io.binghe.rpc.provider.common.scanner.RpcServiceScanner;
 import org.junit.Test;
 
 import java.util.List;

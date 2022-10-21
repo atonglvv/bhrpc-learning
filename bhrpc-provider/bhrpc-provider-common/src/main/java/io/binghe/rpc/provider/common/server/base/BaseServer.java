@@ -19,6 +19,9 @@ import io.binghe.rpc.codec.RpcDecoder;
 import io.binghe.rpc.codec.RpcEncoder;
 import io.binghe.rpc.provider.common.handler.RpcProviderHandler;
 import io.binghe.rpc.provider.common.server.api.Server;
+import io.binghe.rpc.registry.api.RegistryService;
+import io.binghe.rpc.registry.api.config.RegistryConfig;
+import io.binghe.rpc.registry.zookeeper.ZookeeperRegistryService;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -48,16 +51,30 @@ public class BaseServer implements Server {
     protected int port = 27110;
     //存储的是实体类关系
     protected Map<String, Object> handlerMap = new HashMap<>();
-
     private String reflectType;
 
-    public BaseServer(String serverAddress, String reflectType){
+    protected RegistryService registryService;
+
+    public BaseServer(String serverAddress, String registryAddress, String registryType, String reflectType){
         if (!StringUtils.isEmpty(serverAddress)){
             String[] serverArray = serverAddress.split(":");
             this.host = serverArray[0];
             this.port = Integer.parseInt(serverArray[1]);
         }
         this.reflectType = reflectType;
+        this.registryService = this.getRegistryService(registryAddress, registryType);
+    }
+
+    private RegistryService getRegistryService(String registryAddress, String registryType) {
+        //TODO 后续扩展支持SPI
+        RegistryService registryService = null;
+        try {
+            registryService = new ZookeeperRegistryService();
+            registryService.init(new RegistryConfig(registryAddress, registryType));
+        }catch (Exception e){
+            logger.error("RPC Server init error", e);
+        }
+        return registryService;
     }
 
     @Override
