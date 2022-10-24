@@ -15,6 +15,7 @@
  */
 package io.binghe.rpc.test.consumer.handler;
 
+import io.binghe.rpc.common.exception.RegistryException;
 import io.binghe.rpc.consumer.common.RpcConsumer;
 import io.binghe.rpc.proxy.api.callback.AsyncRPCCallback;
 import io.binghe.rpc.consumer.common.context.RpcContext;
@@ -22,21 +23,26 @@ import io.binghe.rpc.proxy.api.future.RPCFuture;
 import io.binghe.rpc.protocol.RpcProtocol;
 import io.binghe.rpc.protocol.header.RpcHeaderFactory;
 import io.binghe.rpc.protocol.request.RpcRequest;
+import io.binghe.rpc.registry.api.RegistryService;
+import io.binghe.rpc.registry.api.config.RegistryConfig;
+import io.binghe.rpc.registry.zookeeper.ZookeeperRegistryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 /**
  * @author binghe(公众号：冰河技术)
  * @version 1.0.0
- * @description 测试服务消费者
+ * @description 测试服务消费者（消费者整合注册中心后，需要引入注册中心服务）
  */
 public class RpcConsumerHandlerTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcConsumerHandlerTest.class);
 
+
     public static void main(String[] args) throws Exception {
         RpcConsumer consumer = RpcConsumer.getInstance();
-        RPCFuture rpcFuture = consumer.sendRequest(getRpcRequestProtocol());
+        RPCFuture rpcFuture = consumer.sendRequest(getRpcRequestProtocol(), getRegistryService("127.0.0.1:2181", "zookeeper"));
         rpcFuture.addCallback(new AsyncRPCCallback() {
             @Override
             public void onSuccess(Object result) {
@@ -54,15 +60,30 @@ public class RpcConsumerHandlerTest {
 
     public static void mainAsync(String[] args) throws Exception {
         RpcConsumer consumer = RpcConsumer.getInstance();
-        consumer.sendRequest(getRpcRequestProtocol());
+        consumer.sendRequest(getRpcRequestProtocol(), getRegistryService("127.0.0.1:2181", "zookeeper"));
         RPCFuture future = RpcContext.getContext().getRPCFuture();
         LOGGER.info("从服务消费者获取到的数据===>>>" + future.get());
         consumer.close();
     }
 
+    private static RegistryService getRegistryService(String registryAddress, String registryType) {
+        if (StringUtils.isEmpty(registryType)){
+            throw new IllegalArgumentException("registry type is null");
+        }
+        //TODO 后续SPI扩展
+        RegistryService registryService = new ZookeeperRegistryService();
+        try {
+            registryService.init(new RegistryConfig(registryAddress, registryType));
+        } catch (Exception e) {
+            LOGGER.error("RpcClient init registry service throws exception:{}", e);
+            throw new RegistryException(e.getMessage(), e);
+        }
+        return registryService;
+    }
+
     public static void mainSync(String[] args) throws Exception {
         RpcConsumer consumer = RpcConsumer.getInstance();
-        RPCFuture future = consumer.sendRequest(getRpcRequestProtocol());
+        RPCFuture future = consumer.sendRequest(getRpcRequestProtocol(), getRegistryService("127.0.0.1:2181", "zookeeper"));
         LOGGER.info("从服务消费者获取到的数据===>>>" + future.get());
         consumer.close();
     }

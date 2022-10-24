@@ -18,6 +18,7 @@ package io.binghe.rpc.proxy.api.consumer;
 import io.binghe.rpc.protocol.RpcProtocol;
 import io.binghe.rpc.protocol.request.RpcRequest;
 import io.binghe.rpc.proxy.api.future.RPCFuture;
+import io.binghe.rpc.registry.api.RegistryService;
 
 /**
  * @author binghe(公众号：冰河技术)
@@ -29,5 +30,5 @@ public interface Consumer {
     /**
      * 消费者发送 request 请求
      */
-    RPCFuture sendRequest(RpcProtocol<RpcRequest> protocol) throws Exception;
+    RPCFuture sendRequest(RpcProtocol<RpcRequest> protocol, RegistryService registryService) throws Exception;
 }
