@@ -20,6 +20,7 @@
         <module>bhrpc-consumer</module>
         <module>bhrpc-proxy</module>
         <module>bhrpc-registry</module>
+        <module>bhrpc-loadbalancer</module>
     </modules>
 
     <properties>
