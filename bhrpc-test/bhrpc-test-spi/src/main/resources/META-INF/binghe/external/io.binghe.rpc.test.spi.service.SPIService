@@ -1,0 +1,1 @@
+spiService=io.binghe.rpc.test.spi.service.impl.SPIServiceImpl

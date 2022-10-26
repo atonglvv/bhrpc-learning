@@ -21,6 +21,7 @@
         <module>bhrpc-proxy</module>
         <module>bhrpc-registry</module>
         <module>bhrpc-loadbalancer</module>
+        <module>bhrpc-spi</module>
     </modules>
 
     <properties>
