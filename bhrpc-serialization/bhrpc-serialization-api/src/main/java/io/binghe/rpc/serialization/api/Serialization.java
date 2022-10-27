@@ -15,11 +15,15 @@
  */
 package io.binghe.rpc.serialization.api;
 
+import io.binghe.rpc.constants.RpcConstants;
+import io.binghe.rpc.spi.annotation.SPI;
+
 /**
  * @author binghe (公众号：冰河技术)
  * @version 1.0.0
  * @description 序列化接口
  */
+@SPI(RpcConstants.SERIALIZATION_JDK)
 public interface Serialization {
 
     /**
