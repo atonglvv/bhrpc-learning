@@ -34,7 +34,7 @@ public class RpcConsumerNativeTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcConsumerNativeTest.class);
 
     public static void main(String[] args){
-        RpcClient rpcClient = new RpcClient("127.0.0.1:2181", "zookeeper", "1.0.0", "binghe", "jdk", 3000, false, false);
+        RpcClient rpcClient = new RpcClient("127.0.0.1:2181", "zookeeper", "1.0.0", "binghe", "hessian2", 3000, false, false);
         DemoService demoService = rpcClient.create(DemoService.class);
         String result = demoService.hello("binghe");
         LOGGER.info("返回的结果数据===>>> " + result);
@@ -45,7 +45,7 @@ public class RpcConsumerNativeTest {
 
     @Before
     public void initRpcClient(){
-        rpcClient = new RpcClient("127.0.0.1:2181", "zookeeper", "1.0.0", "binghe", "json", 3000, false, false);
+        rpcClient = new RpcClient("127.0.0.1:2181", "zookeeper", "1.0.0", "binghe", "hessian2", 3000, false, false);
 
     }
 

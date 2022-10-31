@@ -15,6 +15,7 @@
         <module>bhrpc-serialization-api</module>
         <module>bhrpc-serialization-jdk</module>
         <module>bhrpc-serialization-json</module>
+        <module>bhrpc-serialization-hessian2</module>
     </modules>
 
 

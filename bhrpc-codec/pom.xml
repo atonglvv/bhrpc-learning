@@ -29,6 +29,12 @@
             <artifactId>bhrpc-serialization-json</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.binghe.rpc</groupId>
+            <artifactId>bhrpc-serialization-hessian2</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
