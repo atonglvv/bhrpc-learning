@@ -17,6 +17,7 @@
         <module>bhrpc-serialization-json</module>
         <module>bhrpc-serialization-hessian2</module>
         <module>bhrpc-serialization-fst</module>
+        <module>bhrpc-serialization-kryo</module>
     </modules>
 
 
