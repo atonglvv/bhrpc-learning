@@ -18,6 +18,7 @@
         <module>bhrpc-serialization-hessian2</module>
         <module>bhrpc-serialization-fst</module>
         <module>bhrpc-serialization-kryo</module>
+        <module>bhrpc-serialization-protostuff</module>
     </modules>
 
 
