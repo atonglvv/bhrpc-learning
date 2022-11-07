@@ -17,12 +17,14 @@ package io.binghe.rpc.proxy.api;
 
 
 import io.binghe.rpc.proxy.api.config.ProxyConfig;
+import io.binghe.rpc.spi.annotation.SPI;
 
 /**
  * @author binghe(公众号：冰河技术)
  * @version 1.0.0
  * @description 代理工厂接口
  */
+@SPI
 public interface ProxyFactory {
 
     /**
