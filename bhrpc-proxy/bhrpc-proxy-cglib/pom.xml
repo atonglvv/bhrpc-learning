@@ -3,36 +3,24 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>bhrpc-consumer</artifactId>
+        <artifactId>bhrpc-proxy</artifactId>
         <groupId>io.binghe.rpc</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bhrpc-consumer-common</artifactId>
+    <artifactId>bhrpc-proxy-cglib</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>io.binghe.rpc</groupId>
-            <artifactId>bhrpc-codec</artifactId>
+            <artifactId>bhrpc-spi</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.binghe.rpc</groupId>
-            <artifactId>bhrpc-proxy-jdk</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.binghe.rpc</groupId>
-            <artifactId>bhrpc-proxy-cglib</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.binghe.rpc</groupId>
-            <artifactId>bhrpc-registry-zookeeper</artifactId>
+            <artifactId>bhrpc-proxy-api</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
