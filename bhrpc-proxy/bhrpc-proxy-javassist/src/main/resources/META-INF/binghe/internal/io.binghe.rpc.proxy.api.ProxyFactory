@@ -1,0 +1,1 @@
+javassist=io.binghe.rpc.proxy.javassist.JavassistProxyFactory

@@ -15,6 +15,7 @@
         <module>bhrpc-proxy-api</module>
         <module>bhrpc-proxy-jdk</module>
         <module>bhrpc-proxy-cglib</module>
+        <module>bhrpc-proxy-javassist</module>
     </modules>
 
 
