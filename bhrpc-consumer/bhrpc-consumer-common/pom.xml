@@ -44,6 +44,12 @@
 
         <dependency>
             <groupId>io.binghe.rpc</groupId>
+            <artifactId>bhrpc-proxy-asm</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.binghe.rpc</groupId>
             <artifactId>bhrpc-registry-zookeeper</artifactId>
             <version>${project.version}</version>
         </dependency>

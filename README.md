@@ -166,3 +166,4 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第33章：基于SPI扩展CGLib动态代理机制](https://articles.zsxq.com/id_ncdserhiza68.html)
 * [《RPC手撸专栏》第34章：基于SPI扩展Javassist动态代理机制](https://articles.zsxq.com/id_i2tz6xldl3hc.html)
 * [《RPC手撸专栏》第35章：基于SPI扩展ByteBuddy动态代理机制](https://articles.zsxq.com/id_sth5wav0oicw.html)
+* [《RPC手撸专栏》第36章：基于SPI扩展ASM动态代理机制](https://articles.zsxq.com/id_5he0lwawarlr.html)

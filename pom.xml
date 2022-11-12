@@ -22,6 +22,7 @@
         <module>bhrpc-registry</module>
         <module>bhrpc-loadbalancer</module>
         <module>bhrpc-spi</module>
+        <!--<module>bhrpc-reflect</module>-->
     </modules>
 
     <properties>
@@ -37,7 +38,7 @@
         <commons.collections4.version>4.0</commons.collections4.version>
         <commons.lang3.version>3.12.0</commons.lang3.version>
         <objenesis.version>2.1</objenesis.version>
-        <cglib.version>3.1</cglib.version>
+        <cglib.version>3.2.2</cglib.version>
         <bytebuddy.version>1.10.13</bytebuddy.version>
         <jackson.version>2.10.0</jackson.version>
         <javassist.version>3.21.0-GA</javassist.version>

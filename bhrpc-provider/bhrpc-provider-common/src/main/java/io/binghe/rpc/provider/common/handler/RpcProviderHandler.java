@@ -45,12 +45,15 @@ public class RpcProviderHandler extends SimpleChannelInboundHandler<RpcProtocol<
     private final Logger logger = LoggerFactory.getLogger(RpcProviderHandler.class);
     //存储服务名称#版本号#分组与对象实例的映射关系
     private final Map<String, Object> handlerMap;
-    //调用采用哪种类型调用真实方法
+//    //调用采用哪种类型调用真实方法
     private final String reflectType;
+
+//    private ReflectInvoker reflectInvoker;
 
     public RpcProviderHandler(String reflectType, Map<String, Object> handlerMap){
         this.reflectType = reflectType;
         this.handlerMap = handlerMap;
+//        this.reflectInvoker = ExtensionLoader.getExtension(ReflectInvoker.class, reflectType);
     }
 
     @Override
@@ -110,6 +113,7 @@ public class RpcProviderHandler extends SimpleChannelInboundHandler<RpcProtocol<
             }
         }
         return invokeMethod(serviceBean, serviceClass, methodName, parameterTypes, parameters);
+//        return this.reflectInvoker.invokeMethod(serviceBean, serviceClass, methodName, parameterTypes, parameters);
     }
 
     private Object invokeMethod(Object serviceBean, Class<?> serviceClass, String methodName, Class<?>[] parameterTypes, Object[] parameters) throws Throwable {

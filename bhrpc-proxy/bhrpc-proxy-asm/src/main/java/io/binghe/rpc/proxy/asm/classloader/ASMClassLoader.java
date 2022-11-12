@@ -13,22 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.binghe.rpc.test.provider.single;
+package io.binghe.rpc.proxy.asm.classloader;
 
-import io.binghe.rpc.provider.RpcSingleServer;
-import org.junit.Test;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author binghe(公众号：冰河技术)
  * @version 1.0.0
- * @description 测试Java原生启动RPC
+ * @description 自定义类加载器
  */
-public class RpcSingleServerTest {
+public class ASMClassLoader extends ClassLoader {
 
-    @Test
-    //TODO 修改成JDK
-    public void startRpcSingleServer(){
-        RpcSingleServer singleServer = new RpcSingleServer("127.0.0.1:27880", "127.0.0.1:2181", "zookeeper","io.binghe.rpc.test", "cglib");
-        singleServer.startNettyServer();
+    private final Map<String, byte[]> classMap = new HashMap<>();
+
+    @Override
+    protected Class<?> findClass(String name) throws ClassNotFoundException {
+        if (classMap.containsKey(name)) {
+            byte[] bytes = classMap.get(name);
+            classMap.remove(name);
+            return defineClass(name, bytes, 0, bytes.length);
+        }
+        return super.findClass(name);
+    }
+    public void add(String name, byte[] bytes) {
+        classMap.put(name, bytes);
     }
 }

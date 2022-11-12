@@ -43,7 +43,7 @@ public class ScannerTest {
      */
     @Test
     public void testScannerClassNameListByRpcService() throws Exception {
-        RpcServiceScanner.doScannerWithRpcServiceAnnotationFilterAndRegistryService("io.binghe.rpc.test.scanner");
+       // RpcServiceScanner.doScannerWithRpcServiceAnnotationFilterAndRegistryService("io.binghe.rpc.test.scanner");
     }
 
     /**
