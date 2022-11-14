@@ -26,9 +26,8 @@ import org.junit.Test;
 public class RpcSingleServerTest {
 
     @Test
-    //TODO 修改成JDK
     public void startRpcSingleServer(){
-        RpcSingleServer singleServer = new RpcSingleServer("127.0.0.1:27880", "127.0.0.1:2181", "zookeeper","io.binghe.rpc.test", "cglib");
+        RpcSingleServer singleServer = new RpcSingleServer("127.0.0.1:27880", "127.0.0.1:2181", "zookeeper","io.binghe.rpc.test", "jdk");
         singleServer.startNettyServer();
     }
 }
