@@ -3,19 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>bhrpc-learning</artifactId>
+        <artifactId>bhrpc-reflect</artifactId>
         <groupId>io.binghe.rpc</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bhrpc-reflect</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>bhrpc-reflect-jdk</module>
-        <module>bhrpc-reflect-api</module>
-        <module>bhrpc-reflect-cglib</module>
-    </modules>
+    <artifactId>bhrpc-reflect-cglib</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>io.binghe.rpc</groupId>
+            <artifactId>bhrpc-reflect-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
