@@ -16,6 +16,7 @@
         <module>bhrpc-reflect-api</module>
         <module>bhrpc-reflect-cglib</module>
         <module>bhrpc-reflect-javassist</module>
+        <module>bhrpc-reflect-bytebuddy</module>
     </modules>
 
 
