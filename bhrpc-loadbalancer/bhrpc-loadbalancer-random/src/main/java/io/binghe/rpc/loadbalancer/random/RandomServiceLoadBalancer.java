@@ -16,6 +16,7 @@
 package io.binghe.rpc.loadbalancer.random;
 
 import io.binghe.rpc.loadbalancer.api.ServiceLoadBalancer;
+import io.binghe.rpc.spi.annotation.SPIClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +28,7 @@ import java.util.Random;
  * @version 1.0.0
  * @description 基于随机算法的负载均衡策略
  */
+@SPIClass
 public class RandomServiceLoadBalancer<T> implements ServiceLoadBalancer<T> {
 
     private final Logger logger = LoggerFactory.getLogger(RandomServiceLoadBalancer.class);

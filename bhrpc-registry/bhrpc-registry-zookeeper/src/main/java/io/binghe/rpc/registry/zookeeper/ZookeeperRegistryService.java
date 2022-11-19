@@ -17,10 +17,10 @@ package io.binghe.rpc.registry.zookeeper;
 
 import io.binghe.rpc.common.helper.RpcServiceHelper;
 import io.binghe.rpc.loadbalancer.api.ServiceLoadBalancer;
-import io.binghe.rpc.loadbalancer.random.RandomServiceLoadBalancer;
 import io.binghe.rpc.protocol.meta.ServiceMeta;
 import io.binghe.rpc.registry.api.RegistryService;
 import io.binghe.rpc.registry.api.config.RegistryConfig;
+import io.binghe.rpc.spi.loader.ExtensionLoader;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
@@ -35,7 +35,7 @@ import java.util.List;
 
 /**
  * @author binghe(公众号：冰河技术)
- * @version 1.0.0
+ * @version 1.0.0z
  * @description 基于Zookeeper的注册服务
  */
 public class ZookeeperRegistryService implements RegistryService {
@@ -59,8 +59,7 @@ public class ZookeeperRegistryService implements RegistryService {
                 .basePath(ZK_BASE_PATH)
                 .build();
         this.serviceDiscovery.start();
-        //TODO 默认创建基于随机算法的负载均衡策略，后续基于SPI扩展
-        this.serviceLoadBalancer = new RandomServiceLoadBalancer<ServiceInstance<ServiceMeta>>();
+        this.serviceLoadBalancer = ExtensionLoader.getExtension(ServiceLoadBalancer.class, registryConfig.getRegistryLoadBalanceType());
     }
 
     @Override

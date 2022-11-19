@@ -114,6 +114,10 @@ public class RpcConstants {
      * 基于ZK的一致性Hash负载均衡
      */
     public static final String SERVICE_LOAD_BALANCER_ZKCONSISTENTHASH = "zkconsistenthash";
+    /**
+     * 基于随机算法的负载均衡
+     */
+    public static final String SERVICE_LOAD_BALANCER_RANDOM = "random";
 
     public static void main(String[] args){
         String str = "test0000000000000000";
