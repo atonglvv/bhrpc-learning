@@ -17,6 +17,7 @@
         <module>bhrpc-loadbalancer-random-weight</module>
         <module>bhrpc-loadbalancer-round-robin</module>
         <module>bhrpc-loadbalancer-round-robin-weight</module>
+        <module>bhrpc-loadbalancer-hash</module>
     </modules>
 
 

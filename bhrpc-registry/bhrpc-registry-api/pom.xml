@@ -41,5 +41,11 @@
             <artifactId>bhrpc-loadbalancer-round-robin-weight</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.binghe.rpc</groupId>
+            <artifactId>bhrpc-loadbalancer-hash</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
