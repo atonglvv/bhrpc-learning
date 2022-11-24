@@ -18,6 +18,8 @@
         <module>bhrpc-loadbalancer-round-robin</module>
         <module>bhrpc-loadbalancer-round-robin-weight</module>
         <module>bhrpc-loadbalancer-hash</module>
+        <!--<module>bhrpc-loadbalancer-sourceip-hash</module>-->
+        <module>bhrpc-loadbalancer-hash-weight</module>
     </modules>
 
 
