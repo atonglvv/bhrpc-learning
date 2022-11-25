@@ -33,7 +33,7 @@ public class RobinWeightServiceLoadBalancer<T> implements ServiceLoadBalancer<T>
     private final Logger logger = LoggerFactory.getLogger(RobinWeightServiceLoadBalancer.class);
     private volatile AtomicInteger atomicInteger = new AtomicInteger(0);
     @Override
-    public T select(List<T> servers, int hashCode) {
+    public T select(List<T> servers, int hashCode, String sourceIp) {
         logger.info("基于加权轮询算法的负载均衡策略...");
         if (servers == null || servers.isEmpty()){
             return null;

@@ -13,30 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.binghe.rpc.loadbalancer.hash;
+package io.binghe.rpc.common.ip;
 
-import io.binghe.rpc.loadbalancer.api.ServiceLoadBalancer;
-import io.binghe.rpc.spi.annotation.SPIClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import java.net.InetAddress;
 
 /**
  * @author binghe(公众号：冰河技术)
  * @version 1.0.0
- * @description 基于Hash算法的负载均衡策略
+ * @description IP工具类
  */
-@SPIClass
-public class HashServiceLoadBalancer<T> implements ServiceLoadBalancer<T> {
-    private final Logger logger = LoggerFactory.getLogger(HashServiceLoadBalancer.class);
-    @Override
-    public T select(List<T> servers, int hashCode, String sourceIp) {
-        logger.info("基于Hash算法的负载均衡策略...");
-        if (servers == null || servers.isEmpty()){
-            return null;
+public class IpUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(IpUtils.class);
+
+    public static InetAddress getLocalInetAddress()  {
+        try{
+            return InetAddress.getLocalHost();
+        }catch (Exception e){
+            LOGGER.error("get local ip address throws exception: {}", e);
         }
-        int index = Math.abs(hashCode) % servers.size();
-        return servers.get(index);
+        return null;
+    }
+
+    public static String getLocalAddress(){
+        return getLocalInetAddress().toString();
+    }
+
+    public static String getLocalHostName(){
+        return getLocalInetAddress().getHostName();
+    }
+
+    public static String getLocalHostIp(){
+        return getLocalInetAddress().getHostAddress();
     }
 }

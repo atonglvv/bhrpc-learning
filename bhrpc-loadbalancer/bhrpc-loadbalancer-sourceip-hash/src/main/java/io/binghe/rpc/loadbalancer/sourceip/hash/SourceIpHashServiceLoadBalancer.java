@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.binghe.rpc.loadbalancer.hash.weight;
+package io.binghe.rpc.loadbalancer.sourceip.hash;
 
+import io.binghe.rpc.common.utils.StringUtils;
 import io.binghe.rpc.loadbalancer.api.ServiceLoadBalancer;
 import io.binghe.rpc.spi.annotation.SPIClass;
 import org.slf4j.Logger;
@@ -25,23 +26,22 @@ import java.util.List;
 /**
  * @author binghe(公众号：冰河技术)
  * @version 1.0.0
- * @description 基于加权Hash算法负载均衡策略
+ * @description 基于源IP地址Hash的负载均衡策略
  */
 @SPIClass
-public class HashWeightServiceLoadBalancer <T> implements ServiceLoadBalancer<T> {
-    private final Logger logger = LoggerFactory.getLogger(HashWeightServiceLoadBalancer.class);
+public class SourceIpHashServiceLoadBalancer<T> implements ServiceLoadBalancer<T> {
+    private final Logger logger = LoggerFactory.getLogger(SourceIpHashServiceLoadBalancer.class);
     @Override
     public T select(List<T> servers, int hashCode, String sourceIp) {
-        logger.info("基于加权Hash算法的负载均衡策略...");
+        logger.info("基于源IP地址Hash的负载均衡策略...");
         if (servers == null || servers.isEmpty()){
             return null;
         }
-        hashCode = Math.abs(hashCode);
-        int count = hashCode % servers.size();
-        if (count <= 0){
-            count = servers.size();
+        //传入的IP地址为空，则默认返回第一个服务实例
+        if (StringUtils.isEmpty(sourceIp)){
+            return servers.get(0);
         }
-        int index = hashCode % count;
-        return servers.get(index);
+        int resultHashCode = Math.abs(sourceIp.hashCode() + hashCode);
+        return servers.get(resultHashCode % servers.size());
     }
 }

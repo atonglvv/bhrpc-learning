@@ -44,10 +44,11 @@ public interface RegistryService {
      * 服务发现
      * @param serviceName 服务名称
      * @param invokerHashCode HashCode值
+     * @param sourceIp 源IP地址
      * @return 服务元数据
      * @throws Exception 抛出异常
      */
-    ServiceMeta discovery(String serviceName, int invokerHashCode) throws Exception;
+    ServiceMeta discovery(String serviceName, int invokerHashCode, String sourceIp) throws Exception;
 
     /**
      * 服务销毁

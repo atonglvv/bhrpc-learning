@@ -1,0 +1,1 @@
+iphash=io.binghe.rpc.loadbalancer.sourceip.hash.SourceIpHashServiceLoadBalancer

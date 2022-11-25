@@ -87,9 +87,9 @@ public class ZookeeperRegistryService implements RegistryService {
     }
 
     @Override
-    public ServiceMeta discovery(String serviceName, int invokerHashCode) throws Exception {
+    public ServiceMeta discovery(String serviceName, int invokerHashCode, String sourceIp) throws Exception {
         Collection<ServiceInstance<ServiceMeta>> serviceInstances = serviceDiscovery.queryForInstances(serviceName);
-        ServiceInstance<ServiceMeta> instance = serviceLoadBalancer.select((List<ServiceInstance<ServiceMeta>>) serviceInstances, invokerHashCode);
+        ServiceInstance<ServiceMeta> instance = serviceLoadBalancer.select((List<ServiceInstance<ServiceMeta>>) serviceInstances, invokerHashCode, sourceIp);
         if (instance != null) {
             return instance.getPayload();
         }
