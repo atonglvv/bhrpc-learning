@@ -21,6 +21,7 @@
         <module>bhrpc-loadbalancer-sourceip-hash</module>
         <module>bhrpc-loadbalancer-hash-weight</module>
         <module>bhrpc-loadbalancer-sourceip-hash-weight</module>
+        <module>bhrpc-loadbalancer-consistenthash-zk</module>
     </modules>
 
 
