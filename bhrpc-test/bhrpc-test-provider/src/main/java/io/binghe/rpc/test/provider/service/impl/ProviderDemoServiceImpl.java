@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  * @version 1.0.0
  * @description DemoService实现类
  */
-@RpcService(interfaceClass = DemoService.class, interfaceClassName = "io.binghe.rpc.test.api.DemoService", version = "1.0.0", group = "binghe")
+@RpcService(interfaceClass = DemoService.class, interfaceClassName = "io.binghe.rpc.test.api.DemoService", version = "1.0.0", group = "binghe", weight = 2)
 public class ProviderDemoServiceImpl implements DemoService {
     private final Logger logger = LoggerFactory.getLogger(ProviderDemoServiceImpl.class);
     @Override

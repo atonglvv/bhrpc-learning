@@ -18,6 +18,7 @@ package io.binghe.rpc.provider.common.scanner;
 import io.binghe.rpc.annotation.RpcService;
 import io.binghe.rpc.common.helper.RpcServiceHelper;
 import io.binghe.rpc.common.scanner.ClassScanner;
+import io.binghe.rpc.constants.RpcConstants;
 import io.binghe.rpc.protocol.meta.ServiceMeta;
 import io.binghe.rpc.registry.api.RegistryService;
 import org.slf4j.Logger;
@@ -51,7 +52,7 @@ public class RpcServiceScanner extends ClassScanner {
                 RpcService rpcService = clazz.getAnnotation(RpcService.class);
                 if (rpcService != null){
                     //优先使用interfaceClass, interfaceClass的name为空，再使用interfaceClassName
-                    ServiceMeta serviceMeta = new ServiceMeta(getServiceName(rpcService), rpcService.version(), rpcService.group(), host, port);
+                    ServiceMeta serviceMeta = new ServiceMeta(getServiceName(rpcService), rpcService.version(), rpcService.group(), host, port, getWeight(rpcService.weight()));
                     //将元数据注册到注册中心
                     registryService.register(serviceMeta);
                     handlerMap.put(RpcServiceHelper.buildServiceKey(serviceMeta.getServiceName(), serviceMeta.getServiceVersion(), serviceMeta.getServiceGroup()), clazz.newInstance());
@@ -61,6 +62,16 @@ public class RpcServiceScanner extends ClassScanner {
             }
         });
         return handlerMap;
+    }
+
+    private static int getWeight(int weight) {
+        if (weight < RpcConstants.SERVICE_WEIGHT_MIN){
+            weight = RpcConstants.SERVICE_WEIGHT_MIN;
+        }
+        if (weight > RpcConstants.SERVICE_WEIGHT_MAX){
+            weight = RpcConstants.SERVICE_WEIGHT_MAX;
+        }
+        return weight;
     }
 
     /**
