@@ -23,6 +23,7 @@
         <module>bhrpc-loadbalancer-sourceip-hash-weight</module>
         <module>bhrpc-loadbalancer-consistenthash-zk</module>
         <module>bhrpc-loadbalancer-random-weight-enhanced</module>
+        <module>bhrpc-loadbalancer-round-robin-weight-enhanced</module>
     </modules>
 
 
