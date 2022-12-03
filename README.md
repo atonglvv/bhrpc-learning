@@ -184,3 +184,4 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第51章：基于SPI扩展增强型加权随机算法负载均衡策略](https://articles.zsxq.com/id_mjigpus5d9pc.html)
 * [《RPC手撸专栏》第52章：基于SPI扩展增强型加权轮询算法负载均衡策略](https://articles.zsxq.com/id_fw9wlglk7vko.html)
 * [《RPC手撸专栏》第53章：基于SPI扩展增强型加权Hash算法负载均衡策略](https://articles.zsxq.com/id_d01mp6zox24w.html)
+* [《RPC手撸专栏》第54章：基于SPI扩展增强型加权源IP地址Hash算法负载均衡策略](https://articles.zsxq.com/id_9cthxw6xau9m.html)
