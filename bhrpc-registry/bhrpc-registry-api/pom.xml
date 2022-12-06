@@ -101,5 +101,11 @@
             <artifactId>bhrpc-loadbalancer-consistenthash-zk-enhanced</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.binghe.rpc</groupId>
+            <artifactId>bhrpc-loadbalancer-least-connections</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

@@ -21,6 +21,7 @@ import io.binghe.rpc.common.threadpool.ClientThreadPool;
 import io.binghe.rpc.consumer.common.handler.RpcConsumerHandler;
 import io.binghe.rpc.consumer.common.helper.RpcConsumerHandlerHelper;
 import io.binghe.rpc.consumer.common.initializer.RpcConsumerInitializer;
+import io.binghe.rpc.loadbalancer.context.ConnectionsContext;
 import io.binghe.rpc.protocol.RpcProtocol;
 import io.binghe.rpc.protocol.meta.ServiceMeta;
 import io.binghe.rpc.protocol.request.RpcRequest;
@@ -91,11 +92,11 @@ public class RpcConsumer implements Consumer {
             RpcConsumerHandler handler = RpcConsumerHandlerHelper.get(serviceMeta);
             //缓存中无RpcClientHandler
             if (handler == null){
-                handler = getRpcConsumerHandler(serviceMeta.getServiceAddr(), serviceMeta.getServicePort());
+                handler = getRpcConsumerHandler(serviceMeta);
                 RpcConsumerHandlerHelper.put(serviceMeta, handler);
             }else if (!handler.getChannel().isActive()){  //缓存中存在RpcClientHandler，但不活跃
                 handler.close();
-                handler = getRpcConsumerHandler(serviceMeta.getServiceAddr(), serviceMeta.getServicePort());
+                handler = getRpcConsumerHandler(serviceMeta);
                 RpcConsumerHandlerHelper.put(serviceMeta, handler);
             }
             return handler.sendRequest(protocol, request.getAsync(), request.getOneway());
@@ -106,13 +107,15 @@ public class RpcConsumer implements Consumer {
     /**
      * 创建连接并返回RpcClientHandler
      */
-    private RpcConsumerHandler getRpcConsumerHandler(String serviceAddress, int port) throws InterruptedException {
-        ChannelFuture channelFuture = bootstrap.connect(serviceAddress, port).sync();
+    private RpcConsumerHandler getRpcConsumerHandler(ServiceMeta serviceMeta) throws InterruptedException {
+        ChannelFuture channelFuture = bootstrap.connect(serviceMeta.getServiceAddr(), serviceMeta.getServicePort()).sync();
         channelFuture.addListener((ChannelFutureListener) listener -> {
             if (channelFuture.isSuccess()) {
-                logger.info("connect rpc server {} on port {} success.", serviceAddress, port);
+                logger.info("connect rpc server {} on port {} success.", serviceMeta.getServiceAddr(), serviceMeta.getServicePort());
+                //添加连接信息，在服务消费者端记录每个服务提供者实例的连接次数
+                ConnectionsContext.add(serviceMeta);
             } else {
-                logger.error("connect rpc server {} on port {} failed.", serviceAddress, port);
+                logger.error("connect rpc server {} on port {} failed.", serviceMeta.getServiceAddr(), serviceMeta.getServicePort());
                 channelFuture.cause().printStackTrace();
                 eventLoopGroup.shutdownGracefully();
             }

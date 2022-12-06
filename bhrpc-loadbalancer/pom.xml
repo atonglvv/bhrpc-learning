@@ -27,6 +27,7 @@
         <module>bhrpc-loadbalancer-hash-weight-enhanced</module>
         <module>bhrpc-loadbalancer-sourceip-hash-weight-enhanced</module>
         <module>bhrpc-loadbalancer-consistenthash-zk-enhanced</module>
+        <module>bhrpc-loadbalancer-least-connections</module>
     </modules>
 
 
