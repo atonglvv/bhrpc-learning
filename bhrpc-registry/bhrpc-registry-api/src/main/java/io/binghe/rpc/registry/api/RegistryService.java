@@ -17,6 +17,7 @@ package io.binghe.rpc.registry.api;
 
 import io.binghe.rpc.protocol.meta.ServiceMeta;
 import io.binghe.rpc.registry.api.config.RegistryConfig;
+import io.binghe.rpc.spi.annotation.SPI;
 
 import java.io.IOException;
 
@@ -25,6 +26,7 @@ import java.io.IOException;
  * @version 1.0.0
  * @description
  */
+@SPI
 public interface RegistryService {
 
     /** 服务注册

@@ -22,6 +22,7 @@ import io.binghe.rpc.loadbalancer.helper.ServiceLoadBalancerHelper;
 import io.binghe.rpc.protocol.meta.ServiceMeta;
 import io.binghe.rpc.registry.api.RegistryService;
 import io.binghe.rpc.registry.api.config.RegistryConfig;
+import io.binghe.rpc.spi.annotation.SPIClass;
 import io.binghe.rpc.spi.loader.ExtensionLoader;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -37,9 +38,10 @@ import java.util.List;
 
 /**
  * @author binghe(公众号：冰河技术)
- * @version 1.0.0z
+ * @version 1.0.0
  * @description 基于Zookeeper的注册服务
  */
+@SPIClass
 public class ZookeeperRegistryService implements RegistryService {
 
     public static final int BASE_SLEEP_TIME_MS = 1000;

@@ -17,15 +17,15 @@ package io.binghe.rpc.test.consumer.handler;
 
 import io.binghe.rpc.common.exception.RegistryException;
 import io.binghe.rpc.consumer.common.RpcConsumer;
-import io.binghe.rpc.proxy.api.callback.AsyncRPCCallback;
 import io.binghe.rpc.consumer.common.context.RpcContext;
-import io.binghe.rpc.proxy.api.future.RPCFuture;
 import io.binghe.rpc.protocol.RpcProtocol;
 import io.binghe.rpc.protocol.header.RpcHeaderFactory;
 import io.binghe.rpc.protocol.request.RpcRequest;
+import io.binghe.rpc.proxy.api.callback.AsyncRPCCallback;
+import io.binghe.rpc.proxy.api.future.RPCFuture;
 import io.binghe.rpc.registry.api.RegistryService;
 import io.binghe.rpc.registry.api.config.RegistryConfig;
-import io.binghe.rpc.registry.zookeeper.ZookeeperRegistryService;
+import io.binghe.rpc.spi.loader.ExtensionLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -71,8 +71,7 @@ public class RpcConsumerHandlerTest {
         if (StringUtils.isEmpty(registryType)){
             throw new IllegalArgumentException("registry type is null");
         }
-        //TODO 后续SPI扩展
-        RegistryService registryService = new ZookeeperRegistryService();
+        RegistryService registryService = ExtensionLoader.getExtension(RegistryService.class, registryType);
         try {
             registryService.init(new RegistryConfig(registryAddress, registryType, registryLoadBalanceType));
         } catch (Exception e) {

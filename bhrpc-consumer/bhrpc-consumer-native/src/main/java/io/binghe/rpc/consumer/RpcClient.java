@@ -21,10 +21,8 @@ import io.binghe.rpc.proxy.api.ProxyFactory;
 import io.binghe.rpc.proxy.api.async.IAsyncObjectProxy;
 import io.binghe.rpc.proxy.api.config.ProxyConfig;
 import io.binghe.rpc.proxy.api.object.ObjectProxy;
-import io.binghe.rpc.proxy.jdk.JdkProxyFactory;
 import io.binghe.rpc.registry.api.RegistryService;
 import io.binghe.rpc.registry.api.config.RegistryConfig;
-import io.binghe.rpc.registry.zookeeper.ZookeeperRegistryService;
 import io.binghe.rpc.spi.loader.ExtensionLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,8 +89,7 @@ public class RpcClient {
         if (StringUtils.isEmpty(registryType)){
             throw new IllegalArgumentException("registry type is null");
         }
-        //TODO 后续SPI扩展
-        RegistryService registryService = new ZookeeperRegistryService();
+        RegistryService registryService = ExtensionLoader.getExtension(RegistryService.class, registryType);
         try {
             registryService.init(new RegistryConfig(registryAddress, registryType, registryLoadBalanceType));
         } catch (Exception e) {

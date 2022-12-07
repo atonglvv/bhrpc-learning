@@ -26,6 +26,12 @@
 
         <dependency>
             <groupId>io.binghe.rpc</groupId>
+            <artifactId>bhrpc-spi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.binghe.rpc</groupId>
             <artifactId>bhrpc-reflect-jdk</artifactId>
             <version>${project.version}</version>
         </dependency>
