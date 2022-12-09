@@ -17,6 +17,7 @@ package io.binghe.rpc.consumer.common.handler;
 
 import com.alibaba.fastjson.JSONObject;
 import io.binghe.rpc.consumer.common.context.RpcContext;
+import io.binghe.rpc.protocol.enumeration.RpcType;
 import io.binghe.rpc.proxy.api.future.RPCFuture;
 import io.binghe.rpc.protocol.RpcProtocol;
 import io.binghe.rpc.protocol.header.RpcHeader;
@@ -74,8 +75,31 @@ public class RpcConsumerHandler extends SimpleChannelInboundHandler<RpcProtocol<
         if (protocol == null){
             return;
         }
-        logger.info("服务消费者接收到的数据===>>>{}", JSONObject.toJSONString(protocol));
+        this.handlerMessage(protocol);
+    }
+
+    private void handlerMessage(RpcProtocol<RpcResponse> protocol){
         RpcHeader header = protocol.getHeader();
+        // 心跳消息
+        if (header.getMsgType() == (byte) RpcType.HEARTBEAT.getType()){
+            this.handlerHeartbeatMessage(protocol);
+        }else if (header.getMsgType() == (byte) RpcType.RESPONSE.getType()){ //响应消息
+            this.handlerResponseMessage(protocol, header);
+        }
+    }
+
+    /**
+     * 处理心跳消息
+     */
+    private void handlerHeartbeatMessage(RpcProtocol<RpcResponse> protocol) {
+        //此处简单打印即可,实际场景可不做处理
+        logger.info("receive service provider heartbeat message:{}", protocol.getBody().getResult());
+    }
+
+    /**
+     * 处理响应消息
+     */
+    private void handlerResponseMessage(RpcProtocol<RpcResponse> protocol, RpcHeader header) {
         long requestId = header.getRequestId();
         RPCFuture rpcFuture = pendingRPC.remove(requestId);
         if (rpcFuture != null){

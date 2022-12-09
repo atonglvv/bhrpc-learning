@@ -188,3 +188,4 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第55章：基于SPI扩展增强型Zookeeper一致性Hash算法负载均衡策略](https://articles.zsxq.com/id_noundg5cxq55.html)
 * [《RPC手撸专栏》第56章：基于SPI扩展最少连接数负载均衡策略](https://articles.zsxq.com/id_9r6lownjcggi.html)
 * [《RPC手撸专栏》第57章：基于SPI扩展实现Zookeeper注册中心](https://articles.zsxq.com/id_xkq21xwlnq48.html)
+* [《RPC手撸专栏》第58章：断线重连机制心跳交互数据模型设计](https://articles.zsxq.com/id_pklupeh1lzoh.html)
