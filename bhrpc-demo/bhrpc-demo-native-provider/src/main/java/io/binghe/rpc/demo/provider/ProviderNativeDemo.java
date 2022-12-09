@@ -1,5 +1,5 @@
 /**
- * Copyright 2020-9999 the original author or authors.
+ * Copyright 2022-9999 the original author or authors.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.binghe.rpc.test.provider.single;
+package io.binghe.rpc.demo.provider;
 
 import io.binghe.rpc.provider.RpcSingleServer;
 import org.junit.Test;
 
 /**
- * @author binghe(公众号：冰河技术)
+ * @author binghe(公众号 : 冰河技术)
  * @version 1.0.0
- * @description 测试Java原生启动RPC
+ * @description 服务提供者
  */
-public class RpcSingleServerTest {
+public class ProviderNativeDemo {
 
     @Test
     public void startRpcSingleServer(){
-        RpcSingleServer singleServer = new RpcSingleServer("192.168.0.114:27880", "192.168.0.114:2181", "zookeeper", "random","io.binghe.rpc.test", "asm");
+        RpcSingleServer singleServer = new RpcSingleServer("192.168.0.114:27880", "192.168.0.114:2181", "zookeeper", "random","io.binghe.rpc.demo", "asm");
         singleServer.startNettyServer();
     }
 }

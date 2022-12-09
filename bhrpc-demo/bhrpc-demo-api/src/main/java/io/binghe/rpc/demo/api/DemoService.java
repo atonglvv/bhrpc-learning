@@ -13,21 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.binghe.rpc.test.provider.single;
-
-import io.binghe.rpc.provider.RpcSingleServer;
-import org.junit.Test;
+package io.binghe.rpc.demo.api;
 
 /**
- * @author binghe(公众号：冰河技术)
+ * @author binghe (公众号：冰河技术)
  * @version 1.0.0
- * @description 测试Java原生启动RPC
+ * @description 测试服务接口
  */
-public class RpcSingleServerTest {
+public interface DemoService {
 
-    @Test
-    public void startRpcSingleServer(){
-        RpcSingleServer singleServer = new RpcSingleServer("192.168.0.114:27880", "192.168.0.114:2181", "zookeeper", "random","io.binghe.rpc.test", "asm");
-        singleServer.startNettyServer();
-    }
+    String hello(String name);
 }

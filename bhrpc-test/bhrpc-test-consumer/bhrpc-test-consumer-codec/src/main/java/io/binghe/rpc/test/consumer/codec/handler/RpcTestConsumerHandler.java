@@ -2,6 +2,7 @@ package io.binghe.rpc.test.consumer.codec.handler;
 
 import com.alibaba.fastjson.JSONObject;
 import io.binghe.rpc.protocol.RpcProtocol;
+import io.binghe.rpc.protocol.enumeration.RpcType;
 import io.binghe.rpc.protocol.header.RpcHeaderFactory;
 import io.binghe.rpc.protocol.request.RpcRequest;
 import io.binghe.rpc.protocol.response.RpcResponse;
@@ -23,7 +24,7 @@ public class RpcTestConsumerHandler extends SimpleChannelInboundHandler<RpcProto
         logger.info("发送数据开始...");
         //模拟发送数据
         RpcProtocol<RpcRequest> protocol = new RpcProtocol<RpcRequest>();
-        protocol.setHeader(RpcHeaderFactory.getRequestHeader("jdk"));
+        protocol.setHeader(RpcHeaderFactory.getRequestHeader("jdk", RpcType.REQUEST.getType()));
         RpcRequest request = new RpcRequest();
         request.setClassName("io.binghe.rpc.test.api.DemoService");
         request.setGroup("binghe");

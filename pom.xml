@@ -23,6 +23,7 @@
         <module>bhrpc-loadbalancer</module>
         <module>bhrpc-spi</module>
         <module>bhrpc-reflect</module>
+        <module>bhrpc-demo</module>
     </modules>
 
     <properties>

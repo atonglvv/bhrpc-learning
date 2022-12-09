@@ -15,6 +15,7 @@
  */
 
 import io.binghe.rpc.protocol.RpcProtocol;
+import io.binghe.rpc.protocol.enumeration.RpcType;
 import io.binghe.rpc.protocol.header.RpcHeader;
 import io.binghe.rpc.protocol.header.RpcHeaderFactory;
 import io.binghe.rpc.protocol.request.RpcRequest;
@@ -26,7 +27,7 @@ import io.binghe.rpc.protocol.request.RpcRequest;
  */
 public class Test {
      public static RpcProtocol<RpcRequest> getRpcProtocol(){
-        RpcHeader header = RpcHeaderFactory.getRequestHeader("jdk");
+        RpcHeader header = RpcHeaderFactory.getRequestHeader("jdk", RpcType.REQUEST.getType());
         RpcRequest body = new RpcRequest();
         body.setOneway(false);
         body.setAsync(false);

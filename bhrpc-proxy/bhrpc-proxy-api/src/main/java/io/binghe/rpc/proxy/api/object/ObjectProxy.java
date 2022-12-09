@@ -16,6 +16,7 @@
 package io.binghe.rpc.proxy.api.object;
 
 import io.binghe.rpc.protocol.RpcProtocol;
+import io.binghe.rpc.protocol.enumeration.RpcType;
 import io.binghe.rpc.protocol.header.RpcHeaderFactory;
 import io.binghe.rpc.protocol.request.RpcRequest;
 import io.binghe.rpc.proxy.api.async.IAsyncObjectProxy;
@@ -113,7 +114,7 @@ public class ObjectProxy <T> implements IAsyncObjectProxy, InvocationHandler{
         }
         RpcProtocol<RpcRequest> requestRpcProtocol = new RpcProtocol<RpcRequest>();
 
-        requestRpcProtocol.setHeader(RpcHeaderFactory.getRequestHeader(serializationType));
+        requestRpcProtocol.setHeader(RpcHeaderFactory.getRequestHeader(serializationType, RpcType.REQUEST.getType()));
 
         RpcRequest request = new RpcRequest();
         request.setVersion(this.serviceVersion);
@@ -162,7 +163,7 @@ public class ObjectProxy <T> implements IAsyncObjectProxy, InvocationHandler{
 
         RpcProtocol<RpcRequest> requestRpcProtocol = new RpcProtocol<RpcRequest>();
 
-        requestRpcProtocol.setHeader(RpcHeaderFactory.getRequestHeader(serializationType));
+        requestRpcProtocol.setHeader(RpcHeaderFactory.getRequestHeader(serializationType, RpcType.REQUEST.getType()));
 
         RpcRequest request = new RpcRequest();
         request.setClassName(className);

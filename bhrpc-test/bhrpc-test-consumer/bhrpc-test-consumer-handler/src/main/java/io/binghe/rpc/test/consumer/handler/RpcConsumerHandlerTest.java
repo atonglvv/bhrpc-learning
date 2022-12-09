@@ -19,6 +19,7 @@ import io.binghe.rpc.common.exception.RegistryException;
 import io.binghe.rpc.consumer.common.RpcConsumer;
 import io.binghe.rpc.consumer.common.context.RpcContext;
 import io.binghe.rpc.protocol.RpcProtocol;
+import io.binghe.rpc.protocol.enumeration.RpcType;
 import io.binghe.rpc.protocol.header.RpcHeaderFactory;
 import io.binghe.rpc.protocol.request.RpcRequest;
 import io.binghe.rpc.proxy.api.callback.AsyncRPCCallback;
@@ -42,7 +43,7 @@ public class RpcConsumerHandlerTest {
 
     public static void main(String[] args) throws Exception {
         RpcConsumer consumer = RpcConsumer.getInstance();
-        RPCFuture rpcFuture = consumer.sendRequest(getRpcRequestProtocol(), getRegistryService("127.0.0.1:2181", "zookeeper", "random"));
+        RPCFuture rpcFuture = consumer.sendRequest(getRpcRequestProtocol(), getRegistryService("192.168.0.114:2181", "zookeeper", "random"));
         rpcFuture.addCallback(new AsyncRPCCallback() {
             @Override
             public void onSuccess(Object result) {
@@ -60,7 +61,7 @@ public class RpcConsumerHandlerTest {
 
     public static void mainAsync(String[] args) throws Exception {
         RpcConsumer consumer = RpcConsumer.getInstance();
-        consumer.sendRequest(getRpcRequestProtocol(), getRegistryService("127.0.0.1:2181", "zookeeper", "random"));
+        consumer.sendRequest(getRpcRequestProtocol(), getRegistryService("192.168.0.114:2181", "zookeeper", "random"));
         RPCFuture future = RpcContext.getContext().getRPCFuture();
         LOGGER.info("从服务消费者获取到的数据===>>>" + future.get());
         consumer.close();
@@ -83,7 +84,7 @@ public class RpcConsumerHandlerTest {
 
     public static void mainSync(String[] args) throws Exception {
         RpcConsumer consumer = RpcConsumer.getInstance();
-        RPCFuture future = consumer.sendRequest(getRpcRequestProtocol(), getRegistryService("127.0.0.1:2181", "zookeeper", "random"));
+        RPCFuture future = consumer.sendRequest(getRpcRequestProtocol(), getRegistryService("192.168.0.114:2181", "zookeeper", "random"));
         LOGGER.info("从服务消费者获取到的数据===>>>" + future.get());
         consumer.close();
     }
@@ -91,7 +92,7 @@ public class RpcConsumerHandlerTest {
     private static RpcProtocol<RpcRequest> getRpcRequestProtocol(){
         //模拟发送数据
         RpcProtocol<RpcRequest> protocol = new RpcProtocol<RpcRequest>();
-        protocol.setHeader(RpcHeaderFactory.getRequestHeader("jdk"));
+        protocol.setHeader(RpcHeaderFactory.getRequestHeader("jdk", RpcType.REQUEST.getType()));
         RpcRequest request = new RpcRequest();
         request.setClassName("io.binghe.rpc.test.api.DemoService");
         request.setGroup("binghe");
@@ -108,7 +109,7 @@ public class RpcConsumerHandlerTest {
     private static RpcProtocol<RpcRequest> getRpcRequestProtocolAsync(){
         //模拟发送数据
         RpcProtocol<RpcRequest> protocol = new RpcProtocol<RpcRequest>();
-        protocol.setHeader(RpcHeaderFactory.getRequestHeader("jdk"));
+        protocol.setHeader(RpcHeaderFactory.getRequestHeader("jdk", RpcType.REQUEST.getType()));
         RpcRequest request = new RpcRequest();
         request.setClassName("io.binghe.rpc.test.api.DemoService");
         request.setGroup("binghe");
@@ -125,7 +126,7 @@ public class RpcConsumerHandlerTest {
     private static RpcProtocol<RpcRequest> getRpcRequestProtocolSync(){
         //模拟发送数据
         RpcProtocol<RpcRequest> protocol = new RpcProtocol<RpcRequest>();
-        protocol.setHeader(RpcHeaderFactory.getRequestHeader("jdk"));
+        protocol.setHeader(RpcHeaderFactory.getRequestHeader("jdk", RpcType.REQUEST.getType()));
         RpcRequest request = new RpcRequest();
         request.setClassName("io.binghe.rpc.test.api.DemoService");
         request.setGroup("binghe");
