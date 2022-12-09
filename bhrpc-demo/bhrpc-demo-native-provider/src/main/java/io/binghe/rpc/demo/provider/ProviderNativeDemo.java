@@ -27,7 +27,7 @@ public class ProviderNativeDemo {
 
     @Test
     public void startRpcSingleServer(){
-        RpcSingleServer singleServer = new RpcSingleServer("192.168.0.114:27880", "192.168.0.114:2181", "zookeeper", "random","io.binghe.rpc.demo", "asm");
+        RpcSingleServer singleServer = new RpcSingleServer("127.0.0.1:27880", "127.0.0.1:2181", "zookeeper", "random","io.binghe.rpc.demo", "asm");
         singleServer.startNettyServer();
     }
 }

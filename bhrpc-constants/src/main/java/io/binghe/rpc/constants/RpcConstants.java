@@ -133,8 +133,14 @@ public class RpcConstants {
      */
     public static final int SERVICE_WEIGHT_MAX = 100;
 
-    public static void main(String[] args){
-        String str = "test0000000000000000";
-        System.out.println(str.replace("0", ""));
-    }
+    /**
+     * 心跳ping消息
+     */
+    public static final String HEARTBEAT_PING = "ping";
+
+    /**
+     * 心跳pong消息
+     */
+    public static final String HEARTBEAT_PONG = "pong";
+
 }

@@ -37,10 +37,10 @@ public class ZookeeperRegistryTest {
 
     @Before
     public void init() throws Exception{
-        RegistryConfig registryConfig = new RegistryConfig("192.168.0.114:2181", "zookeeper", "random");
+        RegistryConfig registryConfig = new RegistryConfig("127.0.0.1:2181", "zookeeper", "random");
         this.registryService = ExtensionLoader.getExtension(RegistryService.class, "zookeeper");
         this.registryService.init(registryConfig);
-        this.serviceMeta = new ServiceMeta(ZookeeperRegistryTest.class.getName(), "1.0.0", "binghe", "192.168.0.114", 8080, 1);
+        this.serviceMeta = new ServiceMeta(ZookeeperRegistryTest.class.getName(), "1.0.0", "binghe", "127.0.0.1", 8080, 1);
     }
 
     @Test
@@ -55,7 +55,7 @@ public class ZookeeperRegistryTest {
 
     @Test
     public void testDiscovery() throws Exception {
-        this.registryService.discovery(RegistryService.class.getName(), "binghe".hashCode(), "192.168.0.114");
+        this.registryService.discovery(RegistryService.class.getName(), "binghe".hashCode(), "127.0.0.1");
     }
 
     @Test

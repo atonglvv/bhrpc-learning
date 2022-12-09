@@ -46,7 +46,7 @@ public class BaseServer implements Server {
 
     private final Logger logger = LoggerFactory.getLogger(BaseServer.class);
     //主机域名或者IP地址
-    protected String host = "192.168.0.114";
+    protected String host = "127.0.0.1";
     //端口号
     protected int port = 27110;
     //存储的是实体类关系
