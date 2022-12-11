@@ -21,6 +21,7 @@ import io.binghe.rpc.common.threadpool.ClientThreadPool;
 import io.binghe.rpc.consumer.common.handler.RpcConsumerHandler;
 import io.binghe.rpc.consumer.common.helper.RpcConsumerHandlerHelper;
 import io.binghe.rpc.consumer.common.initializer.RpcConsumerInitializer;
+import io.binghe.rpc.consumer.common.manager.ConsumerConnectionManager;
 import io.binghe.rpc.loadbalancer.context.ConnectionsContext;
 import io.binghe.rpc.protocol.RpcProtocol;
 import io.binghe.rpc.protocol.meta.ServiceMeta;
@@ -39,6 +40,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author binghe(公众号：冰河技术)
@@ -52,8 +56,7 @@ public class RpcConsumer implements Consumer {
     private final EventLoopGroup eventLoopGroup;
     private final String localIp;
     private static volatile RpcConsumer instance;
-
-    private static Map<String, RpcConsumerHandler> handlerMap = new ConcurrentHashMap<>();
+    private ScheduledExecutorService executorService;
 
     private RpcConsumer() {
         localIp = IpUtils.getLocalHostIp();
@@ -61,6 +64,22 @@ public class RpcConsumer implements Consumer {
         eventLoopGroup = new NioEventLoopGroup(4);
         bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class)
                 .handler(new RpcConsumerInitializer());
+        //TODO 启动心跳，后续优化
+        this.startHeartbeat();
+    }
+
+    private void startHeartbeat() {
+        executorService = Executors.newScheduledThreadPool(2);
+        //扫描并处理所有不活跃的连接
+        executorService.scheduleAtFixedRate(() -> {
+            logger.info("=============scanNotActiveChannel============");
+            ConsumerConnectionManager.scanNotActiveChannel();
+        }, 10, 60, TimeUnit.SECONDS);
+
+        executorService.scheduleAtFixedRate(()->{
+            logger.info("=============broadcastPingMessageFromConsumer============");
+            ConsumerConnectionManager.broadcastPingMessageFromConsumer();
+        }, 3, 30, TimeUnit.SECONDS);
     }
 
     public static RpcConsumer getInstance(){
@@ -78,6 +97,7 @@ public class RpcConsumer implements Consumer {
         RpcConsumerHandlerHelper.closeRpcClientHandler();
         eventLoopGroup.shutdownGracefully();
         ClientThreadPool.shutdown();
+        executorService.shutdown();
     }
 
     //修改返回数据的类型

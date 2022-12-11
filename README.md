@@ -190,3 +190,4 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第57章：基于SPI扩展实现Zookeeper注册中心](https://articles.zsxq.com/id_xkq21xwlnq48.html)
 * [《RPC手撸专栏》第58章：心跳机制交互数据模型设计](https://articles.zsxq.com/id_pklupeh1lzoh.html)
 * [《RPC手撸专栏》第59章：心跳机制增强数据模型与协议解析设计](https://articles.zsxq.com/id_dcotswnwhxjh.html)
+* [《RPC手撸专栏》第60章：服务消费者向服务提供者发送心跳信息并接收心跳响应](https://articles.zsxq.com/id_sb16dguakuq4.html)
