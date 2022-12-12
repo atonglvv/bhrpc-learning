@@ -81,4 +81,14 @@ public @interface RpcReference {
      * 服务分组，默认为空
      */
     String group() default "";
+
+    /**
+     * 心跳间隔时间，默认30秒
+     */
+    int heartbeatInterval() default 30000;
+
+    /**
+     * 扫描空闲连接间隔时间，默认60秒
+     */
+    int scanNotActiveChannelInterval() default 60000;
 }
