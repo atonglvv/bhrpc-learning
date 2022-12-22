@@ -91,4 +91,14 @@ public @interface RpcReference {
      * 扫描空闲连接间隔时间，默认60秒
      */
     int scanNotActiveChannelInterval() default 60000;
+
+    /**
+     * 重试间隔时间
+     */
+    int retryInterval() default 1000;
+
+    /**
+     * 重试间隔时间
+     */
+    int retryTimes() default 3;
 }

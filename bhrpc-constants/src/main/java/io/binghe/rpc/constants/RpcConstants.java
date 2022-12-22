@@ -169,4 +169,16 @@ public class RpcConstants {
      */
     public static final String CODEC_CLIENT_IDLE_HANDLER = "client-idle-handler";
 
+    /**
+     * 默认的重试时间间隔，1s
+     */
+    public static final int DEFAULT_RETRY_INTERVAL = 1000;
+
+    /**
+     * 默认的重试次数，无限重试
+     */
+    public static final int DEFAULT_RETRY_TIMES = Integer.MAX_VALUE;
+
+
+
 }
