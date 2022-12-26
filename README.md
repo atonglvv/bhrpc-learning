@@ -199,3 +199,4 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第65章：服务消费者增强型心跳检测机制的实现](https://articles.zsxq.com/id_ggtdg85pe3fp.html)
 * [《RPC手撸专栏》第66章：服务消费者实现服务订阅的重试机制](https://articles.zsxq.com/id_3ck9r5z89ovn.html)
 * [《RPC手撸专栏》第67章：服务消费者连接服务提供者的重试机制](https://articles.zsxq.com/id_i5r441hvg5fp.html)
+* [《RPC手撸专栏》第68章：服务提供者整合Spring XML](https://articles.zsxq.com/id_lpdm92w0kp2l.html)
