@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="io.binghe.rpc.demo"/>
+
+    <context:property-placeholder location="classpath:rpc.properties"/>
+
+    <bean id="rpcClient" class="io.binghe.rpc.consumer.RpcClient">
+        <constructor-arg name="registryAddress" value="${registry.address}"/>
+        <constructor-arg name="registryType" value="${registry.type}"/>
+        <constructor-arg name="registryLoadBalanceType" value="${registry.loadbalance.type}"/>
+        <constructor-arg name="proxy" value="${proxy.type}"/>
+        <constructor-arg name="serviceVersion" value="${service.version}"/>
+        <constructor-arg name="serviceGroup" value="${service.group}"/>
+        <constructor-arg name="serializationType" value="${serialization.type}"/>
+        <constructor-arg name="timeout" value="${timeout}"/>
+        <constructor-arg name="async" value="false"/>
+        <constructor-arg name="oneway" value="false"/>
+        <constructor-arg name="heartbeatInterval" value="${service.heartbeat.interval}"/>
+        <constructor-arg name="scanNotActiveChannelInterval" value="${service.scanNotActiveChannelInterval}"/>
+        <constructor-arg name="retryInterval" value="${consumer.retry.interval}"/>
+        <constructor-arg name="retryTimes" value="${consumer.retry.times}"/>
+    </bean>
+</beans>
