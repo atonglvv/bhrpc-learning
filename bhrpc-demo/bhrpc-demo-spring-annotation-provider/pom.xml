@@ -5,20 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.binghe.rpc</groupId>
-        <artifactId>bhrpc-learning</artifactId>
+        <artifactId>bhrpc-demo</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>bhrpc-demo</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>bhrpc-demo-api</module>
-        <module>bhrpc-demo-native-consumer</module>
-        <module>bhrpc-demo-native-provider</module>
-        <module>bhrpc-demo-spring-xml-provider</module>
-       <!-- <module>bhrpc-demo-spring-xml-consumer</module>-->
-        <module>bhrpc-demo-spring-annotation-provider</module>
-    </modules>
+    <artifactId>bhrpc-demo-spring-annotation-provider</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -27,11 +18,16 @@
     </properties>
 
     <dependencies>
-        <!-- JUnit -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
+            <groupId>io.binghe.rpc</groupId>
+            <artifactId>bhrpc-provider-spring</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.binghe.rpc</groupId>
+            <artifactId>bhrpc-demo-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
