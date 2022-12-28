@@ -14,6 +14,7 @@
     <modules>
         <module>bhrpc-consumer-common</module>
         <module>bhrpc-consumer-native</module>
+        <module>bhrpc-consumer-spring</module>
     </modules>
 
 
