@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+bhrpc:
+  binghe:
+    provider:
+      # rpc server
+      serverAddress: 127.0.0.1:20880
+      # zookeeper server
+      registryAddress: 127.0.0.1:2181
+      # registry center type, zookeeper/nacos/apoll/etcd/eureka
+      registryType: zookeeper
+      #registry loadbalance type: zkconsistenthash
+      registryLoadBalanceType: zkconsistenthash
+      # reflect type, value is jdk or cglib
+      reflectType: cglib
+      # heartbeatInterval
+      heartbeatInterval: 30000
+      # scanNotActiveChannelInterval
+      scanNotActiveChannelInterval: 60000

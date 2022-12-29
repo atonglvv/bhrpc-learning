@@ -19,6 +19,7 @@
         <module>bhrpc-demo-spring-xml-consumer</module>
         <module>bhrpc-demo-spring-annotation-provider</module>
         <module>bhrpc-demo-spring-annotation-consumer</module>
+        <module>bhrpc-demo-spring-boot-provider</module>
     </modules>
 
     <properties>

@@ -18,6 +18,7 @@ package io.binghe.rpc.spring.boot.provider.starter;
 import io.binghe.rpc.provider.spring.RpcSpringServer;
 import io.binghe.rpc.spring.boot.provider.config.SpringBootProviderConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,6 +28,7 @@ import org.springframework.context.annotation.Configuration;
  * @description RPC 服务提供者的自动配置类
  */
 @Configuration
+@EnableConfigurationProperties
 public class SpringBootProviderAutoConfiguration {
 
     @Bean
