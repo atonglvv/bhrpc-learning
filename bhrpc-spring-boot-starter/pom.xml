@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>bhrpc-spring-boot-starter-provider</module>
+        <module>bhrpc-spring-boot-starter-consumer</module>
     </modules>
 
     <properties>
