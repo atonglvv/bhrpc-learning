@@ -22,6 +22,7 @@
         <module>bhrpc-demo-spring-boot-provider</module>
         <module>bhrpc-demo-spring-boot-consumer</module>
         <module>bhrpc-demo-docker-provider</module>
+        <module>bhrpc-demo-docker-consumer</module>
     </modules>
 
     <properties>

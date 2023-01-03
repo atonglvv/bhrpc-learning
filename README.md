@@ -210,3 +210,4 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第76章：服务消费者整合SpringBoot](https://articles.zsxq.com/id_6urdw6g1zg0h.html)
 * [《RPC手撸专栏》第77章：基于SpringBoot接入服务消费者](https://articles.zsxq.com/id_9cq199w02eim.html)
 * [《RPC手撸专栏》第78章：基于Docker接入服务提供者](https://articles.zsxq.com/id_dfptlavwpapq.html)
+* [《RPC手撸专栏》第79章：基于Docker接入服务消费者](https://articles.zsxq.com/id_16ff4f19lgv2.html)
