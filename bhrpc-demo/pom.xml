@@ -21,6 +21,7 @@
         <module>bhrpc-demo-spring-annotation-consumer</module>
         <module>bhrpc-demo-spring-boot-provider</module>
         <module>bhrpc-demo-spring-boot-consumer</module>
+        <module>bhrpc-demo-docker-provider</module>
     </modules>
 
     <properties>

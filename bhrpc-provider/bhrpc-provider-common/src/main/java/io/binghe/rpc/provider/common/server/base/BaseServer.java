@@ -52,9 +52,11 @@ public class BaseServer implements Server {
 
     private final Logger logger = LoggerFactory.getLogger(BaseServer.class);
     //主机域名或者IP地址
-    protected String host = "127.0.0.1";
+    private String host = "127.0.0.1";
     //端口号
-    protected int port = 27110;
+    private int port = 27110;
+    protected String serverRegistryHost;
+    protected int serverRegistryPort;
     //存储的是实体类关系
     protected Map<String, Object> handlerMap = new HashMap<>();
     private String reflectType;
@@ -71,11 +73,19 @@ public class BaseServer implements Server {
     //扫描并移除空闲连接时间，默认60秒
     private int scanNotActiveChannelInterval = 60000;
 
-    public BaseServer(String serverAddress, String registryAddress, String registryType, String registryLoadBalanceType, String reflectType, int heartbeatInterval, int scanNotActiveChannelInterval){
+    public BaseServer(String serverAddress, String serverRegistryAddress, String registryAddress, String registryType, String registryLoadBalanceType, String reflectType, int heartbeatInterval, int scanNotActiveChannelInterval){
         if (!StringUtils.isEmpty(serverAddress)){
             String[] serverArray = serverAddress.split(":");
             this.host = serverArray[0];
             this.port = Integer.parseInt(serverArray[1]);
+        }
+        if (!StringUtils.isEmpty(serverRegistryAddress)){
+            String[] serverRegistryAddressArray = serverRegistryAddress.split(":");
+            this.serverRegistryHost = serverRegistryAddressArray[0];
+            this.serverRegistryPort = Integer.parseInt(serverRegistryAddressArray[1]);
+        }else{
+            this.serverRegistryHost = this.host;
+            this.serverRegistryPort = this.port;
         }
         if (heartbeatInterval > 0){
             this.heartbeatInterval = heartbeatInterval;

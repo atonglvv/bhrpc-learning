@@ -13,21 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.binghe.rpc.test.provider.single;
+package io.binghe.rpc.demo.docker.provider.impl;
 
-import io.binghe.rpc.provider.RpcSingleServer;
-import org.junit.Test;
+import io.binghe.rpc.annotation.RpcService;
+import io.binghe.rpc.demo.api.DemoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author binghe(公众号：冰河技术)
  * @version 1.0.0
- * @description 测试Java原生启动RPC
+ * @description DemoService实现类
  */
-public class RpcSingleServerTest {
-
-    @Test
-    public void startRpcSingleServer(){
-        RpcSingleServer singleServer = new RpcSingleServer("127.0.0.1:27880", "127.0.0.1:27880","127.0.0.1:2181", "zookeeper", "random","io.binghe.rpc.test", "asm", 3000, 6000);
-        singleServer.startNettyServer();
+@RpcService(interfaceClass = DemoService.class, interfaceClassName = "io.binghe.rpc.demo.api.DemoService", version = "1.0.0", group = "binghe", weight = 2)
+public class ProviderDemoServiceImpl implements DemoService {
+    private final Logger logger = LoggerFactory.getLogger(ProviderDemoServiceImpl.class);
+    @Override
+    public String hello(String name) {
+        logger.info("调用hello方法传入的参数为===>>>{}", name);
+        return "hello " + name;
     }
 }

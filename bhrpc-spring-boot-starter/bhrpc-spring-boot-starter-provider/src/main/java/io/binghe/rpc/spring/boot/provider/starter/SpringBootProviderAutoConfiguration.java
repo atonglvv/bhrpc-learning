@@ -40,6 +40,7 @@ public class SpringBootProviderAutoConfiguration {
     @Bean
     public RpcSpringServer rpcSpringServer(final SpringBootProviderConfig springBootProviderConfig){
         return new RpcSpringServer(springBootProviderConfig.getServerAddress(),
+                springBootProviderConfig.getServerRegistryAddress(),
                 springBootProviderConfig.getRegistryAddress(),
                 springBootProviderConfig.getRegistryType(),
                 springBootProviderConfig.getRegistryLoadBalanceType(),

@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.binghe.rpc.demo.provider;
+package io.binghe.rpc.demo.docker.provider;
 
-import io.binghe.rpc.provider.RpcSingleServer;
-import org.junit.Test;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @author binghe(公众号 : 冰河技术)
  * @version 1.0.0
- * @description 服务提供者
+ * @description Rpc框架接入Docker的服务提供者启动类
  */
-public class ProviderNativeDemo {
+@SpringBootApplication
+@ComponentScan(value = "io.binghe.rpc")
+public class DockerProviderDemoStarter {
 
-    @Test
-    public void startRpcSingleServer(){
-        RpcSingleServer singleServer = new RpcSingleServer("127.0.0.1:27880", "127.0.0.1:27880","127.0.0.1:2181", "zookeeper", "random","io.binghe.rpc.demo", "asm", 3000, 6000);
-        singleServer.startNettyServer();
+    public static void main(String[] args){
+        SpringApplication.run(DockerProviderDemoStarter.class, args);
     }
 }

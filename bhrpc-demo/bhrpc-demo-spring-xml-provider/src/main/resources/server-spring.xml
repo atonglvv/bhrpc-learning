@@ -13,6 +13,7 @@
 
     <bean id="rpcServer" class="io.binghe.rpc.provider.spring.RpcSpringServer">
         <constructor-arg name="serverAddress" value="${server.address}"/>
+        <constructor-arg name="serverRegistryAddress" value="${server.registry.address}"/>
         <constructor-arg name="registryAddress" value="${registry.address}"/>
         <constructor-arg name="registryType" value="${registry.type}"/>
         <constructor-arg name="registryLoadBalanceType" value="${registry.loadbalance.type}"/>
