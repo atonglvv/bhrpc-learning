@@ -94,6 +94,8 @@ public class RpcReferenceBean implements FactoryBean<Object> {
     //重试次数
     private int retryTimes = 3;
 
+    private RpcClient rpcClient;
+
     @Override
     public Object getObject() throws Exception {
         return object;
@@ -105,8 +107,8 @@ public class RpcReferenceBean implements FactoryBean<Object> {
     }
 
     @SuppressWarnings("unchecked")
-    public void init() throws Exception{
-        RpcClient rpcClient = new RpcClient(registryAddress, registryType, loadBalanceType, proxy, version, group, serializationType, timeout, async, oneway, heartbeatInterval, scanNotActiveChannelInterval, retryInterval, retryTimes);
+    public void init(){
+        rpcClient = new RpcClient(registryAddress, registryType, loadBalanceType, proxy, version, group, serializationType, timeout, async, oneway, heartbeatInterval, scanNotActiveChannelInterval, retryInterval, retryTimes);
         this.object = rpcClient.create(interfaceClass);
     }
 
@@ -168,5 +170,65 @@ public class RpcReferenceBean implements FactoryBean<Object> {
 
     public void setScanNotActiveChannelInterval(int scanNotActiveChannelInterval) {
         this.scanNotActiveChannelInterval = scanNotActiveChannelInterval;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public String getRegistryType() {
+        return registryType;
+    }
+
+    public String getLoadBalanceType() {
+        return loadBalanceType;
+    }
+
+    public String getSerializationType() {
+        return serializationType;
+    }
+
+    public String getRegistryAddress() {
+        return registryAddress;
+    }
+
+    public long getTimeout() {
+        return timeout;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public boolean isAsync() {
+        return async;
+    }
+
+    public boolean isOneway() {
+        return oneway;
+    }
+
+    public String getProxy() {
+        return proxy;
+    }
+
+    public int getScanNotActiveChannelInterval() {
+        return scanNotActiveChannelInterval;
+    }
+
+    public int getHeartbeatInterval() {
+        return heartbeatInterval;
+    }
+
+    public int getRetryInterval() {
+        return retryInterval;
+    }
+
+    public int getRetryTimes() {
+        return retryTimes;
+    }
+
+    public RpcClient getRpcClient() {
+        return rpcClient;
     }
 }

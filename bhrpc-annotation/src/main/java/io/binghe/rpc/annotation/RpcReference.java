@@ -15,6 +15,7 @@
  */
 package io.binghe.rpc.annotation;
 
+import io.binghe.rpc.constants.RpcConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.annotation.ElementType;
@@ -25,7 +26,7 @@ import java.lang.annotation.Target;
 /**
  * @author binghe
  * @version 1.0.0
- * @description bhrpc服务消费者
+ * @description bhrpc服务消费者，配置优先级：服务消费者字段上配置的@RpcReference注解属性 > yml文件 > @RpcReference默认注解属性
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
@@ -35,32 +36,32 @@ public @interface RpcReference {
     /**
      * 版本号
      */
-    String version() default "1.0.0";
+    String version() default RpcConstants.RPC_COMMON_DEFAULT_VERSION;
 
     /**
      * 注册中心类型, 目前的类型包含：zookeeper、nacos、etcd、consul
      */
-    String registryType() default "zookeeper";
+    String registryType() default RpcConstants.RPC_REFERENCE_DEFAULT_REGISTRYTYPE;
 
     /**
      * 注册地址
      */
-    String registryAddress() default "127.0.0.1:2181";
+    String registryAddress() default RpcConstants.RPC_REFERENCE_DEFAULT_REGISTRYADDRESS;
 
     /**
      * 负载均衡类型，默认基于ZK的一致性Hash
      */
-    String loadBalanceType() default "zkconsistenthash";
+    String loadBalanceType() default RpcConstants.RPC_REFERENCE_DEFAULT_LOADBALANCETYPE;
 
     /**
      * 序列化类型，目前的类型包含：protostuff、kryo、json、jdk、hessian2、fst
      */
-    String serializationType() default "protostuff";
+    String serializationType() default RpcConstants.RPC_REFERENCE_DEFAULT_SERIALIZATIONTYPE;
 
     /**
      * 超时时间，默认5s
      */
-    long timeout() default 5000;
+    long timeout() default RpcConstants.RPC_REFERENCE_DEFAULT_TIMEOUT;
 
     /**
      * 是否异步执行
@@ -75,30 +76,30 @@ public @interface RpcReference {
     /**
      * 代理的类型，jdk：jdk代理， javassist: javassist代理, cglib: cglib代理
      */
-    String proxy() default "jdk";
+    String proxy() default RpcConstants.RPC_REFERENCE_DEFAULT_PROXY;
 
     /**
      * 服务分组，默认为空
      */
-    String group() default "";
+    String group() default RpcConstants.RPC_COMMON_DEFAULT_GROUP;
 
     /**
      * 心跳间隔时间，默认30秒
      */
-    int heartbeatInterval() default 30000;
+    int heartbeatInterval() default RpcConstants.RPC_COMMON_DEFAULT_HEARTBEATINTERVAL;
 
     /**
      * 扫描空闲连接间隔时间，默认60秒
      */
-    int scanNotActiveChannelInterval() default 60000;
+    int scanNotActiveChannelInterval() default RpcConstants.RPC_COMMON_DEFAULT_SCANNOTACTIVECHANNELINTERVAL;
 
     /**
      * 重试间隔时间
      */
-    int retryInterval() default 1000;
+    int retryInterval() default RpcConstants.RPC_REFERENCE_DEFAULT_RETRYINTERVAL;
 
     /**
      * 重试间隔时间
      */
-    int retryTimes() default 3;
+    int retryTimes() default RpcConstants.RPC_REFERENCE_DEFAULT_RETRYTIMES;
 }

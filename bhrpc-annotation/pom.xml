@@ -11,4 +11,11 @@
 
     <artifactId>bhrpc-annotation</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>io.binghe.rpc</groupId>
+            <artifactId>bhrpc-constants</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

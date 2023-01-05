@@ -17,6 +17,7 @@ package io.binghe.rpc.consumer.spring;
 
 import io.binghe.rpc.annotation.RpcReference;
 import io.binghe.rpc.constants.RpcConstants;
+import io.binghe.rpc.consumer.spring.context.RpcConsumerSpringContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -58,6 +59,7 @@ public class RpcConsumerPostProcessor implements ApplicationContextAware, BeanCl
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.context = applicationContext;
+        RpcConsumerSpringContext.getInstance().setContext(applicationContext);
     }
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {

@@ -180,5 +180,63 @@ public class RpcConstants {
     public static final int DEFAULT_RETRY_TIMES = Integer.MAX_VALUE;
 
 
+    /**
+     * RPC框架默认版本号
+     */
+    public static final String RPC_COMMON_DEFAULT_VERSION = "1.0.0";
 
+    /**
+     * RPC框架默认的分组
+     */
+    public static final String RPC_COMMON_DEFAULT_GROUP = "";
+
+    /**
+     * RPC框架默认的心跳间隔时间
+     */
+    public static final int RPC_COMMON_DEFAULT_HEARTBEATINTERVAL = 30000;
+
+    /**
+     * 服务提供者默认的扫描并移除不活跃连接的间隔时间
+     */
+    public static final int RPC_COMMON_DEFAULT_SCANNOTACTIVECHANNELINTERVAL = 60000;
+
+    /**
+     * 服务消费者默认的注册中心类型
+     */
+    public static final String RPC_REFERENCE_DEFAULT_REGISTRYTYPE = "zookeeper";
+
+    /**
+     * 服务消费者默认的注册中心地址
+     */
+    public static final String RPC_REFERENCE_DEFAULT_REGISTRYADDRESS = "127.0.0.1:2181";
+
+    /**
+     * 服务消费者默认负载均衡类型
+     */
+    public static final String RPC_REFERENCE_DEFAULT_LOADBALANCETYPE = "zkconsistenthash";
+
+    /**
+     * 服务消费者默认的序列化方式
+     */
+    public static final String RPC_REFERENCE_DEFAULT_SERIALIZATIONTYPE = "protostuff";
+
+    /**
+     * 服务消费者默认的超时时间
+     */
+    public static final int RPC_REFERENCE_DEFAULT_TIMEOUT = 5000;
+
+    /**
+     * 服务消费者默认的代理
+     */
+    public static final String RPC_REFERENCE_DEFAULT_PROXY = "jdk";
+
+    /**
+     * 服务消费者默认的重试间隔时间
+     */
+    public static final int RPC_REFERENCE_DEFAULT_RETRYINTERVAL = 1000;
+
+    /**
+     * 服务消费者默认的重试次数
+     */
+    public static final int RPC_REFERENCE_DEFAULT_RETRYTIMES = 3;
 }
