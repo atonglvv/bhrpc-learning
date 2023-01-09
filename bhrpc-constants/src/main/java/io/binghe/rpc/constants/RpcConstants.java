@@ -239,4 +239,14 @@ public class RpcConstants {
      * 服务消费者默认的重试次数
      */
     public static final int RPC_REFERENCE_DEFAULT_RETRYTIMES = 3;
+
+    /**
+     * 扫描结果缓存的时间间隔，默认为1秒，单位为毫秒
+     */
+    public static final int RPC_SCAN_RESULT_CACHE_TIME_INTERVAL = 1000;
+
+    /**
+     * 默认的结果缓存时长，默认5秒，单位是毫秒
+     */
+    public static final int RPC_SCAN_RESULT_CACHE_EXPIRE = 5000;
 }

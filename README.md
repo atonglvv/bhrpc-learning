@@ -212,3 +212,5 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第78章：基于Docker接入服务提供者](https://articles.zsxq.com/id_dfptlavwpapq.html)
 * [《RPC手撸专栏》第79章：基于Docker接入服务消费者](https://articles.zsxq.com/id_16ff4f19lgv2.html)
 * [《RPC手撸专栏》第80章：整合SpringCloud Alibaba实际项目](https://articles.zsxq.com/id_zxv133s0wffh.html)
+* [《RPC手撸专栏》第80章-X：整合SpringCloud Alibaba阶段作业](https://t.zsxq.com/09qxlVm8k)
+* [《RPC手撸专栏》第81章：结果缓存通用模型设计](https://articles.zsxq.com/id_a7q8wlunhtd8.html)
