@@ -18,3 +18,7 @@ bhrpc:
       reflectType: cglib
       # heartbeatInterval
       heartbeatInterval: 30000
+      # enableResultCache
+      enableResultCache: true
+      # resultCacheExpire
+      resultCacheExpire: 10000

@@ -37,15 +37,17 @@ public class ConsumerNativeDemo {
 
     @Before
     public void initRpcClient(){
-        rpcClient = new RpcClient("192.168.184.102:2181", "zookeeper", "enhanced_leastconnections","asm","1.0.0", "binghe", "protostuff", 3000, false, false, 30000, 60000, 1000, 3);
+        rpcClient = new RpcClient("127.0.0.1:2181", "zookeeper", "enhanced_leastconnections","asm","1.0.0", "binghe", "protostuff", 3000, false, false, 30000, 60000, 1000, 3);
     }
 
 
     @Test
     public void testInterfaceRpc() throws InterruptedException {
         DemoService demoService = rpcClient.create(DemoService.class);
-        String result = demoService.hello("binghe");
-        LOGGER.info("返回的结果数据===>>> " + result);
+        for (int i = 0; i < 5; i++){
+            String result = demoService.hello("binghe");
+            LOGGER.info("返回的结果数据===>>> " + result);
+        }
         //rpcClient.shutdown();
         while (true){
             Thread.sleep(1000);

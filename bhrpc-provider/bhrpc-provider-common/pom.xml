@@ -59,5 +59,11 @@
             <artifactId>bhrpc-reflect-asm</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.binghe.rpc</groupId>
+            <artifactId>bhrpc-cache</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

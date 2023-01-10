@@ -15,6 +15,8 @@
  */
 package io.binghe.rpc.provider.common.handler;
 
+import io.binghe.rpc.cache.result.CacheResultKey;
+import io.binghe.rpc.cache.result.CacheResultManager;
 import io.binghe.rpc.common.helper.RpcServiceHelper;
 import io.binghe.rpc.common.threadpool.ServerThreadPool;
 import io.binghe.rpc.constants.RpcConstants;
@@ -42,14 +44,37 @@ import java.util.Map;
  */
 public class RpcProviderHandler extends SimpleChannelInboundHandler<RpcProtocol<RpcRequest>> {
     private final Logger logger = LoggerFactory.getLogger(RpcProviderHandler.class);
-    //存储服务名称#版本号#分组与对象实例的映射关系
+    /**
+     * 存储服务提供者中被@RpcService注解标注的类的对象
+     * key为：serviceName#serviceVersion#group
+     * value为：@RpcService注解标注的类的对象
+     */
     private final Map<String, Object> handlerMap;
 
+    /**
+     * 反射调用真实方法的SPI接口
+     */
     private ReflectInvoker reflectInvoker;
 
-    public RpcProviderHandler(String reflectType, Map<String, Object> handlerMap){
+    /**
+     * 是否启用结果缓存
+     */
+    private final boolean enableResultCache;
+
+    /**
+     * 结果缓存管理器
+     */
+    private final CacheResultManager<RpcProtocol<RpcResponse>> cacheResultManager;
+
+
+    public RpcProviderHandler(String reflectType, boolean enableResultCache, int resultCacheExpire, Map<String, Object> handlerMap){
         this.handlerMap = handlerMap;
         this.reflectInvoker = ExtensionLoader.getExtension(ReflectInvoker.class, reflectType);
+        this.enableResultCache = enableResultCache;
+        if (resultCacheExpire <= 0){
+            resultCacheExpire = RpcConstants.RPC_SCAN_RESULT_CACHE_EXPIRE;
+        }
+        this.cacheResultManager = CacheResultManager.getInstance(resultCacheExpire, enableResultCache);
     }
 
     @Override
@@ -109,10 +134,38 @@ public class RpcProviderHandler extends SimpleChannelInboundHandler<RpcProtocol<
         }else if (header.getMsgType() == (byte) RpcType.HEARTBEAT_TO_PROVIDER.getType()){  //接收到服务消费者响应的心跳消息
             handlerHeartbeatMessageToProvider(protocol, channel);
         }else if (header.getMsgType() == (byte) RpcType.REQUEST.getType()){ //请求消息
-            responseRpcProtocol = handlerRequestMessage(protocol, header);
+            responseRpcProtocol = handlerRequestMessageWithCache(protocol, header);
         }
         return responseRpcProtocol;
     }
+
+
+    /**
+     * 结合缓存处理结果
+     */
+    private RpcProtocol<RpcResponse> handlerRequestMessageWithCache(RpcProtocol<RpcRequest> protocol, RpcHeader header){
+        header.setMsgType((byte) RpcType.RESPONSE.getType());
+        if (enableResultCache) return handlerRequestMessageCache(protocol, header);
+        return handlerRequestMessage(protocol, header);
+    }
+
+    /**
+     * 处理缓存
+     */
+    private RpcProtocol<RpcResponse> handlerRequestMessageCache(RpcProtocol<RpcRequest> protocol, RpcHeader header) {
+        RpcRequest request = protocol.getBody();
+        CacheResultKey cacheKey = new CacheResultKey(request.getClassName(), request.getMethodName(), request.getParameterTypes(), request.getParameters(), request.getVersion(), request.getGroup());
+        RpcProtocol<RpcResponse> responseRpcProtocol = cacheResultManager.get(cacheKey);
+        if (responseRpcProtocol == null){
+            responseRpcProtocol = handlerRequestMessage(protocol, header);
+            //设置保存的时间
+            cacheKey.setCacheTimeStamp(System.currentTimeMillis());
+            cacheResultManager.put(cacheKey, responseRpcProtocol);
+        }
+        responseRpcProtocol.setHeader(header);
+        return responseRpcProtocol;
+    }
+
 
     /**
      * 处理服务消费者响应的心跳消息
@@ -143,7 +196,6 @@ public class RpcProviderHandler extends SimpleChannelInboundHandler<RpcProtocol<
      * 处理请求消息
      */
     private RpcProtocol<RpcResponse> handlerRequestMessage(RpcProtocol<RpcRequest> protocol, RpcHeader header) {
-        header.setMsgType((byte) RpcType.RESPONSE.getType());
         RpcRequest request = protocol.getBody();
         logger.debug("Receive request " + header.getRequestId());
         RpcProtocol<RpcResponse> responseRpcProtocol = new RpcProtocol<RpcResponse>();
