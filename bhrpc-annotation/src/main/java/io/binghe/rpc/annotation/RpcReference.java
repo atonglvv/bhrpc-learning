@@ -102,4 +102,14 @@ public @interface RpcReference {
      * 重试间隔时间
      */
     int retryTimes() default RpcConstants.RPC_REFERENCE_DEFAULT_RETRYTIMES;
+
+    /**
+     * 是否开启结果缓存
+     */
+    boolean enableResultCache() default false;
+
+    /**
+     * 缓存结果的时长，单位是毫秒
+     */
+    int resultCacheExpire() default RpcConstants.RPC_SCAN_RESULT_CACHE_EXPIRE;
 }

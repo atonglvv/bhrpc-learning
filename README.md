@@ -215,3 +215,4 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第80章-X：整合SpringCloud Alibaba阶段作业](https://t.zsxq.com/09qxlVm8k)
 * [《RPC手撸专栏》第81章：结果缓存通用模型设计](https://articles.zsxq.com/id_a7q8wlunhtd8.html)
 * [《RPC手撸专栏》第82章：服务提供者支持结果缓存](https://articles.zsxq.com/id_pb8flsvw5vzn.html)
+* [《RPC手撸专栏》第83章：服务消费者支持结果缓存](https://articles.zsxq.com/id_7nkgz2zgzpf9.html)

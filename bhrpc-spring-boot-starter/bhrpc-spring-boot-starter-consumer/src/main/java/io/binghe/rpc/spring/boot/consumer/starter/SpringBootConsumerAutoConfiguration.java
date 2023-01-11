@@ -115,6 +115,13 @@ public class SpringBootConsumerAutoConfiguration {
                 || (RpcConstants.RPC_COMMON_DEFAULT_SCANNOTACTIVECHANNELINTERVAL == referenceBean.getScanNotActiveChannelInterval() && springBootConsumerConfig.getScanNotActiveChannelInterval() > 0)){
             referenceBean.setScanNotActiveChannelInterval(springBootConsumerConfig().getScanNotActiveChannelInterval());
         }
+        if (!referenceBean.isEnableResultCache()){
+            referenceBean.setEnableResultCache(springBootConsumerConfig.getEnableResultCache());
+        }
+        if (referenceBean.getResultCacheExpire() <= 0
+                || (RpcConstants.RPC_SCAN_RESULT_CACHE_EXPIRE == referenceBean.getResultCacheExpire() && springBootConsumerConfig.getResultCacheExpire() > 0)){
+            referenceBean.setResultCacheExpire(springBootConsumerConfig.getResultCacheExpire());
+        }
 
         return referenceBean;
     }
