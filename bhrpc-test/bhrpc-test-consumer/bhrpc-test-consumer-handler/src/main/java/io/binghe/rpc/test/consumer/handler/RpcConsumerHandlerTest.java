@@ -42,7 +42,13 @@ public class RpcConsumerHandlerTest {
 
 
     public static void main(String[] args) throws Exception {
-        RpcConsumer consumer = RpcConsumer.getInstance(30000, 60000, 1000, 3);
+        RpcConsumer consumer = RpcConsumer.getInstance()
+                .setHeartbeatInterval(300000)
+                .setRetryInterval(10000)
+                .setDirectServerUrl("127.0.0.1:27880")
+                .setEnableDirectServer(true)
+                .setRetryTimes(3)
+                .setScanNotActiveChannelInterval(60000);
         RPCFuture rpcFuture = consumer.sendRequest(getRpcRequestProtocol(), getRegistryService("127.0.0.1:2181", "zookeeper", "random"));
         rpcFuture.addCallback(new AsyncRPCCallback() {
             @Override
@@ -60,7 +66,13 @@ public class RpcConsumerHandlerTest {
     }
 
     public static void mainAsync(String[] args) throws Exception {
-        RpcConsumer consumer = RpcConsumer.getInstance(30000, 60000, 3000, 3);
+        RpcConsumer consumer = RpcConsumer.getInstance()
+                .setHeartbeatInterval(300000)
+                .setRetryInterval(10000)
+                .setDirectServerUrl("127.0.0.1:27880")
+                .setEnableDirectServer(true)
+                .setRetryTimes(3)
+                .setScanNotActiveChannelInterval(60000);
         consumer.sendRequest(getRpcRequestProtocol(), getRegistryService("127.0.0.1:2181", "zookeeper", "random"));
         RPCFuture future = RpcContext.getContext().getRPCFuture();
         LOGGER.info("从服务消费者获取到的数据===>>>" + future.get());
@@ -83,7 +95,13 @@ public class RpcConsumerHandlerTest {
     }
 
     public static void mainSync(String[] args) throws Exception {
-        RpcConsumer consumer = RpcConsumer.getInstance(30000, 60000, 3000, 3);
+        RpcConsumer consumer = RpcConsumer.getInstance()
+                .setHeartbeatInterval(300000)
+                .setRetryInterval(10000)
+                .setDirectServerUrl("127.0.0.1:27880")
+                .setEnableDirectServer(true)
+                .setRetryTimes(3)
+                .setScanNotActiveChannelInterval(60000);
         RPCFuture future = consumer.sendRequest(getRpcRequestProtocol(), getRegistryService("127.0.0.1:2181", "zookeeper", "random"));
         LOGGER.info("从服务消费者获取到的数据===>>>" + future.get());
         consumer.close();

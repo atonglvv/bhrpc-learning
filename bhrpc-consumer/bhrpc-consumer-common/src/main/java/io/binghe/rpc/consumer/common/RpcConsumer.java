@@ -15,9 +15,11 @@
  */
 package io.binghe.rpc.consumer.common;
 
+import io.binghe.rpc.common.exception.RpcException;
 import io.binghe.rpc.common.helper.RpcServiceHelper;
 import io.binghe.rpc.common.ip.IpUtils;
 import io.binghe.rpc.common.threadpool.ClientThreadPool;
+import io.binghe.rpc.common.utils.StringUtils;
 import io.binghe.rpc.constants.RpcConstants;
 import io.binghe.rpc.consumer.common.handler.RpcConsumerHandler;
 import io.binghe.rpc.consumer.common.helper.RpcConsumerHandlerHelper;
@@ -73,15 +75,13 @@ public class RpcConsumer implements Consumer {
     //当前重试次数
     private volatile int currentConnectRetryTimes = 0;
 
-    private RpcConsumer(int heartbeatInterval, int scanNotActiveChannelInterval, int retryInterval, int retryTimes) {
-        if (heartbeatInterval > 0){
-            this.heartbeatInterval = heartbeatInterval;
-        }
-        if (scanNotActiveChannelInterval > 0){
-            this.scanNotActiveChannelInterval = scanNotActiveChannelInterval;
-        }
-        this.retryInterval = retryInterval <= 0 ? RpcConstants.DEFAULT_RETRY_INTERVAL : retryInterval;
-        this.retryTimes = retryTimes <= 0 ? RpcConstants.DEFAULT_RETRY_TIMES : retryTimes;
+    //是否开启直连服务
+    private boolean enableDirectServer = false;
+
+    //直连服务的地址
+    private String directServerUrl;
+
+    private RpcConsumer() {
         localIp = IpUtils.getLocalHostIp();
         bootstrap = new Bootstrap();
         eventLoopGroup = new NioEventLoopGroup(4);
@@ -89,6 +89,40 @@ public class RpcConsumer implements Consumer {
                 .handler(new RpcConsumerInitializer(heartbeatInterval));
         //TODO 启动心跳，后续优化
         this.startHeartbeat();
+    }
+
+    public RpcConsumer setEnableDirectServer(boolean enableDirectServer) {
+        this.enableDirectServer = enableDirectServer;
+        return this;
+    }
+
+    public RpcConsumer setDirectServerUrl(String directServerUrl) {
+        this.directServerUrl = directServerUrl;
+        return this;
+    }
+
+    public RpcConsumer setHeartbeatInterval(int heartbeatInterval) {
+        if (heartbeatInterval > 0){
+            this.heartbeatInterval = heartbeatInterval;
+        }
+        return this;
+    }
+
+    public RpcConsumer setScanNotActiveChannelInterval(int scanNotActiveChannelInterval) {
+        if (scanNotActiveChannelInterval > 0){
+            this.scanNotActiveChannelInterval = scanNotActiveChannelInterval;
+        }
+        return this;
+    }
+
+    public RpcConsumer setRetryInterval(int retryInterval) {
+        this.retryInterval = retryInterval <= 0 ? RpcConstants.DEFAULT_RETRY_INTERVAL : retryInterval;
+        return this;
+    }
+
+    public RpcConsumer setRetryTimes(int retryTimes) {
+        this.retryTimes = retryTimes <= 0 ? RpcConstants.DEFAULT_RETRY_TIMES : retryTimes;
+        return this;
     }
 
     private void startHeartbeat() {
@@ -105,11 +139,11 @@ public class RpcConsumer implements Consumer {
         }, 3, heartbeatInterval, TimeUnit.MILLISECONDS);
     }
 
-    public static RpcConsumer getInstance(int heartbeatInterval, int scanNotActiveChannelInterval, int retryInterval, int retryTimes){
+    public static RpcConsumer getInstance(){
         if (instance == null){
             synchronized (RpcConsumer.class){
                 if (instance == null){
-                    instance = new RpcConsumer(heartbeatInterval, scanNotActiveChannelInterval, retryInterval, retryTimes);
+                    instance = new RpcConsumer();
                 }
             }
         }
@@ -130,16 +164,76 @@ public class RpcConsumer implements Consumer {
         String serviceKey = RpcServiceHelper.buildServiceKey(request.getClassName(), request.getVersion(), request.getGroup());
         Object[] params = request.getParameters();
         int invokerHashCode =  (params == null || params.length <= 0) ? serviceKey.hashCode() : params[0].hashCode();
-        ServiceMeta serviceMeta = this.getServiceMetaWithRetry(registryService, serviceKey, invokerHashCode);
-        RpcConsumerHandler handler = null;
-        if (serviceMeta != null){
-            handler = getRpcConsumerHandlerWithRetry(serviceMeta);
-        }
+        //获取发送消息的handler
+        RpcConsumerHandler handler = getRpcConsumerHandlerWithRetry(registryService, serviceKey, invokerHashCode);
         RPCFuture rpcFuture = null;
         if (handler != null){
             rpcFuture = handler.sendRequest(protocol, request.getAsync(), request.getOneway());
         }
         return rpcFuture;
+    }
+
+    /**
+     * 基于重试获取发送消息的handler
+     */
+    private RpcConsumerHandler getRpcConsumerHandlerWithRetry(RegistryService registryService, String serviceKey, int invokerHashCode) throws Exception{
+        logger.info("获取服务消费者处理器...");
+        RpcConsumerHandler handler = getRpcConsumerHandler(registryService, serviceKey, invokerHashCode);
+        //获取的handler为空，启动重试机制
+        if (handler == null){
+            for (int i = 1; i <= retryTimes; i++){
+                logger.info("获取服务消费者处理器第【{}】次重试...", i);
+                handler = getRpcConsumerHandler(registryService, serviceKey, invokerHashCode);
+                if (handler != null){
+                    break;
+                }
+                Thread.sleep(retryInterval);
+            }
+        }
+        return handler;
+    }
+
+    /**
+     * 获取发送消息的handler
+     */
+    private RpcConsumerHandler getRpcConsumerHandler(RegistryService registryService, String serviceKey, int invokerHashCode) throws Exception {
+        ServiceMeta serviceMeta = this.getDirectServiceMetaOrWithRetry(registryService, serviceKey, invokerHashCode);
+        RpcConsumerHandler handler = null;
+        if (serviceMeta != null){
+            handler = getRpcConsumerHandlerWithRetry(serviceMeta);
+        }
+        return handler;
+    }
+
+    /**
+     * 直连服务提供者或者结合重试获取服务元数据信息
+     */
+    private ServiceMeta getDirectServiceMetaOrWithRetry(RegistryService registryService, String serviceKey, int invokerHashCode) throws Exception {
+        ServiceMeta serviceMeta = null;
+        if (enableDirectServer){
+            serviceMeta = this.getDirectServiceMeta();
+        }else {
+            serviceMeta = this.getServiceMetaWithRetry(registryService, serviceKey, invokerHashCode);
+        }
+        return serviceMeta;
+    }
+
+    /**
+     * 服务消费者直连服务提供者
+     */
+    private ServiceMeta getDirectServiceMeta(){
+        if (StringUtils.isEmpty(directServerUrl)){
+            throw new RpcException("direct server url is null ...");
+        }
+        if (!directServerUrl.contains(RpcConstants.IP_PORT_SPLIT)){
+            throw new RpcException("direct server url not contains : ");
+        }
+        logger.info("服务消费者直连服务提供者===>>> {}", directServerUrl);
+        ServiceMeta serviceMeta = new ServiceMeta();
+        String[] directServerUrlArray = directServerUrl.split(RpcConstants.IP_PORT_SPLIT);
+        serviceMeta.setServiceAddr(directServerUrlArray[0]);
+        serviceMeta.setServicePort(Integer.parseInt(directServerUrlArray[1]));
+        return serviceMeta;
     }
 
     /**

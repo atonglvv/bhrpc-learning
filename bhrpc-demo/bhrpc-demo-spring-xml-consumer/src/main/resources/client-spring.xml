@@ -28,5 +28,7 @@
         <constructor-arg name="retryTimes" value="${consumer.retry.times}"/>
         <constructor-arg name="enableResultCache" value="${consumer.enableResultCache}"/>
         <constructor-arg name="resultCacheExpire" value="${consumer.resultCacheExpire}"/>
+        <constructor-arg name="enableDirectServer" value="${consumer.enableDirectServer}"/>
+        <constructor-arg name="directServerUrl" value="${consumer.directServerUrl}"/>
     </bean>
 </beans>

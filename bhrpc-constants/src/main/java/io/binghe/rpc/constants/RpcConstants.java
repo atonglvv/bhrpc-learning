@@ -249,4 +249,14 @@ public class RpcConstants {
      * 默认的结果缓存时长，默认5秒，单位是毫秒
      */
     public static final int RPC_SCAN_RESULT_CACHE_EXPIRE = 5000;
+
+    /**
+     * 默认直连服务的地址
+     */
+    public static final String RPC_COMMON_DEFAULT_DIRECT_SERVER = "";
+
+    /**
+     * IP和端口的分隔符
+     */
+    public static final String IP_PORT_SPLIT = ":";
 }

@@ -216,3 +216,5 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第81章：结果缓存通用模型设计](https://articles.zsxq.com/id_a7q8wlunhtd8.html)
 * [《RPC手撸专栏》第82章：服务提供者支持结果缓存](https://articles.zsxq.com/id_pb8flsvw5vzn.html)
 * [《RPC手撸专栏》第83章：服务消费者支持结果缓存](https://articles.zsxq.com/id_7nkgz2zgzpf9.html)
+* [《RPC手撸专栏》第83章-X：结果缓存阶段作业](https://t.zsxq.com/0aWyqturC)
+* [《RPC手撸专栏》第84章：服务消费者直连某个服务提供者](https://articles.zsxq.com/id_loa4a96us7vr.html)
