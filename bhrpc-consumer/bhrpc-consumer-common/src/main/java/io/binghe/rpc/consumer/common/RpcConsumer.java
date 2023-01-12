@@ -42,6 +42,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.ConnectException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -211,7 +213,7 @@ public class RpcConsumer implements Consumer {
     private ServiceMeta getDirectServiceMetaOrWithRetry(RegistryService registryService, String serviceKey, int invokerHashCode) throws Exception {
         ServiceMeta serviceMeta = null;
         if (enableDirectServer){
-            serviceMeta = this.getDirectServiceMeta();
+            serviceMeta = this.getServiceMeta(directServerUrl, registryService, invokerHashCode);
         }else {
             serviceMeta = this.getServiceMetaWithRetry(registryService, serviceKey, invokerHashCode);
         }
@@ -219,20 +221,53 @@ public class RpcConsumer implements Consumer {
     }
 
     /**
+     * 直连服务提供者
+     */
+    private ServiceMeta getServiceMeta(String directServerUrl, RegistryService registryService, int invokerHashCode){
+        logger.info("服务消费者直连服务提供者...");
+        //只配置了一个服务提供者地址
+        if (!directServerUrl.contains(RpcConstants.RPC_MULTI_DIRECT_SERVERS_SEPARATOR)){
+            return getDirectServiceMetaWithCheck(directServerUrl);
+        }
+        //配置了多个服务提供者地址
+        return registryService.select(this.getMultiServiceMeta(directServerUrl), invokerHashCode, localIp);
+    }
+
+    /**
+     * 获取多个服务提供者元数据
+     */
+    private List<ServiceMeta> getMultiServiceMeta(String directServerUrl){
+        List<ServiceMeta> serviceMetaList = new ArrayList<>();
+        String[] directServerUrlArray = directServerUrl.split(RpcConstants.RPC_MULTI_DIRECT_SERVERS_SEPARATOR);
+        if (directServerUrlArray != null && directServerUrlArray.length > 0){
+            for (String directUrl : directServerUrlArray){
+                serviceMetaList.add(getDirectServiceMeta(directUrl));
+            }
+        }
+        return serviceMetaList;
+    }
+
+    /**
      * 服务消费者直连服务提供者
      */
-    private ServiceMeta getDirectServiceMeta(){
+    private ServiceMeta getDirectServiceMetaWithCheck(String directServerUrl){
         if (StringUtils.isEmpty(directServerUrl)){
             throw new RpcException("direct server url is null ...");
         }
         if (!directServerUrl.contains(RpcConstants.IP_PORT_SPLIT)){
             throw new RpcException("direct server url not contains : ");
         }
-        logger.info("服务消费者直连服务提供者===>>> {}", directServerUrl);
+        return this.getDirectServiceMeta(directServerUrl);
+    }
+
+    /**
+     * 获取直连服务提供者元数据
+     */
+    private ServiceMeta getDirectServiceMeta(String directServerUrl) {
         ServiceMeta serviceMeta = new ServiceMeta();
         String[] directServerUrlArray = directServerUrl.split(RpcConstants.IP_PORT_SPLIT);
-        serviceMeta.setServiceAddr(directServerUrlArray[0]);
-        serviceMeta.setServicePort(Integer.parseInt(directServerUrlArray[1]));
+        serviceMeta.setServiceAddr(directServerUrlArray[0].trim());
+        serviceMeta.setServicePort(Integer.parseInt(directServerUrlArray[1].trim()));
         return serviceMeta;
     }
 

@@ -259,4 +259,9 @@ public class RpcConstants {
      * IP和端口的分隔符
      */
     public static final String IP_PORT_SPLIT = ":";
+
+    /**
+     * 服务消费者直连多个服务提供者时，多个地址之间的分隔符
+     */
+    public static final String RPC_MULTI_DIRECT_SERVERS_SEPARATOR = ",";
 }

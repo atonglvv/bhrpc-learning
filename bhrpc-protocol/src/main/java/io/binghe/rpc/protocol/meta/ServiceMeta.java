@@ -16,6 +16,7 @@
 package io.binghe.rpc.protocol.meta;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * @author binghe(公众号：冰河技术)
@@ -65,6 +66,24 @@ public class ServiceMeta implements Serializable {
         this.servicePort = servicePort;
         this.serviceGroup = serviceGroup;
         this.weight = weight;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(serviceName, serviceVersion, serviceAddr, servicePort, serviceGroup, weight);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ServiceMeta serviceMeta = (ServiceMeta) o;
+        return Objects.equals(serviceName, serviceMeta.serviceName)
+                && Objects.equals(serviceVersion, serviceMeta.serviceVersion)
+                && Objects.equals(serviceAddr, serviceMeta.serviceAddr)
+                && servicePort == serviceMeta.servicePort
+                && Objects.equals(serviceGroup, serviceMeta.serviceGroup)
+                && weight == serviceMeta.weight;
     }
 
     public String getServiceName() {
