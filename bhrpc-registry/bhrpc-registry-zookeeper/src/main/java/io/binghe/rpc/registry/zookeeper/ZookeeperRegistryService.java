@@ -32,8 +32,10 @@ import org.apache.curator.x.discovery.ServiceInstance;
 import org.apache.curator.x.discovery.details.JsonInstanceSerializer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * @author binghe(公众号：冰河技术)
@@ -98,6 +100,29 @@ public class ZookeeperRegistryService implements RegistryService {
     @Override
     public ServiceMeta select(List<ServiceMeta> serviceMetaList, int invokerHashCode, String sourceIp) {
         return this.serviceLoadBalancer.select(serviceMetaList, invokerHashCode, sourceIp);
+    }
+
+    @Override
+    public List<ServiceMeta> discoveryAll() throws Exception {
+        List<ServiceMeta> serviceMetaList = new ArrayList<>();
+        Collection<String> names = serviceDiscovery.queryForNames();
+        if (names == null || names.isEmpty()) return serviceMetaList;
+        for (String name : names){
+            Collection<ServiceInstance<ServiceMeta>> serviceInstances = serviceDiscovery.queryForInstances(name);
+            List<ServiceMeta> list = this.getServiceMetaFromServiceInstance((List<ServiceInstance<ServiceMeta>>) serviceInstances);
+            serviceMetaList.addAll(list);
+        }
+        return serviceMetaList;
+    }
+
+    private List<ServiceMeta> getServiceMetaFromServiceInstance(List<ServiceInstance<ServiceMeta>> serviceInstances){
+        List<ServiceMeta> list = new ArrayList<>();
+        if (serviceInstances == null || serviceInstances.isEmpty()) return list;
+        IntStream.range(0, serviceInstances.size()).forEach((i)->{
+            ServiceInstance<ServiceMeta> serviceInstance = serviceInstances.get(i);
+            list.add(serviceInstance.getPayload());
+        });
+        return list;
     }
 
     @Override

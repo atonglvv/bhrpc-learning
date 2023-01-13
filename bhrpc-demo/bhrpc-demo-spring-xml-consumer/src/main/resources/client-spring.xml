@@ -30,5 +30,6 @@
         <constructor-arg name="resultCacheExpire" value="${consumer.resultCacheExpire}"/>
         <constructor-arg name="enableDirectServer" value="${consumer.enableDirectServer}"/>
         <constructor-arg name="directServerUrl" value="${consumer.directServerUrl}"/>
+        <constructor-arg name="enableDelayConnection" value="${consumer.enableDelayConnection}"/>
     </bean>
 </beans>
