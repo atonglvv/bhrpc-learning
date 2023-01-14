@@ -24,6 +24,7 @@ import io.binghe.rpc.proxy.api.object.ObjectProxy;
 import io.binghe.rpc.registry.api.RegistryService;
 import io.binghe.rpc.registry.api.config.RegistryConfig;
 import io.binghe.rpc.spi.loader.ExtensionLoader;
+import io.binghe.rpc.threadpool.ConcurrentThreadPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -111,11 +112,16 @@ public class RpcClient {
      */
     private boolean enableDelayConnection;
 
+    /**
+     * 并发线程池
+     */
+    private ConcurrentThreadPool concurrentThreadPool;
+
     public RpcClient(String registryAddress, String registryType, String registryLoadBalanceType, String proxy,
                      String serviceVersion, String serviceGroup, String serializationType, long timeout, boolean async,
                      boolean oneway, int heartbeatInterval, int scanNotActiveChannelInterval, int retryInterval,
                      int retryTimes, boolean enableResultCache, int resultCacheExpire, boolean enableDirectServer,
-                     String directServerUrl, boolean enableDelayConnection) {
+                     String directServerUrl, boolean enableDelayConnection, int corePoolSize, int maximumPoolSize) {
         this.serviceVersion = serviceVersion;
         this.proxy = proxy;
         this.timeout = timeout;
@@ -133,6 +139,7 @@ public class RpcClient {
         this.directServerUrl = directServerUrl;
         this.enableDelayConnection = enableDelayConnection;
         this.registryService = this.getRegistryService(registryAddress, registryType, registryLoadBalanceType);
+        this.concurrentThreadPool = ConcurrentThreadPool.getInstance(corePoolSize, maximumPoolSize);
     }
 
     private RegistryService getRegistryService(String registryAddress, String registryType, String registryLoadBalanceType) {
@@ -160,6 +167,8 @@ public class RpcClient {
                         .setRetryTimes(retryTimes)
                         .setScanNotActiveChannelInterval(scanNotActiveChannelInterval)
                         .setEnableDelayConnection(enableDelayConnection)
+                        .setConcurrentThreadPool(concurrentThreadPool)
+                        .buildNettyGroup()
                         .buildConnection(registryService),
                 async, oneway, enableResultCache, resultCacheExpire));
         return proxyFactory.getProxy(interfaceClass);
@@ -175,6 +184,8 @@ public class RpcClient {
                         .setRetryTimes(retryTimes)
                         .setScanNotActiveChannelInterval(scanNotActiveChannelInterval)
                         .setEnableDelayConnection(enableDelayConnection)
+                        .setConcurrentThreadPool(concurrentThreadPool)
+                        .buildNettyGroup()
                         .buildConnection(registryService),
                 async, oneway, enableResultCache, resultCacheExpire);
     }

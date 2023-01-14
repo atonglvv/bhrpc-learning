@@ -15,7 +15,7 @@
  */
 package io.binghe.rpc.proxy.api.future;
 
-import io.binghe.rpc.common.threadpool.ClientThreadPool;
+import io.binghe.rpc.threadpool.ConcurrentThreadPool;
 import io.binghe.rpc.protocol.RpcProtocol;
 import io.binghe.rpc.protocol.request.RpcRequest;
 import io.binghe.rpc.protocol.response.RpcResponse;
@@ -49,11 +49,13 @@ public class RPCFuture extends CompletableFuture<Object> {
 
     private List<AsyncRPCCallback> pendingCallbacks = new ArrayList<AsyncRPCCallback>();
     private ReentrantLock lock = new ReentrantLock();
+    private ConcurrentThreadPool concurrentThreadPool;
 
-    public RPCFuture(RpcProtocol<RpcRequest> requestRpcProtocol) {
+    public RPCFuture(RpcProtocol<RpcRequest> requestRpcProtocol, ConcurrentThreadPool concurrentThreadPool) {
         this.sync = new Sync();
         this.requestRpcProtocol = requestRpcProtocol;
         this.startTime = System.currentTimeMillis();
+        this.concurrentThreadPool = concurrentThreadPool;
     }
 
     @Override
@@ -135,7 +137,7 @@ public class RPCFuture extends CompletableFuture<Object> {
 
     private void runCallback(final AsyncRPCCallback callback) {
         final RpcResponse res = this.responseRpcProtocol.getBody();
-        ClientThreadPool.submit(() -> {
+        concurrentThreadPool.submit(() -> {
             if (!res.isError()) {
                 callback.onSuccess(res.getResult());
             } else {

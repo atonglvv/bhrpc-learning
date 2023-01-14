@@ -19,14 +19,15 @@ import com.alibaba.fastjson.JSONObject;
 import io.binghe.rpc.constants.RpcConstants;
 import io.binghe.rpc.consumer.common.cache.ConsumerChannelCache;
 import io.binghe.rpc.consumer.common.context.RpcContext;
+import io.binghe.rpc.protocol.RpcProtocol;
 import io.binghe.rpc.protocol.enumeration.RpcStatus;
 import io.binghe.rpc.protocol.enumeration.RpcType;
-import io.binghe.rpc.protocol.header.RpcHeaderFactory;
-import io.binghe.rpc.proxy.api.future.RPCFuture;
-import io.binghe.rpc.protocol.RpcProtocol;
 import io.binghe.rpc.protocol.header.RpcHeader;
+import io.binghe.rpc.protocol.header.RpcHeaderFactory;
 import io.binghe.rpc.protocol.request.RpcRequest;
 import io.binghe.rpc.protocol.response.RpcResponse;
+import io.binghe.rpc.proxy.api.future.RPCFuture;
+import io.binghe.rpc.threadpool.ConcurrentThreadPool;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
@@ -51,9 +52,13 @@ public class RpcConsumerHandler extends SimpleChannelInboundHandler<RpcProtocol<
     private SocketAddress remotePeer;
 
     //存储请求ID与RpcResponse协议的映射关系
-    //private Map<Long, RpcProtocol<RpcResponse>> pendingResponse = new ConcurrentHashMap<>();
-
     private Map<Long, RPCFuture> pendingRPC = new ConcurrentHashMap<>();
+
+    private ConcurrentThreadPool concurrentThreadPool;
+
+    public RpcConsumerHandler(ConcurrentThreadPool concurrentThreadPool){
+        this.concurrentThreadPool = concurrentThreadPool;
+    }
 
     public Channel getChannel() {
         return channel;
@@ -109,7 +114,9 @@ public class RpcConsumerHandler extends SimpleChannelInboundHandler<RpcProtocol<
         if (protocol == null){
             return;
         }
-        this.handlerMessage(protocol, ctx.channel());
+        concurrentThreadPool.submit(() -> {
+            this.handlerMessage(protocol, ctx.channel());
+        });
     }
 
     private void handlerMessage(RpcProtocol<RpcResponse> protocol, Channel channel){
@@ -163,7 +170,9 @@ public class RpcConsumerHandler extends SimpleChannelInboundHandler<RpcProtocol<
      */
     public RPCFuture sendRequest(RpcProtocol<RpcRequest> protocol, boolean async, boolean oneway){
         logger.info("服务消费者发送的数据===>>>{}", JSONObject.toJSONString(protocol));
-        return oneway ? this.sendRequestOneway(protocol) : async ? sendRequestAsync(protocol) : this.sendRequestSync(protocol);
+        return concurrentThreadPool.submit(() -> {
+            return oneway ? this.sendRequestOneway(protocol) : async ? sendRequestAsync(protocol) : this.sendRequestSync(protocol);
+        });
     }
 
 
@@ -189,7 +198,7 @@ public class RpcConsumerHandler extends SimpleChannelInboundHandler<RpcProtocol<
 
 
     private RPCFuture getRpcFuture(RpcProtocol<RpcRequest> protocol) {
-        RPCFuture rpcFuture = new RPCFuture(protocol);
+        RPCFuture rpcFuture = new RPCFuture(protocol, concurrentThreadPool);
         RpcHeader header = protocol.getHeader();
         long requestId = header.getRequestId();
         pendingRPC.put(requestId, rpcFuture);

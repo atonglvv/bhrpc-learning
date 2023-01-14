@@ -31,5 +31,7 @@
         <constructor-arg name="enableDirectServer" value="${consumer.enableDirectServer}"/>
         <constructor-arg name="directServerUrl" value="${consumer.directServerUrl}"/>
         <constructor-arg name="enableDelayConnection" value="${consumer.enableDelayConnection}"/>
+        <constructor-arg name="corePoolSize" value="${consumer.corePoolSize}"/>
+        <constructor-arg name="maximumPoolSize" value="${consumer.maximumPoolSize}"/>
     </bean>
 </beans>

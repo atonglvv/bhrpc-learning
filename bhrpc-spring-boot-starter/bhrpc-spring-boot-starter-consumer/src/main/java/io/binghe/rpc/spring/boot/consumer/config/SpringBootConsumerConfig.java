@@ -105,6 +105,16 @@ public final class SpringBootConsumerConfig {
      */
     private boolean enableDelayConnection;
 
+    /**
+     * 并发线程池核心线程数
+     */
+    private int corePoolSize;
+
+    /**
+     * 并发线程池最大线程数
+     */
+    private int maximumPoolSize;
+
     public SpringBootConsumerConfig() {
     }
 
@@ -113,7 +123,8 @@ public final class SpringBootConsumerConfig {
                                     final String proxy, final String version, final String group, final String serializationType,
                                     final int timeout, final boolean async, final boolean oneway, final int heartbeatInterval,
                                     final int scanNotActiveChannelInterval, final int retryInterval, final int retryTimes,
-                                    final boolean enableDirectServer, final String directServerUrl, final boolean enableDelayConnection) {
+                                    final boolean enableDirectServer, final String directServerUrl, final boolean enableDelayConnection,
+                                    final int corePoolSize, final int maximumPoolSize) {
         this.registryAddress = registryAddress;
         this.registryType = registryType;
         this.loadBalanceType = loadBalanceType;
@@ -133,6 +144,8 @@ public final class SpringBootConsumerConfig {
         this.enableDirectServer = enableDirectServer;
         this.directServerUrl = directServerUrl;
         this.enableDelayConnection = enableDelayConnection;
+        this.corePoolSize = corePoolSize;
+        this.maximumPoolSize = maximumPoolSize;
     }
 
     public String getRegistryAddress() {
@@ -285,5 +298,21 @@ public final class SpringBootConsumerConfig {
 
     public void setEnableDelayConnection(boolean enableDelayConnection) {
         this.enableDelayConnection = enableDelayConnection;
+    }
+
+    public int getCorePoolSize() {
+        return corePoolSize;
+    }
+
+    public void setCorePoolSize(int corePoolSize) {
+        this.corePoolSize = corePoolSize;
+    }
+
+    public int getMaximumPoolSize() {
+        return maximumPoolSize;
+    }
+
+    public void setMaximumPoolSize(int maximumPoolSize) {
+        this.maximumPoolSize = maximumPoolSize;
     }
 }

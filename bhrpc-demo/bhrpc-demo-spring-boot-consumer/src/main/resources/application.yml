@@ -42,3 +42,7 @@ bhrpc:
       directServerUrl: 127.0.0.1:27880
       # enableDelayConnection
       enableDelayConnection: true
+      # corePoolSize
+      corePoolSize: 16
+      # maximumPoolSize
+      maximumPoolSize: 16

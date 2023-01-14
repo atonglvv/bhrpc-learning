@@ -136,6 +136,16 @@ public class SpringBootConsumerAutoConfiguration {
         if (!referenceBean.isEnableDelayConnection()){
             referenceBean.setEnableDelayConnection(springBootConsumerConfig.getEnableDelayConnection());
         }
+
+        if (referenceBean.getCorePoolSize() <= 0
+                || (RpcConstants.DEFAULT_CORE_POOL_SIZE == referenceBean.getCorePoolSize() && springBootConsumerConfig.getCorePoolSize() > 0)){
+            referenceBean.setCorePoolSize(springBootConsumerConfig.getCorePoolSize());
+        }
+
+        if (referenceBean.getMaximumPoolSize() <= 0
+                || (RpcConstants.DEFAULT_MAXI_NUM_POOL_SIZE == referenceBean.getMaximumPoolSize() && springBootConsumerConfig.getMaximumPoolSize() > 0)){
+            referenceBean.setMaximumPoolSize(springBootConsumerConfig.getMaximumPoolSize());
+        }
         return referenceBean;
     }
 }

@@ -16,10 +16,10 @@
 package io.binghe.rpc.threadpool;
 
 import io.binghe.rpc.constants.RpcConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @author binghe(公众号:冰河技术)
@@ -27,6 +27,8 @@ import java.util.concurrent.TimeUnit;
  * @description 线程池
  */
 public class ConcurrentThreadPool {
+
+    private final Logger logger = LoggerFactory.getLogger(ConcurrentThreadPool.class);
     /**
      * 线程池
      */
@@ -71,6 +73,19 @@ public class ConcurrentThreadPool {
 
     public void submit(Runnable task){
         threadPoolExecutor.submit(task);
+    }
+
+    public <T> T submit(Callable<T> task){
+        Future<T> future = threadPoolExecutor.submit(task);
+        if (future == null){
+            return null;
+        }
+        try {
+            return future.get();
+        } catch (Exception e) {
+            logger.error("submit callable task exception:{}", e.getMessage());
+        }
+        return null;
     }
 
     public void stop(){
