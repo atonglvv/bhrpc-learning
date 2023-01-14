@@ -22,5 +22,7 @@
         <constructor-arg name="scanNotActiveChannelInterval" value="${server.scanNotActiveChannelInterval}"/>
         <constructor-arg name="enableResultCache" value="${server.enableResultCache}"/>
         <constructor-arg name="resultCacheExpire" value="${server.resultCacheExpire}"/>
+        <constructor-arg name="corePoolSize" value="${server.corePoolSize}"/>
+        <constructor-arg name="maximumPoolSize" value="${server.maximumPoolSize}"/>
     </bean>
 </beans>

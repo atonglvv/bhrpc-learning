@@ -62,8 +62,14 @@ public class SpringAnnotationProviderConfig {
     @Value("${server.resultCacheExpire}")
     private int resultCacheExpire;
 
+    @Value("${server.corePoolSize}")
+    private int corePoolSize;
+
+    @Value("${server.maximumPoolSize}")
+    private int maximumPoolSize;
+
     @Bean
     public RpcSpringServer rpcSpringServer(){
-        return new RpcSpringServer(serverAddress, serverRegistryAddress, registryAddress, registryType, registryLoadbalanceType, reflectType, heartbeatInterval, scanNotActiveChannelInterval, enableResultCache, resultCacheExpire);
+        return new RpcSpringServer(serverAddress, serverRegistryAddress, registryAddress, registryType, registryLoadbalanceType, reflectType, heartbeatInterval, scanNotActiveChannelInterval, enableResultCache, resultCacheExpire, corePoolSize, maximumPoolSize);
     }
 }

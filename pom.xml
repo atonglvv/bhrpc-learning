@@ -26,6 +26,7 @@
         <module>bhrpc-demo</module>
         <module>bhrpc-spring-boot-starter</module>
         <module>bhrpc-cache</module>
+        <module>bhrpc-threadpool</module>
     </modules>
 
     <properties>

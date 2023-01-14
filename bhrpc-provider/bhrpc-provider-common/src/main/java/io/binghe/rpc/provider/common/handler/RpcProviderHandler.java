@@ -18,7 +18,6 @@ package io.binghe.rpc.provider.common.handler;
 import io.binghe.rpc.cache.result.CacheResultKey;
 import io.binghe.rpc.cache.result.CacheResultManager;
 import io.binghe.rpc.common.helper.RpcServiceHelper;
-import io.binghe.rpc.common.threadpool.ServerThreadPool;
 import io.binghe.rpc.constants.RpcConstants;
 import io.binghe.rpc.protocol.RpcProtocol;
 import io.binghe.rpc.protocol.enumeration.RpcStatus;
@@ -29,6 +28,7 @@ import io.binghe.rpc.protocol.response.RpcResponse;
 import io.binghe.rpc.provider.common.cache.ProviderChannelCache;
 import io.binghe.rpc.reflect.api.ReflectInvoker;
 import io.binghe.rpc.spi.loader.ExtensionLoader;
+import io.binghe.rpc.threadpool.ConcurrentThreadPool;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -66,8 +66,13 @@ public class RpcProviderHandler extends SimpleChannelInboundHandler<RpcProtocol<
      */
     private final CacheResultManager<RpcProtocol<RpcResponse>> cacheResultManager;
 
+    /**
+     * 线程池
+     */
+    private final ConcurrentThreadPool concurrentThreadPool;
 
-    public RpcProviderHandler(String reflectType, boolean enableResultCache, int resultCacheExpire, Map<String, Object> handlerMap){
+
+    public RpcProviderHandler(String reflectType, boolean enableResultCache, int resultCacheExpire, int corePoolSize, int maximumPoolSize, Map<String, Object> handlerMap){
         this.handlerMap = handlerMap;
         this.reflectInvoker = ExtensionLoader.getExtension(ReflectInvoker.class, reflectType);
         this.enableResultCache = enableResultCache;
@@ -75,6 +80,7 @@ public class RpcProviderHandler extends SimpleChannelInboundHandler<RpcProtocol<
             resultCacheExpire = RpcConstants.RPC_SCAN_RESULT_CACHE_EXPIRE;
         }
         this.cacheResultManager = CacheResultManager.getInstance(resultCacheExpire, enableResultCache);
+        this.concurrentThreadPool = ConcurrentThreadPool.getInstance(corePoolSize, maximumPoolSize);
     }
 
     @Override
@@ -111,7 +117,7 @@ public class RpcProviderHandler extends SimpleChannelInboundHandler<RpcProtocol<
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RpcProtocol<RpcRequest> protocol) throws Exception {
-        ServerThreadPool.submit(() -> {
+        concurrentThreadPool.submit(() -> {
             RpcProtocol<RpcResponse> responseRpcProtocol = handlerMessage(protocol, ctx.channel());
             ctx.writeAndFlush(responseRpcProtocol).addListener(new ChannelFutureListener() {
                 @Override
