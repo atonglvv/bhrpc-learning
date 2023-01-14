@@ -222,3 +222,4 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第86章：服务消费者支持延迟连接服务提供者](https://articles.zsxq.com/id_hj42kkrf85cn.html)
 * [《RPC手撸专栏》第87章：服务消费者支持非延迟连接服务提供者](https://articles.zsxq.com/id_h3svijixud6p.html)
 * [《RPC手撸专栏》第88章：并发控制基础模型设计](https://articles.zsxq.com/id_a79di5nhzlk4.html)
+* [《RPC手撸专栏》第89章：服务提供者支持并发控制](https://articles.zsxq.com/id_w9zdvzuxv4tu.html)
