@@ -1,0 +1,1 @@
+print=io.binghe.rpc.flow.processor.print.PrintFlowPostProcessor
