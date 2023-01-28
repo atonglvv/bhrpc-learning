@@ -227,3 +227,4 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第89章：服务提供者支持并发控制](https://articles.zsxq.com/id_w9zdvzuxv4tu.html)
 * [《RPC手撸专栏》第90章：服务消费者支持并发控制](https://articles.zsxq.com/id_hu84gd1gdzah.html)
 * [《RPC手撸专栏》第91章：流控分析后置处理器模型设计](https://articles.zsxq.com/id_ndawdn2u64gr.html)
+* [《RPC手撸专栏》第92章：服务提供者整合流控分析](https://articles.zsxq.com/id_b87137w95lm9.html)

@@ -146,6 +146,11 @@ public class SpringBootConsumerAutoConfiguration {
                 || (RpcConstants.DEFAULT_MAXI_NUM_POOL_SIZE == referenceBean.getMaximumPoolSize() && springBootConsumerConfig.getMaximumPoolSize() > 0)){
             referenceBean.setMaximumPoolSize(springBootConsumerConfig.getMaximumPoolSize());
         }
+
+        if (StringUtils.isEmpty(referenceBean.getFlowType())
+                || (RpcConstants.FLOW_POST_PROCESSOR_PRINT.equals(referenceBean.getFlowType()) && !StringUtils.isEmpty(springBootConsumerConfig.getFlowType()))){
+            referenceBean.setFlowType(springBootConsumerConfig.getFlowType());
+        }
         return referenceBean;
     }
 }

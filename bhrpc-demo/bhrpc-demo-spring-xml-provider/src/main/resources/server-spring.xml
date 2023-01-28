@@ -24,5 +24,6 @@
         <constructor-arg name="resultCacheExpire" value="${server.resultCacheExpire}"/>
         <constructor-arg name="corePoolSize" value="${server.corePoolSize}"/>
         <constructor-arg name="maximumPoolSize" value="${server.maximumPoolSize}"/>
+        <constructor-arg name="flowType" value="${server.flowType}"/>
     </bean>
 </beans>

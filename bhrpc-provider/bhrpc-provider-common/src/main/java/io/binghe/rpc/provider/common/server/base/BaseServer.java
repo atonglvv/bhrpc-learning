@@ -18,6 +18,7 @@ package io.binghe.rpc.provider.common.server.base;
 import io.binghe.rpc.codec.RpcDecoder;
 import io.binghe.rpc.codec.RpcEncoder;
 import io.binghe.rpc.constants.RpcConstants;
+import io.binghe.rpc.flow.processor.FlowPostProcessor;
 import io.binghe.rpc.provider.common.handler.RpcProviderHandler;
 import io.binghe.rpc.provider.common.manager.ProviderConnectionManager;
 import io.binghe.rpc.provider.common.server.api.Server;
@@ -82,8 +83,10 @@ public class BaseServer implements Server {
     private int corePoolSize;
     //最大线程数
     private int maximumPoolSize;
+    //流控分析后置处理器
+    private FlowPostProcessor flowPostProcessor;
 
-    public BaseServer(String serverAddress, String serverRegistryAddress, String registryAddress, String registryType, String registryLoadBalanceType, String reflectType, int heartbeatInterval, int scanNotActiveChannelInterval, boolean enableResultCache, int resultCacheExpire, int corePoolSize, int maximumPoolSize){
+    public BaseServer(String serverAddress, String serverRegistryAddress, String registryAddress, String registryType, String registryLoadBalanceType, String reflectType, int heartbeatInterval, int scanNotActiveChannelInterval, boolean enableResultCache, int resultCacheExpire, int corePoolSize, int maximumPoolSize, String flowType){
         if (!StringUtils.isEmpty(serverAddress)){
             String[] serverArray = serverAddress.split(":");
             this.host = serverArray[0];
@@ -112,6 +115,7 @@ public class BaseServer implements Server {
         this.enableResultCache = enableResultCache;
         this.corePoolSize = corePoolSize;
         this.maximumPoolSize = maximumPoolSize;
+        this.flowPostProcessor = ExtensionLoader.getExtension(FlowPostProcessor.class, flowType);
     }
 
     private RegistryService getRegistryService(String registryAddress, String registryType, String registryLoadBalanceType) {
@@ -138,8 +142,8 @@ public class BaseServer implements Server {
                         @Override
                         protected void initChannel(SocketChannel channel) throws Exception {
                             channel.pipeline()
-                                    .addLast(RpcConstants.CODEC_DECODER, new RpcDecoder())
-                                    .addLast(RpcConstants.CODEC_ENCODER, new RpcEncoder())
+                                    .addLast(RpcConstants.CODEC_DECODER, new RpcDecoder(flowPostProcessor))
+                                    .addLast(RpcConstants.CODEC_ENCODER, new RpcEncoder(flowPostProcessor))
                                     .addLast(RpcConstants.CODEC_SERVER_IDLE_HANDLER, new IdleStateHandler(0, 0, heartbeatInterval, TimeUnit.MILLISECONDS))
                                     .addLast(RpcConstants.CODEC_HANDLER, new RpcProviderHandler(reflectType, enableResultCache, resultCacheExpire, corePoolSize, maximumPoolSize, handlerMap));
                         }

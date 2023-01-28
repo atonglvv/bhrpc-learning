@@ -16,6 +16,7 @@
 package io.binghe.rpc.codec;
 
 import io.binghe.rpc.common.utils.SerializationUtils;
+import io.binghe.rpc.flow.processor.FlowPostProcessor;
 import io.binghe.rpc.protocol.RpcProtocol;
 import io.binghe.rpc.protocol.header.RpcHeader;
 import io.binghe.rpc.serialization.api.Serialization;
@@ -30,6 +31,12 @@ import io.netty.handler.codec.MessageToByteEncoder;
  */
 public class RpcEncoder extends MessageToByteEncoder<RpcProtocol<Object>> implements RpcCodec {
 
+    private FlowPostProcessor postProcessor;
+
+    public RpcEncoder(FlowPostProcessor postProcessor){
+        this.postProcessor = postProcessor;
+    }
+
     @Override
     protected void encode(ChannelHandlerContext ctx, RpcProtocol<Object> msg, ByteBuf byteBuf) throws Exception {
         RpcHeader header = msg.getHeader();
@@ -38,11 +45,13 @@ public class RpcEncoder extends MessageToByteEncoder<RpcProtocol<Object>> implem
         byteBuf.writeByte(header.getStatus());
         byteBuf.writeLong(header.getRequestId());
         String serializationType = header.getSerializationType();
-        //TODO Serialization是扩展点
         Serialization serialization = getSerialization(serializationType);
         byteBuf.writeBytes(SerializationUtils.paddingString(serializationType).getBytes("UTF-8"));
         byte[] data = serialization.serialize(msg.getBody());
         byteBuf.writeInt(data.length);
         byteBuf.writeBytes(data);
+        //异步调用流控分析后置处理器
+        header.setMsgLen(data.length);
+        this.postFlowProcessor(postProcessor, header);
     }
 }

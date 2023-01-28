@@ -24,6 +24,7 @@ import io.binghe.rpc.consumer.common.handler.RpcConsumerHandler;
 import io.binghe.rpc.consumer.common.helper.RpcConsumerHandlerHelper;
 import io.binghe.rpc.consumer.common.initializer.RpcConsumerInitializer;
 import io.binghe.rpc.consumer.common.manager.ConsumerConnectionManager;
+import io.binghe.rpc.flow.processor.FlowPostProcessor;
 import io.binghe.rpc.loadbalancer.context.ConnectionsContext;
 import io.binghe.rpc.protocol.RpcProtocol;
 import io.binghe.rpc.protocol.meta.ServiceMeta;
@@ -31,6 +32,7 @@ import io.binghe.rpc.protocol.request.RpcRequest;
 import io.binghe.rpc.proxy.api.consumer.Consumer;
 import io.binghe.rpc.proxy.api.future.RPCFuture;
 import io.binghe.rpc.registry.api.RegistryService;
+import io.binghe.rpc.spi.loader.ExtensionLoader;
 import io.binghe.rpc.threadpool.ConcurrentThreadPool;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -92,6 +94,9 @@ public class RpcConsumer implements Consumer {
     //并发处理线程池
     private ConcurrentThreadPool concurrentThreadPool;
 
+    //流控分析后置处理器
+    private FlowPostProcessor flowPostProcessor;
+
     private RpcConsumer() {
         localIp = IpUtils.getLocalHostIp();
         bootstrap = new Bootstrap();
@@ -142,9 +147,17 @@ public class RpcConsumer implements Consumer {
         return this;
     }
 
+    public RpcConsumer setFlowPostProcessor(String flowType){
+        if (StringUtils.isEmpty(flowType)){
+            flowType = RpcConstants.FLOW_POST_PROCESSOR_PRINT;
+        }
+        this.flowPostProcessor = ExtensionLoader.getExtension(FlowPostProcessor.class, flowType);
+        return this;
+    }
+
     public RpcConsumer buildNettyGroup(){
         bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class)
-                .handler(new RpcConsumerInitializer(heartbeatInterval, concurrentThreadPool));
+                .handler(new RpcConsumerInitializer(heartbeatInterval, concurrentThreadPool, flowPostProcessor));
         return this;
     }
 

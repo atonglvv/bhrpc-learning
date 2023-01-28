@@ -15,6 +15,8 @@
  */
 package io.binghe.rpc.test.consumer.codec;
 
+import io.binghe.rpc.flow.processor.FlowPostProcessor;
+import io.binghe.rpc.spi.loader.ExtensionLoader;
 import io.binghe.rpc.test.consumer.codec.init.RpcTestConsumerInitializer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.EventLoopGroup;
@@ -33,7 +35,7 @@ public class RpcTestConsumer {
         try{
             bootstrap.group(eventLoopGroup)
                     .channel(NioSocketChannel.class)
-                    .handler(new RpcTestConsumerInitializer());
+                    .handler(new RpcTestConsumerInitializer(ExtensionLoader.getExtension(FlowPostProcessor.class, "print")));
             bootstrap.connect("127.0.0.1", 27880).sync();
         }catch (Exception e){
             e.printStackTrace();

@@ -33,5 +33,6 @@
         <constructor-arg name="enableDelayConnection" value="${consumer.enableDelayConnection}"/>
         <constructor-arg name="corePoolSize" value="${consumer.corePoolSize}"/>
         <constructor-arg name="maximumPoolSize" value="${consumer.maximumPoolSize}"/>
+        <constructor-arg name="flowType" value="${consumer.flowType}"/>
     </bean>
 </beans>

@@ -15,8 +15,11 @@
  */
 package io.binghe.rpc.codec;
 
+import io.binghe.rpc.flow.processor.FlowPostProcessor;
+import io.binghe.rpc.protocol.header.RpcHeader;
 import io.binghe.rpc.serialization.api.Serialization;
 import io.binghe.rpc.spi.loader.ExtensionLoader;
+import io.binghe.rpc.threadpool.FlowPostProcessorThreadPool;
 
 /**
  * @author binghe (公众号：冰河技术)
@@ -32,5 +35,17 @@ public interface RpcCodec {
      */
     default Serialization getSerialization(String serializationType){
         return ExtensionLoader.getExtension(Serialization.class, serializationType);
+    }
+
+    /**
+     * 调用RPC框架流量分析后置处理器
+     * @param postProcessor 后置处理器
+     * @param header 封装了流量信息的消息头
+     */
+    default void postFlowProcessor(FlowPostProcessor postProcessor, RpcHeader header){
+        //异步调用流控分析后置处理器
+        FlowPostProcessorThreadPool.submit(() -> {
+            postProcessor.postRpcHeaderProcessor(header);
+        });
     }
 }

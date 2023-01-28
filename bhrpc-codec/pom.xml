@@ -12,6 +12,13 @@
     <artifactId>bhrpc-codec</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <groupId>io.binghe.rpc</groupId>
+            <artifactId>bhrpc-flow-print</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>io.binghe.rpc</groupId>
             <artifactId>bhrpc-protocol</artifactId>

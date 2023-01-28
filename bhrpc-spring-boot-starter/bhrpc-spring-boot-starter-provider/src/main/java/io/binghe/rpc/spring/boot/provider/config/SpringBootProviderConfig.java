@@ -78,10 +78,15 @@ public final class SpringBootProviderConfig {
      */
     private int maximumPoolSize;
 
+    /**
+     * 流控类型
+     */
+    private String flowType;
+
     public SpringBootProviderConfig() {
     }
 
-    public SpringBootProviderConfig(final String serverAddress, final String serverRegistryAddress, final String registryAddress, final String registryType, final String registryLoadBalanceType, final String reflectType, final int heartbeatInterval, int scanNotActiveChannelInterval, final boolean enableResultCache, final int resultCacheExpire, final int corePoolSize, final int maximumPoolSize) {
+    public SpringBootProviderConfig(final String serverAddress, final String serverRegistryAddress, final String registryAddress, final String registryType, final String registryLoadBalanceType, final String reflectType, final int heartbeatInterval, int scanNotActiveChannelInterval, final boolean enableResultCache, final int resultCacheExpire, final int corePoolSize, final int maximumPoolSize, String flowType) {
         this.serverAddress = serverAddress;
         this.registryAddress = registryAddress;
         this.registryType = registryType;
@@ -96,6 +101,7 @@ public final class SpringBootProviderConfig {
         this.resultCacheExpire = resultCacheExpire;
         this.corePoolSize = corePoolSize;
         this.maximumPoolSize = maximumPoolSize;
+        this.flowType = flowType;
     }
 
     public String getServerAddress() {
@@ -192,5 +198,13 @@ public final class SpringBootProviderConfig {
 
     public void setMaximumPoolSize(int maximumPoolSize) {
         this.maximumPoolSize = maximumPoolSize;
+    }
+
+    public String getFlowType() {
+        return flowType;
+    }
+
+    public void setFlowType(String flowType) {
+        this.flowType = flowType;
     }
 }

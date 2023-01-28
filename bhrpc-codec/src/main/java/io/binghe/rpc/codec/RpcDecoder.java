@@ -17,6 +17,7 @@ package io.binghe.rpc.codec;
 
 import io.binghe.rpc.common.utils.SerializationUtils;
 import io.binghe.rpc.constants.RpcConstants;
+import io.binghe.rpc.flow.processor.FlowPostProcessor;
 import io.binghe.rpc.protocol.RpcProtocol;
 import io.binghe.rpc.protocol.enumeration.RpcType;
 import io.binghe.rpc.protocol.header.RpcHeader;
@@ -36,6 +37,12 @@ import java.util.List;
  * @description 实现RPC解码操作
  */
 public class RpcDecoder  extends ByteToMessageDecoder implements RpcCodec {
+
+    private FlowPostProcessor postProcessor;
+    public RpcDecoder(FlowPostProcessor postProcessor){
+        this.postProcessor = postProcessor;
+    }
+
     @Override
     public final void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         if (in.readableBytes() < RpcConstants.HEADER_TOTAL_LEN) {
@@ -108,5 +115,7 @@ public class RpcDecoder  extends ByteToMessageDecoder implements RpcCodec {
                 }
                 break;
         }
+        //异步调用流控分析后置处理器
+        this.postFlowProcessor(postProcessor, header);
     }
 }

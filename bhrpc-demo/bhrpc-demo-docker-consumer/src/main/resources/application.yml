@@ -46,3 +46,5 @@ bhrpc:
       corePoolSize: 16
       # maximumPoolSize
       maximumPoolSize: 16
+      # flowType
+      flowType: print

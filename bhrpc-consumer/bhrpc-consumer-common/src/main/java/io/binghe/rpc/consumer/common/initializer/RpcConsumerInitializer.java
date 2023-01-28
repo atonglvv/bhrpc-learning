@@ -19,6 +19,7 @@ import io.binghe.rpc.codec.RpcDecoder;
 import io.binghe.rpc.codec.RpcEncoder;
 import io.binghe.rpc.constants.RpcConstants;
 import io.binghe.rpc.consumer.common.handler.RpcConsumerHandler;
+import io.binghe.rpc.flow.processor.FlowPostProcessor;
 import io.binghe.rpc.threadpool.ConcurrentThreadPool;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -35,17 +36,19 @@ import java.util.concurrent.TimeUnit;
 public class RpcConsumerInitializer extends ChannelInitializer<SocketChannel> {
     private int heartbeatInterval;
     private ConcurrentThreadPool concurrentThreadPool;
-    public RpcConsumerInitializer(int heartbeatInterval, ConcurrentThreadPool concurrentThreadPool){
+    private FlowPostProcessor flowPostProcessor;
+    public RpcConsumerInitializer(int heartbeatInterval, ConcurrentThreadPool concurrentThreadPool, FlowPostProcessor flowPostProcessor){
         if (heartbeatInterval > 0){
             this.heartbeatInterval = heartbeatInterval;
         }
         this.concurrentThreadPool = concurrentThreadPool;
+        this.flowPostProcessor = flowPostProcessor;
     }
     @Override
     protected void initChannel(SocketChannel channel) throws Exception {
         ChannelPipeline cp = channel.pipeline();
-        cp.addLast(RpcConstants.CODEC_ENCODER, new RpcEncoder());
-        cp.addLast(RpcConstants.CODEC_DECODER, new RpcDecoder());
+        cp.addLast(RpcConstants.CODEC_ENCODER, new RpcEncoder(flowPostProcessor));
+        cp.addLast(RpcConstants.CODEC_DECODER, new RpcDecoder(flowPostProcessor));
         cp.addLast(RpcConstants.CODEC_CLIENT_IDLE_HANDLER, new IdleStateHandler(heartbeatInterval, 0, 0, TimeUnit.MILLISECONDS));
         cp.addLast(RpcConstants.CODEC_HANDLER, new RpcConsumerHandler(concurrentThreadPool));
     }
