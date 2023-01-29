@@ -39,8 +39,8 @@ public class RpcSpringServer extends BaseServer implements ApplicationContextAwa
 
     private final Logger logger = LoggerFactory.getLogger(RpcSpringServer.class);
 
-    public RpcSpringServer(String serverAddress, String serverRegistryAddress, String registryAddress, String registryType, String registryLoadBalanceType, String reflectType, int heartbeatInterval, int scanNotActiveChannelInterval, boolean enableResultCache, int resultCacheExpire, int corePoolSize, int maximumPoolSize, String flowType) {
-        super(serverAddress, serverRegistryAddress, registryAddress, registryType, registryLoadBalanceType, reflectType, heartbeatInterval, scanNotActiveChannelInterval, enableResultCache, resultCacheExpire, corePoolSize, maximumPoolSize, flowType);
+    public RpcSpringServer(String serverAddress, String serverRegistryAddress, String registryAddress, String registryType, String registryLoadBalanceType, String reflectType, int heartbeatInterval, int scanNotActiveChannelInterval, boolean enableResultCache, int resultCacheExpire, int corePoolSize, int maximumPoolSize, String flowType, int maxConnections, String disuseStrategyType) {
+        super(serverAddress, serverRegistryAddress, registryAddress, registryType, registryLoadBalanceType, reflectType, heartbeatInterval, scanNotActiveChannelInterval, enableResultCache, resultCacheExpire, corePoolSize, maximumPoolSize, flowType, maxConnections, disuseStrategyType);
     }
 
     @Override

@@ -86,7 +86,12 @@ public class BaseServer implements Server {
     //流控分析后置处理器
     private FlowPostProcessor flowPostProcessor;
 
-    public BaseServer(String serverAddress, String serverRegistryAddress, String registryAddress, String registryType, String registryLoadBalanceType, String reflectType, int heartbeatInterval, int scanNotActiveChannelInterval, boolean enableResultCache, int resultCacheExpire, int corePoolSize, int maximumPoolSize, String flowType){
+    //最大连接限制
+    private int maxConnections;
+    //拒绝策略类型
+    private String disuseStrategyType;
+
+    public BaseServer(String serverAddress, String serverRegistryAddress, String registryAddress, String registryType, String registryLoadBalanceType, String reflectType, int heartbeatInterval, int scanNotActiveChannelInterval, boolean enableResultCache, int resultCacheExpire, int corePoolSize, int maximumPoolSize, String flowType, int maxConnections, String disuseStrategyType){
         if (!StringUtils.isEmpty(serverAddress)){
             String[] serverArray = serverAddress.split(":");
             this.host = serverArray[0];
@@ -115,6 +120,8 @@ public class BaseServer implements Server {
         this.enableResultCache = enableResultCache;
         this.corePoolSize = corePoolSize;
         this.maximumPoolSize = maximumPoolSize;
+        this.maxConnections = maxConnections;
+        this.disuseStrategyType = disuseStrategyType;
         this.flowPostProcessor = ExtensionLoader.getExtension(FlowPostProcessor.class, flowType);
     }
 
@@ -145,7 +152,7 @@ public class BaseServer implements Server {
                                     .addLast(RpcConstants.CODEC_DECODER, new RpcDecoder(flowPostProcessor))
                                     .addLast(RpcConstants.CODEC_ENCODER, new RpcEncoder(flowPostProcessor))
                                     .addLast(RpcConstants.CODEC_SERVER_IDLE_HANDLER, new IdleStateHandler(0, 0, heartbeatInterval, TimeUnit.MILLISECONDS))
-                                    .addLast(RpcConstants.CODEC_HANDLER, new RpcProviderHandler(reflectType, enableResultCache, resultCacheExpire, corePoolSize, maximumPoolSize, handlerMap));
+                                    .addLast(RpcConstants.CODEC_HANDLER, new RpcProviderHandler(reflectType, enableResultCache, resultCacheExpire, corePoolSize, maximumPoolSize, maxConnections, disuseStrategyType, handlerMap));
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG,128)

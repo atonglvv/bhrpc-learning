@@ -27,7 +27,7 @@ public class RpcSingleServerTest {
 
     @Test
     public void startRpcSingleServer(){
-        RpcSingleServer singleServer = new RpcSingleServer("127.0.0.1:27880", "127.0.0.1:27880","127.0.0.1:2181", "zookeeper", "random","io.binghe.rpc.test", "asm", 3000, 6000, true, 10000, 16, 16, "print");
+        RpcSingleServer singleServer = new RpcSingleServer("127.0.0.1:27880", "127.0.0.1:27880","127.0.0.1:2181", "zookeeper", "random","io.binghe.rpc.test", "asm", 3000, 6000, true, 10000, 16, 16, "print", 2, "strategy_default");
         singleServer.startNettyServer();
     }
 }

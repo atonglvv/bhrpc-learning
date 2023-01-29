@@ -28,3 +28,7 @@ bhrpc:
       maximumPoolSize: 16
       # flowType
       flowType: print
+      # maxConnections
+      maxConnections: 500
+      # disuseStrategyType
+      disuseStrategyType: strategy_default

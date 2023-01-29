@@ -25,5 +25,7 @@
         <constructor-arg name="corePoolSize" value="${server.corePoolSize}"/>
         <constructor-arg name="maximumPoolSize" value="${server.maximumPoolSize}"/>
         <constructor-arg name="flowType" value="${server.flowType}"/>
+        <constructor-arg name="maxConnections" value="${server.maxConnections}"/>
+        <constructor-arg name="disuseStrategyType" value="${server.disuseStrategyType}"/>
     </bean>
 </beans>
