@@ -28,6 +28,8 @@
         <module>bhrpc-cache</module>
         <module>bhrpc-threadpool</module>
         <module>bhrpc-flow</module>
+        <module>bhrpc-disuse</module>
+        <module>bhrpc-connection</module>
     </modules>
 
     <properties>
