@@ -13,21 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.binghe.rpc.demo.provider;
+package io.binghe.rpc.disuse.first;
 
-import io.binghe.rpc.provider.RpcSingleServer;
-import org.junit.Test;
+import io.binghe.rpc.disuse.api.DisuseStrategy;
+import io.binghe.rpc.disuse.api.connection.ConnectionInfo;
+import io.binghe.rpc.spi.annotation.SPIClass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * @author binghe(公众号 : 冰河技术)
  * @version 1.0.0
- * @description 服务提供者
+ * @description 获取列表中的第一个
  */
-public class ProviderNativeDemo {
-
-    @Test
-    public void startRpcSingleServer(){
-        RpcSingleServer singleServer = new RpcSingleServer("127.0.0.1:27880", "127.0.0.1:27880","127.0.0.1:2181", "zookeeper", "random","io.binghe.rpc.demo", "asm", 3000, 6000, true, 30000, 16, 16, "print", 1, "first");
-        singleServer.startNettyServer();
+@SPIClass
+public class FirstDisuseStrategy implements DisuseStrategy {
+    private final Logger logger = LoggerFactory.getLogger(FirstDisuseStrategy.class);
+    @Override
+    public ConnectionInfo selectConnection(List<ConnectionInfo> connectionList) {
+        logger.info("execute first disuse strategy...");
+        return connectionList.get(0);
     }
 }
