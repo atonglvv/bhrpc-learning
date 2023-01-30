@@ -41,5 +41,11 @@
             <artifactId>bhrpc-disuse-fifo</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.binghe.rpc</groupId>
+            <artifactId>bhrpc-disuse-lfu</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
