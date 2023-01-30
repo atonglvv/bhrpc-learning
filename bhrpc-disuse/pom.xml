@@ -16,6 +16,7 @@
         <module>bhrpc-disuse-defult</module>
         <module>bhrpc-disuse-first</module>
         <module>bhrpc-disuse-last</module>
+        <module>bhrpc-disuse-fifo</module>
     </modules>
 
     <properties>
