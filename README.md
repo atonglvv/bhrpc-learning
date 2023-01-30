@@ -243,3 +243,4 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第95章：服务提供者整合连接控制](https://articles.zsxq.com/id_4itcb5tpup7b.html)
 * [《RPC手撸专栏》第95章-X：连接控制阶段作业](https://t.zsxq.com/0asmzlzC6)
 * [《RPC手撸专栏》第96章：基于SPI扩展最早连接淘汰策略](https://articles.zsxq.com/id_e7hlzna0gpm9.html)
+* [《RPC手撸专栏》第97章：基于SPI扩展最晚连接淘汰策略](https://articles.zsxq.com/id_24pp9fvewh4l.html)
