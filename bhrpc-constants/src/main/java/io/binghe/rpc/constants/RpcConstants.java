@@ -294,4 +294,9 @@ public class RpcConstants {
      * 默认策略
      */
     public static final String RPC_CONNECTION_DISUSE_STRATEGY_DEFAULT = "strategy_default";
+
+    /**
+     * 默认的缓存区大小
+     */
+    public static final int DEFAULT_BUFFER_SIZE = 655350;
 }

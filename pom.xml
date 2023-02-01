@@ -30,6 +30,7 @@
         <module>bhrpc-flow</module>
         <module>bhrpc-disuse</module>
         <module>bhrpc-connection</module>
+        <module>bhrpc-buffer</module>
     </modules>
 
     <properties>
