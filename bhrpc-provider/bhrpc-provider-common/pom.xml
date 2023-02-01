@@ -72,5 +72,11 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.binghe.rpc</groupId>
+            <artifactId>bhrpc-buffer</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 </project>

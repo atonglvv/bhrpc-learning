@@ -34,3 +34,7 @@ bhrpc:
       maxConnections: 500
       # disuseStrategyType
       disuseStrategyType: strategy_default
+      # enableBuffer
+      enableBuffer: true
+      # bufferSize
+      bufferSize: 409600

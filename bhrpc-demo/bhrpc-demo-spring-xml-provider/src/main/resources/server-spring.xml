@@ -27,5 +27,7 @@
         <constructor-arg name="flowType" value="${server.flowType}"/>
         <constructor-arg name="maxConnections" value="${server.maxConnections}"/>
         <constructor-arg name="disuseStrategyType" value="${server.disuseStrategyType}"/>
+        <constructor-arg name="enableBuffer" value="${server.enableBuffer}"/>
+        <constructor-arg name="bufferSize" value="${server.bufferSize}"/>
     </bean>
 </beans>

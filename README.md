@@ -251,3 +251,4 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第102章：基于SPI扩展拒绝连接淘汰策略](https://articles.zsxq.com/id_zxujiru0m4aa.html)
 * [《RPC手撸专栏》第102章-X：SPI扩展连接拒绝策略阶段作业](https://t.zsxq.com/0aYfqnGxl)
 * [《RPC手撸专栏》第103章：数据缓冲基础模型设计](https://articles.zsxq.com/id_7vlqjihwavcw.html)
+* [《RPC手撸专栏》第104章：服务提供者整合数据缓冲](https://articles.zsxq.com/id_gf5vsocpwga6.html)
