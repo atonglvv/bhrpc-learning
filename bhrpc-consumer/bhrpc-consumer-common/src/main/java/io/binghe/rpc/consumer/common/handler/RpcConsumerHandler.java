@@ -16,6 +16,7 @@
 package io.binghe.rpc.consumer.common.handler;
 
 import com.alibaba.fastjson.JSONObject;
+import io.binghe.rpc.buffer.cache.BufferCacheManager;
 import io.binghe.rpc.constants.RpcConstants;
 import io.binghe.rpc.consumer.common.cache.ConsumerChannelCache;
 import io.binghe.rpc.consumer.common.context.RpcContext;
@@ -27,6 +28,7 @@ import io.binghe.rpc.protocol.header.RpcHeaderFactory;
 import io.binghe.rpc.protocol.request.RpcRequest;
 import io.binghe.rpc.protocol.response.RpcResponse;
 import io.binghe.rpc.proxy.api.future.RPCFuture;
+import io.binghe.rpc.threadpool.BufferCacheThreadPool;
 import io.binghe.rpc.threadpool.ConcurrentThreadPool;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -52,12 +54,42 @@ public class RpcConsumerHandler extends SimpleChannelInboundHandler<RpcProtocol<
     private SocketAddress remotePeer;
 
     //存储请求ID与RpcResponse协议的映射关系
-    private Map<Long, RPCFuture> pendingRPC = new ConcurrentHashMap<>();
+    private static final Map<Long, RPCFuture> pendingRPC = new ConcurrentHashMap<>();
 
     private ConcurrentThreadPool concurrentThreadPool;
 
-    public RpcConsumerHandler(ConcurrentThreadPool concurrentThreadPool){
+    /**
+     * 是否开启缓冲区
+     */
+    private boolean enableBuffer;
+
+    /**
+     * 缓冲区管理器
+     */
+    private BufferCacheManager<RpcProtocol<RpcResponse>> bufferCacheManager;
+
+    public RpcConsumerHandler(boolean enableBuffer, int bufferSize, ConcurrentThreadPool concurrentThreadPool){
         this.concurrentThreadPool = concurrentThreadPool;
+        this.enableBuffer = enableBuffer;
+        if (enableBuffer){
+            this.bufferCacheManager = BufferCacheManager.getInstance(bufferSize);
+            BufferCacheThreadPool.submit(() -> {
+                consumerBufferCache();
+            });
+        }
+    }
+
+    /**
+     * 消费缓冲区数据
+     */
+    private void consumerBufferCache() {
+        //不断消息缓冲区的数据
+        while (true){
+            RpcProtocol<RpcResponse> protocol = this.bufferCacheManager.take();
+            if (protocol != null){
+                this.handlerResponseMessage(protocol);
+            }
+        }
     }
 
     public Channel getChannel() {
@@ -127,7 +159,19 @@ public class RpcConsumerHandler extends SimpleChannelInboundHandler<RpcProtocol<
         }else if (header.getMsgType() == (byte) RpcType.HEARTBEAT_FROM_PROVIDER.getType()){
             this.handlerHeartbeatMessageFromProvider(protocol, channel);
         }else if (header.getMsgType() == (byte) RpcType.RESPONSE.getType()){ //响应消息
-            this.handlerResponseMessage(protocol, header);
+            this.handlerResponseMessageOrBuffer(protocol);
+        }
+    }
+
+    /**
+     * 包含是否开启了缓冲区的响应消息
+     */
+    private void handlerResponseMessageOrBuffer(RpcProtocol<RpcResponse> protocol){
+        if (enableBuffer){
+            logger.info("enable buffer...");
+            this.bufferCacheManager.put(protocol);
+        }else {
+            this.handlerResponseMessage(protocol);
         }
     }
 
@@ -157,8 +201,8 @@ public class RpcConsumerHandler extends SimpleChannelInboundHandler<RpcProtocol<
     /**
      * 处理响应消息
      */
-    private void handlerResponseMessage(RpcProtocol<RpcResponse> protocol, RpcHeader header) {
-        long requestId = header.getRequestId();
+    private void handlerResponseMessage(RpcProtocol<RpcResponse> protocol) {
+        long requestId = protocol.getHeader().getRequestId();
         RPCFuture rpcFuture = pendingRPC.remove(requestId);
         if (rpcFuture != null){
             rpcFuture.done(protocol);

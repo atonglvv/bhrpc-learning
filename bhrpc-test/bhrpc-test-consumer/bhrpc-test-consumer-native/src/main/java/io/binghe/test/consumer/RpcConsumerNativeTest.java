@@ -34,7 +34,7 @@ public class RpcConsumerNativeTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcConsumerNativeTest.class);
 
     public static void main(String[] args){
-        RpcClient rpcClient = new RpcClient("127.0.0.1:2181", "zookeeper", "random", "jdk", "1.0.0", "binghe", "hessian2", 3000, false, false, 30000, 60000, 1000, 3, true, 10000, true, "127.0.0.1:27880", true, 16,16, "print");
+        RpcClient rpcClient = new RpcClient("127.0.0.1:2181", "zookeeper", "random", "jdk", "1.0.0", "binghe", "hessian2", 3000, false, false, 30000, 60000, 1000, 3, true, 10000, true, "127.0.0.1:27880", true, 16,16, "print", true, 4096);
         DemoService demoService = rpcClient.create(DemoService.class);
         String result = demoService.hello("binghe");
         LOGGER.info("返回的结果数据===>>> " + result);
@@ -45,7 +45,7 @@ public class RpcConsumerNativeTest {
 
     @Before
     public void initRpcClient(){
-        rpcClient = new RpcClient("127.0.0.1:2181", "zookeeper", "enhanced_leastconnections","asm","1.0.0", "binghe", "protostuff", 3000, false, false, 30000, 60000, 1000, 3, true, 10000, true, "127.0.0.1:27880", true, 16, 16, "print");
+        rpcClient = new RpcClient("127.0.0.1:2181", "zookeeper", "enhanced_leastconnections","asm","1.0.0", "binghe", "protostuff", 3000, false, false, 30000, 60000, 1000, 3, true, 10000, true, "127.0.0.1:27880", true, 16, 16, "print", false, 4096);
     }
 
 

@@ -48,3 +48,7 @@ bhrpc:
       maximumPoolSize: 16
       # flowType
       flowType: print
+      # enableBuffer
+      enableBuffer: true
+      # bufferSize
+      bufferSize: 40960
