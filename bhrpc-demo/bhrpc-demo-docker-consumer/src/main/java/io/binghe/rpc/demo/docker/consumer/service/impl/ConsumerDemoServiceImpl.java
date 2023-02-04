@@ -17,6 +17,7 @@ package io.binghe.rpc.demo.docker.consumer.service.impl;
 
 import io.binghe.rpc.annotation.RpcReference;
 import io.binghe.rpc.demo.api.DemoService;
+import io.binghe.rpc.demo.docker.consumer.hello.FallbackDemoServcieImpl;
 import io.binghe.rpc.demo.docker.consumer.service.ConsumerDemoService;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConsumerDemoServiceImpl implements ConsumerDemoService {
 
-    @RpcReference(registryType = "zookeeper", registryAddress = "127.0.0.1:2181", loadBalanceType = "zkconsistenthash", version = "1.0.0", group = "binghe", serializationType = "protostuff", proxy = "cglib", timeout = 30000, async = false, oneway = false)
+    @RpcReference(registryType = "zookeeper", registryAddress = "127.0.0.1:2181", loadBalanceType = "zkconsistenthash", version = "1.0.0", group = "binghe", serializationType = "protostuff", proxy = "cglib", timeout = 30000, async = false, oneway = false, reflectType = "jdk", fallbackClass = FallbackDemoServcieImpl.class)
     private DemoService demoService;
 
     @Override

@@ -58,7 +58,7 @@ import java.util.concurrent.TimeUnit;
 public class RpcConsumer implements Consumer {
 
     private final Logger logger = LoggerFactory.getLogger(RpcConsumer.class);
-    private final Bootstrap bootstrap;
+    private Bootstrap bootstrap;
     private final EventLoopGroup eventLoopGroup;
     private final String localIp;
     private static volatile RpcConsumer instance;
@@ -171,8 +171,14 @@ public class RpcConsumer implements Consumer {
     }
 
     public RpcConsumer buildNettyGroup(){
-        bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class)
-                .handler(new RpcConsumerInitializer(heartbeatInterval, enableBuffer, bufferSize, concurrentThreadPool, flowPostProcessor));
+        try {
+            bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class)
+                    .handler(new RpcConsumerInitializer(heartbeatInterval, enableBuffer, bufferSize, concurrentThreadPool, flowPostProcessor));
+        }catch (IllegalStateException e){
+            bootstrap = new Bootstrap();
+            bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class)
+                    .handler(new RpcConsumerInitializer(heartbeatInterval, enableBuffer, bufferSize, concurrentThreadPool, flowPostProcessor));
+        }
         return this;
     }
 
