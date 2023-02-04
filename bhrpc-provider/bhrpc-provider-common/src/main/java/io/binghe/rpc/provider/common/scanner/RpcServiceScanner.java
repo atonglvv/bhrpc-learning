@@ -42,7 +42,7 @@ public class RpcServiceScanner extends ClassScanner {
      */
     public static Map<String, Object> doScannerWithRpcServiceAnnotationFilterAndRegistryService(String host, int port, String scanPackage, RegistryService registryService) throws Exception{
         Map<String, Object> handlerMap = new HashMap<>();
-        List<String> classNameList = getClassNameList(scanPackage);
+        List<String> classNameList = getClassNameList(scanPackage, true);
         if (classNameList == null || classNameList.isEmpty()){
             return handlerMap;
         }
