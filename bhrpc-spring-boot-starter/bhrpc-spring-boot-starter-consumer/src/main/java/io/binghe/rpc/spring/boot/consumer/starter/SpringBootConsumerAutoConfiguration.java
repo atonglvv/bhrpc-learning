@@ -161,6 +161,16 @@ public class SpringBootConsumerAutoConfiguration {
             referenceBean.setBufferSize(springBootConsumerConfig.getBufferSize());
         }
 
+        if (StringUtils.isEmpty(referenceBean.getReflectType())
+                || (RpcConstants.DEFAULT_REFLECT_TYPE.equals(referenceBean.getReflectType()) && !StringUtils.isEmpty(springBootConsumerConfig.getReflectType()))){
+            referenceBean.setReflectType(springBootConsumerConfig.getReflectType());
+        }
+
+        if (StringUtils.isEmpty(referenceBean.getFallbackClassName())
+                || (RpcConstants.DEFAULT_FALLBACK_CLASS_NAME.equals(referenceBean.getFallbackClassName()) && !StringUtils.isEmpty(springBootConsumerConfig.getFallbackClassName()))){
+            referenceBean.setFallbackClassName(springBootConsumerConfig.getFallbackClassName());
+        }
+
         return referenceBean;
     }
 }

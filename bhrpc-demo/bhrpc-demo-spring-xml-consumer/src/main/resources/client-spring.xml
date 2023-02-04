@@ -36,5 +36,7 @@
         <constructor-arg name="flowType" value="${consumer.flowType}"/>
         <constructor-arg name="enableBuffer" value="${consumer.enableBuffer}"/>
         <constructor-arg name="bufferSize" value="${consumer.bufferSize}"/>
+        <constructor-arg name="reflectType" value="${consumer.reflectType}"/>
+        <constructor-arg name="fallbackClassName" value="${consumer.fallbackClassName}"/>
     </bean>
 </beans>

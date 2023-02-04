@@ -52,3 +52,7 @@ bhrpc:
       enableBuffer: true
       # bufferSize
       bufferSize: 40960
+      # reflectType
+      reflectType: cglib
+      # fallbackClassName
+      fallbackClassName: xxx.xxx.xxx.Xxx

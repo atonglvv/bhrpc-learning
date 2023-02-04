@@ -13,21 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.binghe.rpc.demo.provider;
+package io.binghe.demo.consumer.hello;
 
-import io.binghe.rpc.provider.RpcSingleServer;
-import org.junit.Test;
+import io.binghe.rpc.demo.api.DemoService;
 
 /**
  * @author binghe(公众号 : 冰河技术)
  * @version 1.0.0
- * @description 服务提供者
+ * @description helloService服务实现类
  */
-public class ProviderNativeDemo {
+public class FallbackDemoServcieImpl implements DemoService {
 
-    @Test
-    public void startRpcSingleServer(){
-        RpcSingleServer singleServer = new RpcSingleServer("127.0.0.1:27880", "127.0.0.1:27880","127.0.0.1:2181", "zookeeper", "random","io.binghe.rpc.demo", "jdk", 3000, 6000, true, 30000, 16, 16, "print", 1, "refuse", true, 2);
-        singleServer.startNettyServer();
+    @Override
+    public String hello(String name) {
+        return "fallback hello " + name;
     }
 }

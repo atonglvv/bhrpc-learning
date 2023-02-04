@@ -299,4 +299,25 @@ public class RpcConstants {
      * 默认的缓存区大小
      */
     public static final int DEFAULT_BUFFER_SIZE = 655350;
+
+
+    /**
+     * 默认容错class
+     */
+    public static final Class<?> DEFAULT_FALLBACK_CLASS = void.class;
+
+    /**
+     * 默认容错class名称
+     */
+    public static final String DEFAULT_FALLBACK_CLASS_NAME = "";
+
+    /**
+     * 默认的反射类型
+     */
+    public static final String DEFAULT_REFLECT_TYPE = "jdk";
+
+    /**
+     * 默认返回值
+     */
+    public static final String DEFAULT_RETUEN_VALUE = "";
 }
