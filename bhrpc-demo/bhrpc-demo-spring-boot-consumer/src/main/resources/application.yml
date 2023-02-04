@@ -16,8 +16,8 @@ bhrpc:
       version: 1.0.0
       # group
       group: binghe
-      # zkconsistenthash
-      serializationType: zkconsistenthash
+      # protostuff
+      serializationType: protostuff
       # timeout
       timeout: 30000
       # async

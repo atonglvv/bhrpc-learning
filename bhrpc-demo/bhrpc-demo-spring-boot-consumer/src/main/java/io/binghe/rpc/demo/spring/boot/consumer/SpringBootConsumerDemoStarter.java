@@ -29,7 +29,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @description 服务消费者基于SpringBoot的启动类
  */
 @SpringBootApplication
-@ComponentScan(basePackages = {"io.binghe.rpc"})
+@ComponentScan(basePackages = {"io.binghe.rpc", "io.binghe.rpc.demo"})
 public class SpringBootConsumerDemoStarter {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringBootConsumerDemoStarter.class);
     public static void main(String[] args){

@@ -13,26 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.binghe.rpc.demo.docker.consumer.service.impl;
+package io.binghe.rpc.demo.spring.boot.consumer.hello;
 
-import io.binghe.rpc.annotation.RpcReference;
 import io.binghe.rpc.demo.api.DemoService;
-import io.binghe.rpc.demo.docker.consumer.service.ConsumerDemoService;
-import org.springframework.stereotype.Service;
 
 /**
  * @author binghe(公众号 : 冰河技术)
  * @version 1.0.0
- * @description 服务消费者Service实现类
+ * @description helloService服务实现类
  */
-@Service
-public class ConsumerDemoServiceImpl implements ConsumerDemoService {
-
-    @RpcReference(registryType = "zookeeper", registryAddress = "127.0.0.1:2181", loadBalanceType = "zkconsistenthash", version = "1.0.0", group = "binghe", serializationType = "protostuff", proxy = "cglib", timeout = 30000, async = false, oneway = false)
-    private DemoService demoService;
+public class FallbackDemoServcieImpl implements DemoService {
 
     @Override
     public String hello(String name) {
-        return demoService.hello(name);
+        return "fallback hello " + name;
     }
 }
