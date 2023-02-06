@@ -38,5 +38,9 @@
         <constructor-arg name="bufferSize" value="${consumer.bufferSize}"/>
         <constructor-arg name="reflectType" value="${consumer.reflectType}"/>
         <constructor-arg name="fallbackClassName" value="${consumer.fallbackClassName}"/>
+        <constructor-arg name="enableRateLimiter" value="${consumer.enableRateLimiter}"/>
+        <constructor-arg name="rateLimiterType" value="${consumer.rateLimiterType}"/>
+        <constructor-arg name="permits" value="${consumer.permits}"/>
+        <constructor-arg name="milliSeconds" value="${consumer.milliSeconds}"/>
     </bean>
 </beans>

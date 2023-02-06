@@ -171,4 +171,24 @@ public @interface RpcReference {
      * 反射类型
      */
     String reflectType() default RpcConstants.DEFAULT_REFLECT_TYPE;
+
+    /**
+     * 是否开启限流
+     */
+    boolean enableRateLimiter() default false;
+
+    /**
+     * 限流类型
+     */
+    String rateLimiterType() default RpcConstants.DEFAULT_RATELIMITER_INVOKER;
+
+    /**
+     * 在milliSeconds毫秒内最多能够通过的请求个数
+     */
+    int permits() default RpcConstants.DEFAULT_RATELIMITER_PERMITS;
+
+    /**
+     * 毫秒数
+     */
+    int milliSeconds() default RpcConstants.DEFAULT_RATELIMITER_MILLI_SECONDS;
 }

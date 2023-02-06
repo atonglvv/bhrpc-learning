@@ -37,7 +37,7 @@ public class ConsumerNativeDemo {
 
     @Before
     public void initRpcClient(){
-        rpcClient = new RpcClient("127.0.0.1:2181", "zookeeper", "zkconsistenthash","asm","1.0.0", "binghe", "protostuff", 3000, false, false, 30000, 60000, 1000, 3, false, 10000, false, "127.0.0.1:27880", false, 16, 16, "print", true, 2, "jdk", "io.binghe.demo.consumer.hello.FallbackDemoServcieImpl");
+        rpcClient = new RpcClient("127.0.0.1:2181", "zookeeper", "zkconsistenthash","asm","1.0.0", "binghe", "protostuff", 3000, false, false, 30000, 60000, 1000, 3, false, 10000, false, "127.0.0.1:27880", false, 16, 16, "print", true, 2, "jdk", "io.binghe.demo.consumer.hello.FallbackDemoServcieImpl", true, "counter", 100, 1000);
     }
 
 
