@@ -320,4 +320,19 @@ public class RpcConstants {
      * 默认返回值
      */
     public static final String DEFAULT_RETUEN_VALUE = "";
+
+    /**
+     * 默认限流策略
+     */
+    public static final String DEFAULT_RATELIMITER_INVOKER = "counter";
+
+    /**
+     * 默认限流阈值
+     */
+    public static final int DEFAULT_RATELIMITER_PERMITS = 100;
+
+    /**
+     * 默认限流时间值，毫秒
+     */
+    public static final int DEFAULT_RATELIMITER_MILLI_SECONDS = 1000;
 }

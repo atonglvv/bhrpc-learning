@@ -258,3 +258,4 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第107章：服务容错效果测试](https://articles.zsxq.com/id_356s6sxma22g.html)
 * [《RPC手撸专栏》第108章：服务容错失效问题修复](https://articles.zsxq.com/id_c0mka70xo8ke.html)
 * [《RPC手撸专栏》第108章-X：服务容错阶段作业](https://t.zsxq.com/0aChrm3ci)
+* [《RPC手撸专栏》第109章：服务限流基础模型设计](https://articles.zsxq.com/id_vt4qwkw275gr.html)
