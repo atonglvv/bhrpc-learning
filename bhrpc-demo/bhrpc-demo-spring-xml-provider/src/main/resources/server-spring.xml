@@ -29,5 +29,9 @@
         <constructor-arg name="disuseStrategyType" value="${server.disuseStrategyType}"/>
         <constructor-arg name="enableBuffer" value="${server.enableBuffer}"/>
         <constructor-arg name="bufferSize" value="${server.bufferSize}"/>
+        <constructor-arg name="enableRateLimiter" value="${server.enableRateLimiter}"/>
+        <constructor-arg name="rateLimiterType" value="${server.rateLimiterType}"/>
+        <constructor-arg name="permits" value="${server.permits}"/>
+        <constructor-arg name="milliSeconds" value="${server.milliSeconds}"/>
     </bean>
 </beans>

@@ -20,6 +20,7 @@ import io.binghe.rpc.buffer.object.BufferObject;
 import io.binghe.rpc.cache.result.CacheResultKey;
 import io.binghe.rpc.cache.result.CacheResultManager;
 import io.binghe.rpc.common.helper.RpcServiceHelper;
+import io.binghe.rpc.common.utils.StringUtils;
 import io.binghe.rpc.connection.manager.ConnectionManager;
 import io.binghe.rpc.constants.RpcConstants;
 import io.binghe.rpc.protocol.RpcProtocol;
@@ -29,6 +30,7 @@ import io.binghe.rpc.protocol.header.RpcHeader;
 import io.binghe.rpc.protocol.request.RpcRequest;
 import io.binghe.rpc.protocol.response.RpcResponse;
 import io.binghe.rpc.provider.common.cache.ProviderChannelCache;
+import io.binghe.rpc.ratelimiter.api.RateLimiterInvoker;
 import io.binghe.rpc.reflect.api.ReflectInvoker;
 import io.binghe.rpc.spi.loader.ExtensionLoader;
 import io.binghe.rpc.threadpool.BufferCacheThreadPool;
@@ -90,7 +92,17 @@ public class RpcProviderHandler extends SimpleChannelInboundHandler<RpcProtocol<
      */
     private BufferCacheManager<BufferObject<RpcRequest>> bufferCacheManager;
 
-    public RpcProviderHandler(String reflectType, boolean enableResultCache, int resultCacheExpire, int corePoolSize, int maximumPoolSize, int maxConnections, String disuseStrategyType, boolean enableBuffer, int bufferSize, Map<String, Object> handlerMap){
+    /**
+     * 是否开启限流
+     */
+    private boolean enableRateLimiter;
+
+    /**
+     * 限流SPI接口
+     */
+    private RateLimiterInvoker rateLimiterInvoker;
+
+    public RpcProviderHandler(String reflectType, boolean enableResultCache, int resultCacheExpire, int corePoolSize, int maximumPoolSize, int maxConnections, String disuseStrategyType, boolean enableBuffer, int bufferSize, boolean enableRateLimiter, String rateLimiterType, int permits, int milliSeconds, Map<String, Object> handlerMap){
         this.handlerMap = handlerMap;
         this.reflectInvoker = ExtensionLoader.getExtension(ReflectInvoker.class, reflectType);
         this.enableResultCache = enableResultCache;
@@ -101,6 +113,26 @@ public class RpcProviderHandler extends SimpleChannelInboundHandler<RpcProtocol<
         this.concurrentThreadPool = ConcurrentThreadPool.getInstance(corePoolSize, maximumPoolSize);
         this.connectionManager = ConnectionManager.getInstance(maxConnections, disuseStrategyType);
         this.enableBuffer = enableBuffer;
+        this.initBuffer(bufferSize);
+        this.enableRateLimiter = enableRateLimiter;
+        this.initRateLimiter(rateLimiterType, permits, milliSeconds);
+    }
+
+    /**
+     * 初始化限流器
+     */
+    private void initRateLimiter(String rateLimiterType, int permits, int milliSeconds) {
+        if (enableRateLimiter){
+            rateLimiterType = StringUtils.isEmpty(rateLimiterType) ? RpcConstants.DEFAULT_RATELIMITER_INVOKER : rateLimiterType;
+            this.rateLimiterInvoker = ExtensionLoader.getExtension(RateLimiterInvoker.class, rateLimiterType);
+            this.rateLimiterInvoker.init(permits, milliSeconds);
+        }
+    }
+
+    /**
+     * 初始化缓冲区数据
+     */
+    private void initBuffer(int bufferSize){
         //开启缓冲
         if (enableBuffer){
             logger.info("enable buffer...");
@@ -226,7 +258,28 @@ public class RpcProviderHandler extends SimpleChannelInboundHandler<RpcProtocol<
         }else if (header.getMsgType() == (byte) RpcType.HEARTBEAT_TO_PROVIDER.getType()){  //接收到服务消费者响应的心跳消息
             handlerHeartbeatMessageToProvider(protocol, channel);
         }else if (header.getMsgType() == (byte) RpcType.REQUEST.getType()){ //请求消息
-            responseRpcProtocol = handlerRequestMessageWithCache(protocol, header);
+            responseRpcProtocol = handlerRequestMessageWithCacheAndRateLimiter(protocol, header);
+        }
+        return responseRpcProtocol;
+    }
+
+    /**
+     * 带有限流模式提交请求信息
+     */
+    private RpcProtocol<RpcResponse> handlerRequestMessageWithCacheAndRateLimiter(RpcProtocol<RpcRequest> protocol, RpcHeader header){
+        RpcProtocol<RpcResponse> responseRpcProtocol = null;
+        if (enableRateLimiter){
+            if (rateLimiterInvoker.tryAcquire()){
+                try{
+                    responseRpcProtocol = this.handlerRequestMessageWithCache(protocol, header);
+                }finally {
+                    rateLimiterInvoker.release();
+                }
+            }else {
+                //TODO 执行各种策略
+            }
+        }else {
+            responseRpcProtocol = this.handlerRequestMessageWithCache(protocol, header);
         }
         return responseRpcProtocol;
     }

@@ -36,3 +36,11 @@ bhrpc:
       enableBuffer: true
       # bufferSize
       bufferSize: 409600
+      # enableRateLimiter
+      enableRateLimiter: true
+      # rateLimiterType
+      rateLimiterType: counter
+      # permits
+      permits: 100
+      # milliSeconds
+      milliSeconds: 1000
