@@ -261,3 +261,5 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第109章：服务限流基础模型设计](https://articles.zsxq.com/id_vt4qwkw275gr.html)
 * [《RPC手撸专栏》第110章：服务提供者整合服务限流](https://articles.zsxq.com/id_d6o05rs0bwmw.html)
 * [《RPC手撸专栏》第111章：服务消费者整合服务限流](https://articles.zsxq.com/id_32dwwi3an8rx.html)
+* [《RPC手撸专栏》第111章-X：服务限流阶段作业](https://t.zsxq.com/0aTS2J22h)
+* [《RPC手撸专栏》第112章：基于SPI扩展Semaphore限流策略](https://articles.zsxq.com/id_zchmw3ulitfs.html)
