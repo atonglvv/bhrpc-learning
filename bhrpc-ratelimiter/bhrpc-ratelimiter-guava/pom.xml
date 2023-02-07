@@ -5,23 +5,31 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.binghe.rpc</groupId>
-        <artifactId>bhrpc-learning</artifactId>
+        <artifactId>bhrpc-ratelimiter</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>bhrpc-ratelimiter</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>bhrpc-ratelimiter-api</module>
-        <module>bhrpc-ratelimiter-counter</module>
-        <module>bhrpc-ratelimiter-semaphore</module>
-        <module>bhrpc-ratelimiter-guava</module>
-    </modules>
+    <artifactId>bhrpc-ratelimiter-guava</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <guava.version>31.1-jre</guava.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.binghe.rpc</groupId>
+            <artifactId>bhrpc-ratelimiter-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
