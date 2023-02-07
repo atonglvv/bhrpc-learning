@@ -33,7 +33,6 @@ public class CounterRateLimiterInvoker extends AbstractRateLimiterInvoker {
     private final Logger logger = LoggerFactory.getLogger(CounterRateLimiterInvoker.class);
     private final AtomicInteger currentCounter = new AtomicInteger(0);
     private volatile long lastTimeStamp = System.currentTimeMillis();
-    private final ThreadLocal<Boolean> threadLocal = new ThreadLocal<>();
 
     @Override
     public boolean tryAcquire() {
@@ -48,7 +47,6 @@ public class CounterRateLimiterInvoker extends AbstractRateLimiterInvoker {
         }
         //当前请求数小于配置的数量
         if (currentCounter.incrementAndGet() <= permits){
-            threadLocal.set(true);
             return true;
         }
         return false;
@@ -56,12 +54,6 @@ public class CounterRateLimiterInvoker extends AbstractRateLimiterInvoker {
 
     @Override
     public void release() {
-        if (threadLocal.get()){
-            try {
-                currentCounter.decrementAndGet();
-            }finally {
-                threadLocal.remove();
-            }
-        }
+        //TODO ignore
     }
 }
