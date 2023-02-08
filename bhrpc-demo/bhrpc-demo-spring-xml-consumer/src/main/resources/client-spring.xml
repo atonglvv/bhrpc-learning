@@ -42,5 +42,6 @@
         <constructor-arg name="rateLimiterType" value="${consumer.rateLimiterType}"/>
         <constructor-arg name="permits" value="${consumer.permits}"/>
         <constructor-arg name="milliSeconds" value="${consumer.milliSeconds}"/>
+        <constructor-arg name="rateLimiterFailStrategy" value="${consumer.rateLimiterFailStrategy}"/>
     </bean>
 </beans>

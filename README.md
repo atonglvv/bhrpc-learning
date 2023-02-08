@@ -266,3 +266,4 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第113章：基于SPI扩展Guava限流策略](https://articles.zsxq.com/id_ecztx69ekhfz.html)
 * [《RPC手撸专栏》第113章-X：基于SPI扩展限流策略阶段作业](https://t.zsxq.com/0a2Fzp3Sw)
 * [《RPC手撸专栏》第114章：服务提供者超出限流上限触发的规则](https://articles.zsxq.com/id_2rqhz490onjc.html)
+* [《RPC手撸专栏》第115章：服务消费者超出限流上限触发的规则](https://articles.zsxq.com/id_rwoaeagi50wl.html)
