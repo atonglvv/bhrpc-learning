@@ -29,9 +29,17 @@ public class RpcSingleServer extends BaseServer {
 
     private final Logger logger = LoggerFactory.getLogger(RpcSingleServer.class);
 
-    public RpcSingleServer(String serverAddress, String serverRegistryAddress, String registryAddress, String registryType, String registryLoadBalanceType, String scanPackage, String reflectType, int heartbeatInterval, int scanNotActiveChannelInterval, boolean enableResultCache, int resultCacheExpire, int corePoolSize, int maximumPoolSize, String flowType, int maxConnections, String disuseStrategyType, boolean enableBuffer, int bufferSize, boolean enableRateLimiter, String rateLimiterType, int permits, int milliSeconds) {
+    public RpcSingleServer(String serverAddress, String serverRegistryAddress, String registryAddress, String registryType,
+                           String registryLoadBalanceType, String scanPackage, String reflectType, int heartbeatInterval,
+                           int scanNotActiveChannelInterval, boolean enableResultCache, int resultCacheExpire,
+                           int corePoolSize, int maximumPoolSize, String flowType, int maxConnections, String disuseStrategyType,
+                           boolean enableBuffer, int bufferSize, boolean enableRateLimiter, String rateLimiterType,
+                           int permits, int milliSeconds, String rateLimiterFailStrategy) {
         //调用父类构造方法
-        super(serverAddress, serverRegistryAddress, registryAddress, registryType, registryLoadBalanceType, reflectType, heartbeatInterval, scanNotActiveChannelInterval, enableResultCache, resultCacheExpire, corePoolSize, maximumPoolSize, flowType, maxConnections, disuseStrategyType, enableBuffer, bufferSize, enableRateLimiter, rateLimiterType, permits, milliSeconds);
+        super(serverAddress, serverRegistryAddress, registryAddress, registryType, registryLoadBalanceType, reflectType,
+                heartbeatInterval, scanNotActiveChannelInterval, enableResultCache, resultCacheExpire, corePoolSize,
+                maximumPoolSize, flowType, maxConnections, disuseStrategyType, enableBuffer, bufferSize, enableRateLimiter,
+                rateLimiterType, permits, milliSeconds, rateLimiterFailStrategy);
         try {
             this.handlerMap = RpcServiceScanner.doScannerWithRpcServiceAnnotationFilterAndRegistryService(this.serverRegistryHost, this.serverRegistryPort, scanPackage, registryService);
         } catch (Exception e) {

@@ -33,5 +33,6 @@
         <constructor-arg name="rateLimiterType" value="${server.rateLimiterType}"/>
         <constructor-arg name="permits" value="${server.permits}"/>
         <constructor-arg name="milliSeconds" value="${server.milliSeconds}"/>
+        <constructor-arg name="rateLimiterFailStrategy" value="${server.rateLimiterFailStrategy}"/>
     </bean>
 </beans>

@@ -103,8 +103,14 @@ public class BaseServer implements Server {
     private int permits;
     //毫秒数
     private int milliSeconds;
+    //当限流失败时的处理策略
+    private String rateLimiterFailStrategy;
 
-    public BaseServer(String serverAddress, String serverRegistryAddress, String registryAddress, String registryType, String registryLoadBalanceType, String reflectType, int heartbeatInterval, int scanNotActiveChannelInterval, boolean enableResultCache, int resultCacheExpire, int corePoolSize, int maximumPoolSize, String flowType, int maxConnections, String disuseStrategyType, boolean enableBuffer, int bufferSize, boolean enableRateLimiter, String rateLimiterType, int permits, int milliSeconds){
+    public BaseServer(String serverAddress, String serverRegistryAddress, String registryAddress, String registryType,
+                      String registryLoadBalanceType, String reflectType, int heartbeatInterval, int scanNotActiveChannelInterval,
+                      boolean enableResultCache, int resultCacheExpire, int corePoolSize, int maximumPoolSize, String flowType,
+                      int maxConnections, String disuseStrategyType, boolean enableBuffer, int bufferSize, boolean enableRateLimiter,
+                      String rateLimiterType, int permits, int milliSeconds, String rateLimiterFailStrategy){
         if (!StringUtils.isEmpty(serverAddress)){
             String[] serverArray = serverAddress.split(":");
             this.host = serverArray[0];
@@ -141,6 +147,7 @@ public class BaseServer implements Server {
         this.rateLimiterType = rateLimiterType;
         this.permits = permits;
         this.milliSeconds = milliSeconds;
+        this.rateLimiterFailStrategy = rateLimiterFailStrategy;
         this.flowPostProcessor = ExtensionLoader.getExtension(FlowPostProcessor.class, flowType);
     }
 
@@ -171,7 +178,7 @@ public class BaseServer implements Server {
                                     .addLast(RpcConstants.CODEC_DECODER, new RpcDecoder(flowPostProcessor))
                                     .addLast(RpcConstants.CODEC_ENCODER, new RpcEncoder(flowPostProcessor))
                                     .addLast(RpcConstants.CODEC_SERVER_IDLE_HANDLER, new IdleStateHandler(0, 0, heartbeatInterval, TimeUnit.MILLISECONDS))
-                                    .addLast(RpcConstants.CODEC_HANDLER, new RpcProviderHandler(reflectType, enableResultCache, resultCacheExpire, corePoolSize, maximumPoolSize, maxConnections, disuseStrategyType, enableBuffer, bufferSize, enableRateLimiter, rateLimiterType, permits, milliSeconds, handlerMap));
+                                    .addLast(RpcConstants.CODEC_HANDLER, new RpcProviderHandler(reflectType, enableResultCache, resultCacheExpire, corePoolSize, maximumPoolSize, maxConnections, disuseStrategyType, enableBuffer, bufferSize, enableRateLimiter, rateLimiterType, permits, milliSeconds, rateLimiterFailStrategy, handlerMap));
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG,128)
