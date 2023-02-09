@@ -46,3 +46,11 @@ bhrpc:
       milliSeconds: 1000
       # rateLimiterFailStrategy, direct/fallback/exception
       rateLimiterFailStrategy: direct
+      # enableFusing
+      enableFusing: true
+      # fusingType: counter/percent
+      fusingType: counter
+      # totalFailure
+      totalFailure: 10
+      # fusingMilliSeconds
+      fusingMilliSeconds: 5000

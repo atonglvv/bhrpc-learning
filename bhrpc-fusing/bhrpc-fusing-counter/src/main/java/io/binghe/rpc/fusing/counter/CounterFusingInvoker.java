@@ -33,20 +33,26 @@ public class CounterFusingInvoker extends AbstractFusingInvoker {
 
     @Override
     public boolean invokeFusingStrategy() {
-        logger.info("execute counter fusing strategy, current fusing status is {}", fusingStatus.get());
+        boolean result = false;
         switch (fusingStatus.get()){
             //关闭状态
             case RpcConstants.FUSING_STATUS_CLOSED:
-                return this.invokeClosedFusingStrategy();
+                result =  this.invokeClosedFusingStrategy();
+                break;
             //半开启状态
             case RpcConstants.FUSING_STATUS_HALF_OPEN:
-                return this.invokeHalfOpenFusingStrategy();
+                result = this.invokeHalfOpenFusingStrategy();
+                break;
             //开启状态
             case RpcConstants.FUSING_STATUS_OPEN:
-                return this.invokeOpenFusingStrategy();
+                result = this.invokeOpenFusingStrategy();
+                break;
             default:
-                return this.invokeClosedFusingStrategy();
+                result = this.invokeClosedFusingStrategy();
+                break;
         }
+        logger.info("execute counter fusing strategy, current fusing status is {}", fusingStatus.get());
+        return result;
     }
 
     /**

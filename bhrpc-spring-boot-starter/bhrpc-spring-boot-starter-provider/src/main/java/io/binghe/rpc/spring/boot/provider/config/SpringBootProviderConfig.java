@@ -125,6 +125,25 @@ public final class SpringBootProviderConfig {
      */
     private String rateLimiterFailStrategy;
 
+    /**
+     * 是否开启熔断策略
+     */
+    private boolean enableFusing;
+
+    /**
+     * 熔断规则标识
+     */
+    private String fusingType;
+    /**
+     * 在fusingMilliSeconds毫秒内触发熔断操作的上限值
+     */
+    private double totalFailure;
+    /**
+     * 熔断的毫秒时长
+     */
+    private int fusingMilliSeconds;
+
+
     public SpringBootProviderConfig() {
     }
 
@@ -134,7 +153,8 @@ public final class SpringBootProviderConfig {
                                     final int resultCacheExpire, final int corePoolSize, final int maximumPoolSize, String flowType,
                                     final int maxConnections, final String disuseStrategyType, final boolean enableBuffer, final int bufferSize,
                                     final boolean enableRateLimiter, final String rateLimiterType, final int permits, final int milliSeconds,
-                                    final String rateLimiterFailStrategy) {
+                                    final String rateLimiterFailStrategy, final boolean enableFusing, final String fusingType,
+                                    final double totalFailure, final int fusingMilliSeconds) {
         this.serverAddress = serverAddress;
         this.registryAddress = registryAddress;
         this.registryType = registryType;
@@ -159,6 +179,10 @@ public final class SpringBootProviderConfig {
         this.permits = permits;
         this.milliSeconds = milliSeconds;
         this.rateLimiterFailStrategy = rateLimiterFailStrategy;
+        this.enableFusing = enableFusing;
+        this.fusingType = fusingType;
+        this.totalFailure = totalFailure;
+        this.fusingMilliSeconds = fusingMilliSeconds;
     }
 
     public String getServerAddress() {
@@ -335,5 +359,37 @@ public final class SpringBootProviderConfig {
 
     public void setRateLimiterFailStrategy(String rateLimiterFailStrategy) {
         this.rateLimiterFailStrategy = rateLimiterFailStrategy;
+    }
+
+    public boolean getEnableFusing() {
+        return enableFusing;
+    }
+
+    public void setEnableFusing(boolean enableFusing) {
+        this.enableFusing = enableFusing;
+    }
+
+    public String getFusingType() {
+        return fusingType;
+    }
+
+    public void setFusingType(String fusingType) {
+        this.fusingType = fusingType;
+    }
+
+    public double getTotalFailure() {
+        return totalFailure;
+    }
+
+    public void setTotalFailure(double totalFailure) {
+        this.totalFailure = totalFailure;
+    }
+
+    public int getFusingMilliSeconds() {
+        return fusingMilliSeconds;
+    }
+
+    public void setFusingMilliSeconds(int fusingMilliSeconds) {
+        this.fusingMilliSeconds = fusingMilliSeconds;
     }
 }

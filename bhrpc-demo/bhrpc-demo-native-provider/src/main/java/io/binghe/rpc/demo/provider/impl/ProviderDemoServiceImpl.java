@@ -16,6 +16,7 @@
 package io.binghe.rpc.demo.provider.impl;
 
 import io.binghe.rpc.annotation.RpcService;
+import io.binghe.rpc.common.exception.RpcException;
 import io.binghe.rpc.demo.api.DemoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +32,9 @@ public class ProviderDemoServiceImpl implements DemoService {
     @Override
     public String hello(String name) {
         logger.info("调用hello方法传入的参数为===>>>{}", name);
-//        if ("binghe".equals(name)){
-//            throw new RpcException("rpc provider throws exception");
-//        }
+        if ("binghe".equals(name)){
+            throw new RpcException("rpc provider throws exception");
+        }
         return "hello " + name;
     }
 }
