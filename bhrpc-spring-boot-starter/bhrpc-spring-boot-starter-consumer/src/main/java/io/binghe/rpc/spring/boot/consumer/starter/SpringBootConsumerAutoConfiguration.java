@@ -27,6 +27,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author binghe
  * @version 1.0.0
@@ -43,14 +48,21 @@ public class SpringBootConsumerAutoConfiguration {
     }
 
     @Bean
-    public RpcClient rpcClient(final SpringBootConsumerConfig springBootConsumerConfig){
+    public List<RpcClient> rpcClient(final SpringBootConsumerConfig springBootConsumerConfig){
         return parseRpcClient(springBootConsumerConfig);
     }
 
-    private RpcClient parseRpcClient(final SpringBootConsumerConfig springBootConsumerConfig){
-        RpcReferenceBean rpcReferenceBean = getRpcReferenceBean(springBootConsumerConfig);
-        rpcReferenceBean.init();
-        return rpcReferenceBean.getRpcClient();
+    private List<RpcClient> parseRpcClient(final SpringBootConsumerConfig springBootConsumerConfig){
+        List<RpcClient> rpcClientList = new ArrayList<>();
+        ApplicationContext context = RpcConsumerSpringContext.getInstance().getContext();
+        Map<String, RpcReferenceBean> rpcReferenceBeanMap = context.getBeansOfType(RpcReferenceBean.class);
+        Collection<RpcReferenceBean> rpcReferenceBeans = rpcReferenceBeanMap.values();
+        for (RpcReferenceBean rpcReferenceBean : rpcReferenceBeans){
+            rpcReferenceBean = this.getRpcReferenceBean(rpcReferenceBean, springBootConsumerConfig);
+            rpcReferenceBean.init();
+            rpcClientList.add(rpcReferenceBean.getRpcClient());
+        }
+        return rpcClientList;
     }
 
     /**
@@ -58,9 +70,7 @@ public class SpringBootConsumerAutoConfiguration {
      * 如果存在RpcReferenceBean，部分RpcReferenceBean的字段为空，则使用springBootConsumerConfig字段进行填充
      * 如果不存在RpcReferenceBean，则使用springBootConsumerConfig构建RpcReferenceBean
      */
-    private RpcReferenceBean getRpcReferenceBean(final SpringBootConsumerConfig springBootConsumerConfig){
-        ApplicationContext context = RpcConsumerSpringContext.getInstance().getContext();
-        RpcReferenceBean referenceBean = context.getBean(RpcReferenceBean.class);
+    private RpcReferenceBean getRpcReferenceBean(final RpcReferenceBean referenceBean, final SpringBootConsumerConfig springBootConsumerConfig){
         if (StringUtils.isEmpty(referenceBean.getGroup())
                 || (RpcConstants.RPC_COMMON_DEFAULT_GROUP.equals(referenceBean.getGroup()) && !StringUtils.isEmpty(springBootConsumerConfig.getGroup()))){
             referenceBean.setGroup(springBootConsumerConfig.getGroup());
