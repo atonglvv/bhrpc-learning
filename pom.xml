@@ -32,6 +32,7 @@
         <module>bhrpc-connection</module>
         <module>bhrpc-buffer</module>
         <module>bhrpc-ratelimiter</module>
+        <module>bhrpc-fusing</module>
     </modules>
 
     <properties>

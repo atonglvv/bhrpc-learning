@@ -337,6 +337,16 @@ public class RpcConstants {
     public static final int DEFAULT_RATELIMITER_MILLI_SECONDS = 1000;
 
     /**
+     * 默认熔断时间值，毫秒
+     */
+    public static final int DEFAULT_FUSING_MILLI_SECONDS = 5000;
+
+    /***
+     * 默认熔断总次数或错误率
+     */
+    public static final double DEFAULT_FUSING_TOTAL_FAILURE = 10;
+
+    /**
      * 异常处理
      */
     public static final String RATE_LIMILTER_FAIL_STRATEGY_EXCEPTION = "exception";
@@ -350,4 +360,24 @@ public class RpcConstants {
      * 容错降级处理
      */
     public static final String RATE_LIMILTER_FAIL_STRATEGY_FALLBACK = "fallback";
+
+    /**
+     * 默认熔断规则
+     */
+    public static final String DEFAULT_FUSING_INVOKER = "counter";
+
+    /**
+     * 熔断状态：关闭
+     */
+    public static final int FUSING_STATUS_CLOSED = 1;
+
+    /**
+     * 熔断状态：半开启
+     */
+    public static final int FUSING_STATUS_HALF_OPEN = 2;
+
+    /**
+     * 熔断状态：开启
+     */
+    public static final int FUSING_STATUS_OPEN = 3;
 }
