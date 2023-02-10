@@ -5,22 +5,24 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.binghe.rpc</groupId>
-        <artifactId>bhrpc-learning</artifactId>
+        <artifactId>bhrpc-fusing</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>bhrpc-fusing</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>bhrpc-fusing-api</module>
-        <module>bhrpc-fusing-counter</module>
-        <module>bhrpc-fusing-percent</module>
-    </modules>
+    <artifactId>bhrpc-fusing-percent</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.binghe.rpc</groupId>
+            <artifactId>bhrpc-fusing-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

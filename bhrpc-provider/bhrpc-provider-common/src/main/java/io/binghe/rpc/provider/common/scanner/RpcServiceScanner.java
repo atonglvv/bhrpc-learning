@@ -80,7 +80,7 @@ public class RpcServiceScanner extends ClassScanner {
     private static String getServiceName(RpcService rpcService){
         //优先使用interfaceClass
         Class clazz = rpcService.interfaceClass();
-        if (clazz == void.class){
+        if (clazz == null || clazz == void.class){
             return rpcService.interfaceClassName();
         }
         String serviceName = clazz.getName();
