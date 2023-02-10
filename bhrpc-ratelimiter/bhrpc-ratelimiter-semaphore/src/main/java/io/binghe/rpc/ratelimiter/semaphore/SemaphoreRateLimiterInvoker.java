@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author binghe(公众号 : 冰河技术)
@@ -31,6 +32,8 @@ import java.util.concurrent.Semaphore;
 public class SemaphoreRateLimiterInvoker extends AbstractRateLimiterInvoker {
     private final Logger logger = LoggerFactory.getLogger(SemaphoreRateLimiterInvoker.class);
     private Semaphore semaphore;
+    private final AtomicInteger currentCounter = new AtomicInteger(0);
+    private volatile long lastTimeStamp = System.currentTimeMillis();
 
     @Override
     public void init(int permits, int milliSeconds) {
@@ -41,11 +44,28 @@ public class SemaphoreRateLimiterInvoker extends AbstractRateLimiterInvoker {
     @Override
     public boolean tryAcquire() {
         logger.info("execute semaphore rate limiter...");
-        return semaphore.tryAcquire();
+        //获取当前时间
+        long currentTimeStamp = System.currentTimeMillis();
+        //超过一个时间周期
+        if (currentTimeStamp - lastTimeStamp >= milliSeconds){
+            //重置窗口开始时间
+            lastTimeStamp = currentTimeStamp;
+            //释放所有资源
+            semaphore.release(currentCounter.get());
+            //重置计数
+            currentCounter.set(0);
+        }
+        boolean result = semaphore.tryAcquire();
+        //成功获取资源
+        if (result){
+            currentCounter.incrementAndGet();
+        }
+        return result;
     }
 
     @Override
     public void release() {
-        semaphore.release();
+        //TODO ignore
+        //semaphore.release();
     }
 }

@@ -273,3 +273,4 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第118章：服务消费者整合服务熔断](https://articles.zsxq.com/id_ohtoim0u1pkz.html)
 * [《RPC手撸专栏》第118章-X：服务熔断阶段作业](https://t.zsxq.com/0bAeufSFe)
 * [《RPC手撸专栏》第119章：基于SPI扩展错误率熔断策略](https://articles.zsxq.com/id_ozjp7ion2ebj.html)
+* [《RPC手撸专栏》第119章-X：基于SPI扩展熔断策略阶段作业](https://t.zsxq.com/0bVwOW9GS)
