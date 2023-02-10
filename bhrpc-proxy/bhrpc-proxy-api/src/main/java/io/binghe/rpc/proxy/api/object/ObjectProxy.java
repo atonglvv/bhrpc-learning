@@ -17,8 +17,10 @@ package io.binghe.rpc.proxy.api.object;
 
 import io.binghe.rpc.cache.result.CacheResultKey;
 import io.binghe.rpc.cache.result.CacheResultManager;
+import io.binghe.rpc.common.exception.RpcException;
 import io.binghe.rpc.common.utils.StringUtils;
 import io.binghe.rpc.constants.RpcConstants;
+import io.binghe.rpc.fusing.api.FusingInvoker;
 import io.binghe.rpc.protocol.RpcProtocol;
 import io.binghe.rpc.protocol.enumeration.RpcType;
 import io.binghe.rpc.protocol.header.RpcHeaderFactory;
@@ -122,6 +124,16 @@ public class ObjectProxy <T> implements IAsyncObjectProxy, InvocationHandler{
      */
     private String rateLimiterFailStrategy;
 
+    /**
+     * 是否开启熔断
+     */
+    private boolean enableFusing;
+
+    /**
+     * 熔断SPI接口
+     */
+    private FusingInvoker fusingInvoker;
+
     public ObjectProxy(Class<T> clazz) {
         this.clazz = clazz;
     }
@@ -129,7 +141,8 @@ public class ObjectProxy <T> implements IAsyncObjectProxy, InvocationHandler{
     public ObjectProxy(Class<T> clazz, String serviceVersion, String serviceGroup, String serializationType, long timeout,
                        RegistryService registryService, Consumer consumer, boolean async, boolean oneway, boolean enableResultCache,
                        int resultCacheExpire, String reflectType, String fallbackClassName, Class<?> fallbackClass,
-                       boolean enableRateLimiter, String rateLimiterType, int permits, int milliSeconds, String rateLimiterFailStrategy) {
+                       boolean enableRateLimiter, String rateLimiterType, int permits, int milliSeconds, String rateLimiterFailStrategy,
+                       boolean enableFusing, String fusingType, double totalFailure, int fusingMilliSeconds) {
         this.clazz = clazz;
         this.serviceVersion = serviceVersion;
         this.timeout = timeout;
@@ -152,6 +165,19 @@ public class ObjectProxy <T> implements IAsyncObjectProxy, InvocationHandler{
             rateLimiterFailStrategy = RpcConstants.RATE_LIMILTER_FAIL_STRATEGY_DIRECT;
         }
         this.rateLimiterFailStrategy = rateLimiterFailStrategy;
+        this.enableFusing = enableFusing;
+        this.initFusing(fusingType, totalFailure, fusingMilliSeconds);
+    }
+
+    /**
+     * 初始化熔断SPI接口
+     */
+    private void initFusing(String fusingType, double totalFailure, int fusingMilliSeconds) {
+        if (enableFusing){
+            fusingType = StringUtils.isEmpty(fusingType) ? RpcConstants.DEFAULT_FUSING_INVOKER : fusingType;
+            this.fusingInvoker = ExtensionLoader.getExtension(FusingInvoker.class, fusingType);
+            this.fusingInvoker.init(totalFailure, fusingMilliSeconds);
+        }
     }
 
     /**
@@ -244,7 +270,7 @@ public class ObjectProxy <T> implements IAsyncObjectProxy, InvocationHandler{
         if (enableRateLimiter){
             if (rateLimiterInvoker.tryAcquire()){
                 try {
-                    result = invokeSendRequestMethod(method, args);
+                    result = invokeSendRequestMethodWithFsing(method, args);
                 }finally {
                     rateLimiterInvoker.release();
                 }
@@ -252,7 +278,7 @@ public class ObjectProxy <T> implements IAsyncObjectProxy, InvocationHandler{
                 result = this.invokeFailRateLimiterMethod(method, args);
             }
         }else {
-            result = invokeSendRequestMethod(method, args);
+            result = invokeSendRequestMethodWithFsing(method, args);
         }
         return result;
     }
@@ -267,9 +293,42 @@ public class ObjectProxy <T> implements IAsyncObjectProxy, InvocationHandler{
             case RpcConstants.RATE_LIMILTER_FAIL_STRATEGY_FALLBACK:
                 return this.getFallbackResult(method, args);
             case RpcConstants.RATE_LIMILTER_FAIL_STRATEGY_DIRECT:
-                return this.invokeSendRequestMethod(method, args);
+                return this.invokeSendRequestMethodWithFsing(method, args);
         }
-        return this.invokeSendRequestMethod(method, args);
+        return this.invokeSendRequestMethodWithFsing(method, args);
+    }
+
+
+    /**
+     * 以熔断方式请求数据
+     */
+    private Object invokeSendRequestMethodWithFsing(Method method, Object[] args) throws Exception{
+        //开启了熔断
+        if (enableFusing){
+            return invokeFusingSendRequestMethod(method, args);
+        }else {
+            return invokeSendRequestMethod(method, args);
+        }
+    }
+
+    /**
+     * 熔断请求
+     */
+    private Object invokeFusingSendRequestMethod(Method method, Object[] args) throws Exception {
+        //触发了熔断规则，直接返回降级处理业务
+        if (fusingInvoker.invokeFusingStrategy()){
+            return this.getFallbackResult(method, args);
+        }
+        //请求计数器加1
+        fusingInvoker.incrementCount();
+        Object result = null;
+        try {
+            result = invokeSendRequestMethod(method, args);
+        }catch (Throwable e){
+            fusingInvoker.incrementFailureCount();
+            throw new RpcException(e.getMessage());
+        }
+        return result;
     }
 
 

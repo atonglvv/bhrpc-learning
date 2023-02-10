@@ -196,4 +196,23 @@ public @interface RpcReference {
      * 当限流失败时的处理策略
      */
     String rateLimiterFailStrategy() default RpcConstants.RATE_LIMILTER_FAIL_STRATEGY_DIRECT;
+
+    /**
+     * 是否开启熔断策略
+     */
+    boolean enableFusing() default false;
+    /**
+     * 熔断规则标识
+     */
+    String fusingType() default RpcConstants.DEFAULT_FUSING_INVOKER;
+
+    /**
+     * 在fusingMilliSeconds毫秒内触发熔断操作的上限值
+     */
+    double totalFailure() default RpcConstants.DEFAULT_FUSING_TOTAL_FAILURE;
+
+    /**
+     * 熔断的毫秒时长
+     */
+    int fusingMilliSeconds() default RpcConstants.DEFAULT_FUSING_MILLI_SECONDS;
 }

@@ -43,5 +43,9 @@
         <constructor-arg name="permits" value="${consumer.permits}"/>
         <constructor-arg name="milliSeconds" value="${consumer.milliSeconds}"/>
         <constructor-arg name="rateLimiterFailStrategy" value="${consumer.rateLimiterFailStrategy}"/>
+        <constructor-arg name="enableFusing" value="${consumer.enableFusing}"/>
+        <constructor-arg name="fusingType" value="${consumer.fusingType}"/>
+        <constructor-arg name="totalFailure" value="${consumer.totalFailure}"/>
+        <constructor-arg name="fusingMilliSeconds" value="${consumer.fusingMilliSeconds}"/>
     </bean>
 </beans>
