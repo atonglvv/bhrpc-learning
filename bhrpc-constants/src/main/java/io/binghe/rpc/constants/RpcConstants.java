@@ -380,4 +380,24 @@ public class RpcConstants {
      * 熔断状态：开启
      */
     public static final int FUSING_STATUS_OPEN = 3;
+
+    /**
+     * 初始化状态
+     */
+    public static final int FUSING_WAIT_STATUS_INIT = 0;
+
+    /**
+     * 等待
+     */
+    public static final int FUSING_WAIT_STATUS_WAITINF = 1;
+
+    /**
+     * 成功
+     */
+    public static final int FUSING_WAIT_STATUS_SUCCESS = 2;
+
+    /**
+     * 失败
+     */
+    public static final int FUSING_WAIT_STATUS_FAILED = 3;
 }

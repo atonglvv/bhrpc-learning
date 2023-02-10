@@ -47,6 +47,17 @@ public interface FusingInvoker {
      */
     void incrementFailureCount();
 
+
+    /**
+     * 是否半开启状态
+     */
+    boolean isHalfOpenStatus();
+
+    /**
+     * 更新等待的状态
+     */
+    boolean compareAndSetWaitStatus(int expect, int update);
+
     /**
      * 在milliSeconds毫秒内错误数量或者错误百分比达到totalFailure，则触发熔断操作
      * @param totalFailure 在milliSeconds毫秒内触发熔断操作的上限值

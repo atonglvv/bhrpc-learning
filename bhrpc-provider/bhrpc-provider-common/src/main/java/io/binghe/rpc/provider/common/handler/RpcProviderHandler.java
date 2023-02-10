@@ -435,6 +435,13 @@ public class RpcProviderHandler extends SimpleChannelInboundHandler<RpcProtocol<
         //如果是调用失败，则失败次数加1
         if (responseRpcProtocol.getHeader().getStatus() == (byte) RpcStatus.FAIL.getCode()){
             fusingInvoker.incrementFailureCount();
+            if (fusingInvoker.isHalfOpenStatus()){
+                fusingInvoker.compareAndSetWaitStatus(RpcConstants.FUSING_WAIT_STATUS_WAITINF, RpcConstants.FUSING_WAIT_STATUS_FAILED);
+            }
+        }else {
+            if (fusingInvoker.isHalfOpenStatus()){
+                fusingInvoker.compareAndSetWaitStatus(RpcConstants.FUSING_WAIT_STATUS_WAITINF, RpcConstants.FUSING_WAIT_STATUS_SUCCESS);
+            }
         }
         return responseRpcProtocol;
     }
