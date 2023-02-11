@@ -43,21 +43,14 @@ public interface FusingInvoker {
     void incrementCount();
 
     /**
-     * 处理请求失败的次数
+     * 访问成功
      */
-    void incrementFailureCount();
-
+    void markSuccess();
 
     /**
-     * 是否半开启状态
+     * 访问失败
      */
-    boolean isHalfOpenStatus();
-
-    /**
-     * 更新等待的状态
-     */
-    boolean compareAndSetWaitStatus(int expect, int update);
-
+    void markFailed();
     /**
      * 在milliSeconds毫秒内错误数量或者错误百分比达到totalFailure，则触发熔断操作
      * @param totalFailure 在milliSeconds毫秒内触发熔断操作的上限值

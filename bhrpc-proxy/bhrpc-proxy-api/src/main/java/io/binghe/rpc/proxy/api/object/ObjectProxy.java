@@ -324,14 +324,9 @@ public class ObjectProxy <T> implements IAsyncObjectProxy, InvocationHandler{
         Object result = null;
         try {
             result = invokeSendRequestMethod(method, args);
-            if (fusingInvoker.isHalfOpenStatus()){
-                fusingInvoker.compareAndSetWaitStatus(RpcConstants.FUSING_WAIT_STATUS_WAITINF, RpcConstants.FUSING_WAIT_STATUS_SUCCESS);
-            }
+            fusingInvoker.markSuccess();
         }catch (Throwable e){
-            fusingInvoker.incrementFailureCount();
-            if (fusingInvoker.isHalfOpenStatus()){
-                fusingInvoker.compareAndSetWaitStatus(RpcConstants.FUSING_WAIT_STATUS_WAITINF, RpcConstants.FUSING_WAIT_STATUS_FAILED);
-            }
+            fusingInvoker.markFailed();
             throw new RpcException(e.getMessage());
         }
         return result;

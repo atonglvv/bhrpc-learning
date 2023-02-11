@@ -77,23 +77,23 @@ public abstract class AbstractFusingInvoker implements FusingInvoker {
     }
 
     @Override
-    public boolean compareAndSetWaitStatus(int expect, int update) {
-        return fusingWaitStatus.compareAndSet(expect, update);
-    }
-
-    @Override
-    public boolean isHalfOpenStatus() {
-        return fusingStatus.get() == RpcConstants.FUSING_STATUS_HALF_OPEN;
-    }
-
-    @Override
     public void incrementCount() {
         currentCounter.incrementAndGet();
     }
 
     @Override
-    public void incrementFailureCount() {
+    public void markSuccess() {
+        if (fusingStatus.get() == RpcConstants.FUSING_STATUS_HALF_OPEN){
+            fusingWaitStatus.compareAndSet(RpcConstants.FUSING_WAIT_STATUS_WAITINF, RpcConstants.FUSING_WAIT_STATUS_SUCCESS);
+        }
+    }
+
+    @Override
+    public void markFailed() {
         currentFailureCounter.incrementAndGet();
+        if (fusingStatus.get() == RpcConstants.FUSING_STATUS_HALF_OPEN){
+            fusingWaitStatus.compareAndSet(RpcConstants.FUSING_WAIT_STATUS_WAITINF, RpcConstants.FUSING_WAIT_STATUS_FAILED);
+        }
     }
 
     @Override
@@ -111,7 +111,7 @@ public abstract class AbstractFusingInvoker implements FusingInvoker {
         //超过一个指定的时间范围
         if (currentTimeStamp - lastTimeStamp >= milliSeconds){
             //修改等待状态，让修改成功的线程进入半开启状态
-            if (this.compareAndSetWaitStatus(RpcConstants.FUSING_WAIT_STATUS_INIT, RpcConstants.FUSING_WAIT_STATUS_WAITINF)){
+            if (fusingWaitStatus.compareAndSet(RpcConstants.FUSING_WAIT_STATUS_INIT, RpcConstants.FUSING_WAIT_STATUS_WAITINF)){
                 fusingStatus.set(RpcConstants.FUSING_STATUS_HALF_OPEN);
                 lastTimeStamp = currentTimeStamp;
                 this.resetCount();
@@ -129,14 +129,14 @@ public abstract class AbstractFusingInvoker implements FusingInvoker {
         //获取当前时间
         long currentTimeStamp = System.currentTimeMillis();
         //成功了，表示服务已经恢复
-        if (this.compareAndSetWaitStatus(RpcConstants.FUSING_WAIT_STATUS_SUCCESS, RpcConstants.FUSING_WAIT_STATUS_INIT)){
+        if (fusingWaitStatus.compareAndSet(RpcConstants.FUSING_WAIT_STATUS_SUCCESS, RpcConstants.FUSING_WAIT_STATUS_INIT)){
             fusingStatus.set(RpcConstants.FUSING_STATUS_CLOSED);
             lastTimeStamp = currentTimeStamp;
             this.resetCount();
             return false;
         }
         //失败了，表示服务还未恢复
-        if (compareAndSetWaitStatus(RpcConstants.FUSING_WAIT_STATUS_FAILED, RpcConstants.FUSING_WAIT_STATUS_INIT)){
+        if (fusingWaitStatus.compareAndSet(RpcConstants.FUSING_WAIT_STATUS_FAILED, RpcConstants.FUSING_WAIT_STATUS_INIT)){
             //服务未恢复
             fusingStatus.set(RpcConstants.FUSING_STATUS_OPEN);
             lastTimeStamp = currentTimeStamp;
