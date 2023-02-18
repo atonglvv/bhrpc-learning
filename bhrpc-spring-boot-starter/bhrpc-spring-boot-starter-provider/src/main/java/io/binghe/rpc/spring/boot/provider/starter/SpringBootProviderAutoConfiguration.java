@@ -64,6 +64,7 @@ public class SpringBootProviderAutoConfiguration {
                 springBootProviderConfig.getEnableFusing(),
                 springBootProviderConfig.getFusingType(),
                 springBootProviderConfig.getTotalFailure(),
-                springBootProviderConfig.getFusingMilliSeconds());
+                springBootProviderConfig.getFusingMilliSeconds(),
+                springBootProviderConfig.getExceptionPostProcessorType());
     }
 }

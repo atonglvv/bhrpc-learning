@@ -113,13 +113,15 @@ public class BaseServer implements Server {
     private double totalFailure;
     //熔断的毫秒时长
     private int fusingMilliSeconds;
+    //异常后置处理器标识
+    private String exceptionPostProcessorType;
 
     public BaseServer(String serverAddress, String serverRegistryAddress, String registryAddress, String registryType,
                       String registryLoadBalanceType, String reflectType, int heartbeatInterval, int scanNotActiveChannelInterval,
                       boolean enableResultCache, int resultCacheExpire, int corePoolSize, int maximumPoolSize, String flowType,
                       int maxConnections, String disuseStrategyType, boolean enableBuffer, int bufferSize, boolean enableRateLimiter,
                       String rateLimiterType, int permits, int milliSeconds, String rateLimiterFailStrategy, boolean enableFusing, String fusingType,
-                      double totalFailure, int fusingMilliSeconds){
+                      double totalFailure, int fusingMilliSeconds, String exceptionPostProcessorType){
         if (!StringUtils.isEmpty(serverAddress)){
             String[] serverArray = serverAddress.split(":");
             this.host = serverArray[0];
@@ -161,6 +163,7 @@ public class BaseServer implements Server {
         this.fusingType = fusingType;
         this.totalFailure = totalFailure;
         this.fusingMilliSeconds = fusingMilliSeconds;
+        this.exceptionPostProcessorType = exceptionPostProcessorType;
         this.flowPostProcessor = ExtensionLoader.getExtension(FlowPostProcessor.class, flowType);
     }
 
@@ -191,7 +194,7 @@ public class BaseServer implements Server {
                                     .addLast(RpcConstants.CODEC_DECODER, new RpcDecoder(flowPostProcessor))
                                     .addLast(RpcConstants.CODEC_ENCODER, new RpcEncoder(flowPostProcessor))
                                     .addLast(RpcConstants.CODEC_SERVER_IDLE_HANDLER, new IdleStateHandler(0, 0, heartbeatInterval, TimeUnit.MILLISECONDS))
-                                    .addLast(RpcConstants.CODEC_HANDLER, new RpcProviderHandler(reflectType, enableResultCache, resultCacheExpire, corePoolSize, maximumPoolSize, maxConnections, disuseStrategyType, enableBuffer, bufferSize, enableRateLimiter, rateLimiterType, permits, milliSeconds, rateLimiterFailStrategy, enableFusing, fusingType, totalFailure, fusingMilliSeconds, handlerMap));
+                                    .addLast(RpcConstants.CODEC_HANDLER, new RpcProviderHandler(reflectType, enableResultCache, resultCacheExpire, corePoolSize, maximumPoolSize, maxConnections, disuseStrategyType, enableBuffer, bufferSize, enableRateLimiter, rateLimiterType, permits, milliSeconds, rateLimiterFailStrategy, enableFusing, fusingType, totalFailure, fusingMilliSeconds, exceptionPostProcessorType, handlerMap));
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG,128)
