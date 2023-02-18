@@ -33,6 +33,7 @@
         <module>bhrpc-buffer</module>
         <module>bhrpc-ratelimiter</module>
         <module>bhrpc-fusing</module>
+        <module>bhrpc-exception</module>
     </modules>
 
     <properties>

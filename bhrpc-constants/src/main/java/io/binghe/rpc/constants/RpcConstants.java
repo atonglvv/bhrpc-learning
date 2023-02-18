@@ -291,6 +291,11 @@ public class RpcConstants {
     public static final String FLOW_POST_PROCESSOR_PRINT = "print";
 
     /**
+     * 打印异常
+     */
+    public static final String EXCEPTION_POST_PROCESSOR_PRINT = "print";
+
+    /**
      * 默认策略
      */
     public static final String RPC_CONNECTION_DISUSE_STRATEGY_DEFAULT = "strategy_default";

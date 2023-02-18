@@ -282,3 +282,4 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第fix-06章：修复基于SpringBoot启动服务消费者无法同时连接多个服务提供者的问题](https://articles.zsxq.com/id_p6kt5aspbb07.html)
 * [《RPC手撸专栏》第fix-07章：更新基于Semaphore的限流策略](https://articles.zsxq.com/id_kdi8ot238q16.html)
 * [《RPC手撸专栏》第fix-08章：优化服务熔断半开启状态的执行逻辑](https://articles.zsxq.com/id_r7rsxfojwkua.html)
+* [《RPC手撸专栏》第120章：异常监控后置处理器基础模型设计](https://articles.zsxq.com/id_bwceq9e1sufr.html)
