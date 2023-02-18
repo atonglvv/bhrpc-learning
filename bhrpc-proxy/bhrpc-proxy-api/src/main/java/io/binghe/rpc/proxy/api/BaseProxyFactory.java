@@ -51,6 +51,7 @@ public abstract class BaseProxyFactory<T> implements ProxyFactory {
                 proxyConfig.getEnableFusing(),
                 proxyConfig.getFusingType(),
                 proxyConfig.getTotalFailure(),
-                proxyConfig.getFusingMilliSeconds());
+                proxyConfig.getFusingMilliSeconds(),
+                proxyConfig.getExceptionPostProcessorType());
     }
 }

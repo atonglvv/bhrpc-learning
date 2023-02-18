@@ -215,4 +215,10 @@ public @interface RpcReference {
      * 熔断的毫秒时长
      */
     int fusingMilliSeconds() default RpcConstants.DEFAULT_FUSING_MILLI_SECONDS;
+
+
+    /**
+     * 异常处理类型
+     */
+    String exceptionPostProcessorType() default RpcConstants.EXCEPTION_POST_PROCESSOR_PRINT;
 }

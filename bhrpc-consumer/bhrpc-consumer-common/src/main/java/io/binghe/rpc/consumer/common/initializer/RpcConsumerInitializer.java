@@ -19,6 +19,7 @@ import io.binghe.rpc.codec.RpcDecoder;
 import io.binghe.rpc.codec.RpcEncoder;
 import io.binghe.rpc.constants.RpcConstants;
 import io.binghe.rpc.consumer.common.handler.RpcConsumerHandler;
+import io.binghe.rpc.exception.processor.ExceptionPostProcessor;
 import io.binghe.rpc.flow.processor.FlowPostProcessor;
 import io.binghe.rpc.threadpool.ConcurrentThreadPool;
 import io.netty.channel.ChannelInitializer;
@@ -37,9 +38,11 @@ public class RpcConsumerInitializer extends ChannelInitializer<SocketChannel> {
     private int heartbeatInterval;
     private ConcurrentThreadPool concurrentThreadPool;
     private FlowPostProcessor flowPostProcessor;
+    //异常处理后置处理器
+    private ExceptionPostProcessor exceptionPostProcessor;
     private boolean enableBuffer;
     private int bufferSize;
-    public RpcConsumerInitializer(int heartbeatInterval, boolean enableBuffer, int bufferSize, ConcurrentThreadPool concurrentThreadPool, FlowPostProcessor flowPostProcessor){
+    public RpcConsumerInitializer(int heartbeatInterval, boolean enableBuffer, int bufferSize, ConcurrentThreadPool concurrentThreadPool, FlowPostProcessor flowPostProcessor, ExceptionPostProcessor exceptionPostProcessor){
         if (heartbeatInterval > 0){
             this.heartbeatInterval = heartbeatInterval;
         }
@@ -47,6 +50,7 @@ public class RpcConsumerInitializer extends ChannelInitializer<SocketChannel> {
         this.flowPostProcessor = flowPostProcessor;
         this.enableBuffer = enableBuffer;
         this.bufferSize = bufferSize;
+        this.exceptionPostProcessor = exceptionPostProcessor;
     }
     @Override
     protected void initChannel(SocketChannel channel) throws Exception {
@@ -54,6 +58,6 @@ public class RpcConsumerInitializer extends ChannelInitializer<SocketChannel> {
         cp.addLast(RpcConstants.CODEC_ENCODER, new RpcEncoder(flowPostProcessor));
         cp.addLast(RpcConstants.CODEC_DECODER, new RpcDecoder(flowPostProcessor));
         cp.addLast(RpcConstants.CODEC_CLIENT_IDLE_HANDLER, new IdleStateHandler(heartbeatInterval, 0, 0, TimeUnit.MILLISECONDS));
-        cp.addLast(RpcConstants.CODEC_HANDLER, new RpcConsumerHandler(enableBuffer, bufferSize, concurrentThreadPool));
+        cp.addLast(RpcConstants.CODEC_HANDLER, new RpcConsumerHandler(enableBuffer, bufferSize, concurrentThreadPool, exceptionPostProcessor));
     }
 }

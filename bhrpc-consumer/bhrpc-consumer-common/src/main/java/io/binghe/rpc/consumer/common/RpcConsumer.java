@@ -24,6 +24,7 @@ import io.binghe.rpc.consumer.common.handler.RpcConsumerHandler;
 import io.binghe.rpc.consumer.common.helper.RpcConsumerHandlerHelper;
 import io.binghe.rpc.consumer.common.initializer.RpcConsumerInitializer;
 import io.binghe.rpc.consumer.common.manager.ConsumerConnectionManager;
+import io.binghe.rpc.exception.processor.ExceptionPostProcessor;
 import io.binghe.rpc.flow.processor.FlowPostProcessor;
 import io.binghe.rpc.loadbalancer.context.ConnectionsContext;
 import io.binghe.rpc.protocol.RpcProtocol;
@@ -96,7 +97,8 @@ public class RpcConsumer implements Consumer {
 
     //流控分析后置处理器
     private FlowPostProcessor flowPostProcessor;
-
+    //异常处理后置处理器
+    private ExceptionPostProcessor exceptionPostProcessor;
     //是否开启数据缓冲
     private boolean enableBuffer;
     //缓冲区大小
@@ -160,6 +162,14 @@ public class RpcConsumer implements Consumer {
         return this;
     }
 
+    public RpcConsumer setExceptionPostProcessor(String exceptionPostProcessorType) {
+        if (StringUtils.isEmpty(exceptionPostProcessorType)){
+            exceptionPostProcessorType = RpcConstants.EXCEPTION_POST_PROCESSOR_PRINT;
+        }
+        this.exceptionPostProcessor = ExtensionLoader.getExtension(ExceptionPostProcessor.class, exceptionPostProcessorType);
+        return this;
+    }
+
     public RpcConsumer setEnableBuffer(boolean enableBuffer) {
         this.enableBuffer = enableBuffer;
         return this;
@@ -173,11 +183,11 @@ public class RpcConsumer implements Consumer {
     public RpcConsumer buildNettyGroup(){
         try {
             bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class)
-                    .handler(new RpcConsumerInitializer(heartbeatInterval, enableBuffer, bufferSize, concurrentThreadPool, flowPostProcessor));
+                    .handler(new RpcConsumerInitializer(heartbeatInterval, enableBuffer, bufferSize, concurrentThreadPool, flowPostProcessor, exceptionPostProcessor));
         }catch (IllegalStateException e){
             bootstrap = new Bootstrap();
             bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class)
-                    .handler(new RpcConsumerInitializer(heartbeatInterval, enableBuffer, bufferSize, concurrentThreadPool, flowPostProcessor));
+                    .handler(new RpcConsumerInitializer(heartbeatInterval, enableBuffer, bufferSize, concurrentThreadPool, flowPostProcessor, exceptionPostProcessor));
         }
         return this;
     }

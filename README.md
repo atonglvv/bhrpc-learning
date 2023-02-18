@@ -284,3 +284,4 @@ bhrpc框架支持如下功能：
 * [《RPC手撸专栏》第fix-08章：优化服务熔断半开启状态的执行逻辑](https://articles.zsxq.com/id_r7rsxfojwkua.html)
 * [《RPC手撸专栏》第120章：异常监控后置处理器基础模型设计](https://articles.zsxq.com/id_bwceq9e1sufr.html)
 * [《RPC手撸专栏》第121章：服务提供者整合异常监控](https://articles.zsxq.com/id_ds7crh46v1uv.html)
+* [《RPC手撸专栏》第122章：服务消费者整合异常监控](https://articles.zsxq.com/id_opgjgzu8avrg.html)

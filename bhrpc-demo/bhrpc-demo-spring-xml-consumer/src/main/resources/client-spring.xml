@@ -47,5 +47,6 @@
         <constructor-arg name="fusingType" value="${consumer.fusingType}"/>
         <constructor-arg name="totalFailure" value="${consumer.totalFailure}"/>
         <constructor-arg name="fusingMilliSeconds" value="${consumer.fusingMilliSeconds}"/>
+        <constructor-arg name="exceptionPostProcessorType" value="${consumer.exceptionPostProcessorType}"/>
     </bean>
 </beans>

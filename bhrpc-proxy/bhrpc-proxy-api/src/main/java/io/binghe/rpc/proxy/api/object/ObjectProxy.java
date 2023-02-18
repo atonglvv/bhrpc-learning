@@ -20,6 +20,7 @@ import io.binghe.rpc.cache.result.CacheResultManager;
 import io.binghe.rpc.common.exception.RpcException;
 import io.binghe.rpc.common.utils.StringUtils;
 import io.binghe.rpc.constants.RpcConstants;
+import io.binghe.rpc.exception.processor.ExceptionPostProcessor;
 import io.binghe.rpc.fusing.api.FusingInvoker;
 import io.binghe.rpc.protocol.RpcProtocol;
 import io.binghe.rpc.protocol.enumeration.RpcType;
@@ -134,6 +135,11 @@ public class ObjectProxy <T> implements IAsyncObjectProxy, InvocationHandler{
      */
     private FusingInvoker fusingInvoker;
 
+    /**
+     * 异常处理后置处理器
+     */
+    private ExceptionPostProcessor exceptionPostProcessor;
+
     public ObjectProxy(Class<T> clazz) {
         this.clazz = clazz;
     }
@@ -142,7 +148,7 @@ public class ObjectProxy <T> implements IAsyncObjectProxy, InvocationHandler{
                        RegistryService registryService, Consumer consumer, boolean async, boolean oneway, boolean enableResultCache,
                        int resultCacheExpire, String reflectType, String fallbackClassName, Class<?> fallbackClass,
                        boolean enableRateLimiter, String rateLimiterType, int permits, int milliSeconds, String rateLimiterFailStrategy,
-                       boolean enableFusing, String fusingType, double totalFailure, int fusingMilliSeconds) {
+                       boolean enableFusing, String fusingType, double totalFailure, int fusingMilliSeconds, String exceptionPostProcessorType) {
         this.clazz = clazz;
         this.serviceVersion = serviceVersion;
         this.timeout = timeout;
@@ -166,6 +172,10 @@ public class ObjectProxy <T> implements IAsyncObjectProxy, InvocationHandler{
         }
         this.rateLimiterFailStrategy = rateLimiterFailStrategy;
         this.enableFusing = enableFusing;
+        if (StringUtils.isEmpty(exceptionPostProcessorType)){
+            exceptionPostProcessorType = RpcConstants.EXCEPTION_POST_PROCESSOR_PRINT;
+        }
+        this.exceptionPostProcessor = ExtensionLoader.getExtension(ExceptionPostProcessor.class, exceptionPostProcessorType);
         this.initFusing(fusingType, totalFailure, fusingMilliSeconds);
     }
 
@@ -201,6 +211,7 @@ public class ObjectProxy <T> implements IAsyncObjectProxy, InvocationHandler{
                     fallbackClass = Class.forName(fallbackClassName);
                 }
             } catch (ClassNotFoundException e) {
+                exceptionPostProcessor.postExceptionProcessor(e);
                 LOGGER.error(e.getMessage());
             }
         }
@@ -258,6 +269,7 @@ public class ObjectProxy <T> implements IAsyncObjectProxy, InvocationHandler{
         try {
             return invokeSendRequestMethodWithRateLimiter(method, args);
         }catch (Throwable e){
+            exceptionPostProcessor.postExceptionProcessor(e);
             return getFallbackResult(method, args);
         }
     }
@@ -326,6 +338,7 @@ public class ObjectProxy <T> implements IAsyncObjectProxy, InvocationHandler{
             result = invokeSendRequestMethod(method, args);
             fusingInvoker.markSuccess();
         }catch (Throwable e){
+            exceptionPostProcessor.postExceptionProcessor(e);
             fusingInvoker.markFailed();
             throw new RpcException(e.getMessage());
         }
@@ -353,6 +366,7 @@ public class ObjectProxy <T> implements IAsyncObjectProxy, InvocationHandler{
             }
             return reflectInvoker.invokeMethod(fallbackClass.newInstance(), fallbackClass, method.getName(), method.getParameterTypes(), args);
         } catch (Throwable ex) {
+            exceptionPostProcessor.postExceptionProcessor(ex);
             LOGGER.error(ex.getMessage());
         }
         return null;
@@ -402,6 +416,7 @@ public class ObjectProxy <T> implements IAsyncObjectProxy, InvocationHandler{
         try {
             rpcFuture = this.consumer.sendRequest(request, registryService);
         } catch (Exception e) {
+            exceptionPostProcessor.postExceptionProcessor(e);
             LOGGER.error("async all throws exception:{}", e);
         }
         return rpcFuture;

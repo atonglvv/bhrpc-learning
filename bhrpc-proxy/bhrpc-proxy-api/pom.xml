@@ -96,7 +96,11 @@
             <version>${project.version}</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>io.binghe.rpc</groupId>
+            <artifactId>bhrpc-exception-print</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
     </dependencies>
 

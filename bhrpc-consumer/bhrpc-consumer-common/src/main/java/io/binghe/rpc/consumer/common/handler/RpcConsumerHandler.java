@@ -20,6 +20,7 @@ import io.binghe.rpc.buffer.cache.BufferCacheManager;
 import io.binghe.rpc.constants.RpcConstants;
 import io.binghe.rpc.consumer.common.cache.ConsumerChannelCache;
 import io.binghe.rpc.consumer.common.context.RpcContext;
+import io.binghe.rpc.exception.processor.ExceptionPostProcessor;
 import io.binghe.rpc.protocol.RpcProtocol;
 import io.binghe.rpc.protocol.enumeration.RpcStatus;
 import io.binghe.rpc.protocol.enumeration.RpcType;
@@ -68,8 +69,14 @@ public class RpcConsumerHandler extends SimpleChannelInboundHandler<RpcProtocol<
      */
     private BufferCacheManager<RpcProtocol<RpcResponse>> bufferCacheManager;
 
-    public RpcConsumerHandler(boolean enableBuffer, int bufferSize, ConcurrentThreadPool concurrentThreadPool){
+    /**
+     * 异常后置处理器
+     */
+    private ExceptionPostProcessor exceptionPostProcessor;
+
+    public RpcConsumerHandler(boolean enableBuffer, int bufferSize, ConcurrentThreadPool concurrentThreadPool, ExceptionPostProcessor exceptionPostProcessor){
         this.concurrentThreadPool = concurrentThreadPool;
+        this.exceptionPostProcessor = exceptionPostProcessor;
         this.enableBuffer = enableBuffer;
         if (enableBuffer){
             this.bufferCacheManager = BufferCacheManager.getInstance(bufferSize);
@@ -254,4 +261,9 @@ public class RpcConsumerHandler extends SimpleChannelInboundHandler<RpcProtocol<
         ConsumerChannelCache.remove(channel);
     }
 
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        exceptionPostProcessor.postExceptionProcessor(cause);
+        super.exceptionCaught(ctx, cause);
+    }
 }
