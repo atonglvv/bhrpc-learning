@@ -256,6 +256,7 @@ public class RpcClient {
     }
 
     public <T> T create(Class<T> interfaceClass) {
+        // SPI扩展动态代理机制 proxy->动态代理方式
         ProxyFactory proxyFactory = ExtensionLoader.getExtension(ProxyFactory.class, proxy);
         proxyFactory.init(new ProxyConfig(interfaceClass, serviceVersion, serviceGroup, serializationType, timeout, registryService,
                 RpcConsumer.getInstance()

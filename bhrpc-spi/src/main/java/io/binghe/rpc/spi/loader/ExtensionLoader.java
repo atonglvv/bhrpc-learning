@@ -231,6 +231,10 @@ public final class ExtensionLoader<T> {
         return classes;
     }
 
+    /**
+     * 加载扩展类, 从指定目录 SPI_DIRECTORIES 中
+     * @return
+     */
     private Map<String, Class<?>> loadExtensionClass() {
         SPI annotation = clazz.getAnnotation(SPI.class);
         if (Objects.nonNull(annotation)) {
