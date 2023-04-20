@@ -130,6 +130,7 @@ public class RpcProviderHandler extends SimpleChannelInboundHandler<RpcProtocol<
                               boolean enableFusing, String fusingType, double totalFailure, int fusingMilliSeconds, String exceptionPostProcessorType,
                               Map<String, Object> handlerMap){
         this.handlerMap = handlerMap;
+        // SPI扩展动态反射机制 reflectType->反射方式
         this.reflectInvoker = ExtensionLoader.getExtension(ReflectInvoker.class, reflectType);
         this.enableResultCache = enableResultCache;
         if (resultCacheExpire <= 0){
