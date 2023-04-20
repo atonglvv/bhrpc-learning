@@ -245,6 +245,7 @@ public class RpcClient {
         if (StringUtils.isEmpty(registryType)){
             throw new IllegalArgumentException("registry type is null");
         }
+        // SPI扩展注册中心 registryType->注册中心类型
         RegistryService registryService = ExtensionLoader.getExtension(RegistryService.class, registryType);
         try {
             registryService.init(new RegistryConfig(registryAddress, registryType, registryLoadBalanceType));
