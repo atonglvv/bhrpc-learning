@@ -31,7 +31,7 @@ import java.util.Set;
 /**
  * @author binghe(公众号 : 冰河技术)
  * @version 1.0.0
- * @description 服务消费者连接管理器
+ * @description 服务消费者连接管理器(主要用于心跳机制)
  */
 public class ConsumerConnectionManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsumerConnectionManager.class);

@@ -208,7 +208,7 @@ public class RpcConsumer implements Consumer {
 
     private void startHeartbeat() {
         executorService = Executors.newScheduledThreadPool(2);
-        //扫描并处理所有不活跃的连接
+        //扫描并处理(移除)所有不活跃的连接
         executorService.scheduleAtFixedRate(() -> {
             logger.info("=============scanNotActiveChannel============");
             ConsumerConnectionManager.scanNotActiveChannel();
