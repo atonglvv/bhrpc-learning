@@ -74,6 +74,7 @@ public final class ExtensionLoader<T> {
     private ExtensionLoader(final Class<T> clazz, final ClassLoader cl) {
         this.clazz = clazz;
         this.classLoader = cl;
+        // 一定要加载 ExtensionFactory.class
         if (!Objects.equals(clazz, ExtensionFactory.class)) {
             ExtensionLoader.getExtensionLoader(ExtensionFactory.class).getExtensionClasses();
         }
@@ -90,10 +91,11 @@ public final class ExtensionLoader<T> {
     public static <T> ExtensionLoader<T> getExtensionLoader(final Class<T> clazz, final ClassLoader cl) {
 
         Objects.requireNonNull(clazz, "extension clazz is null");
-
+        // clazz 必须是接口
         if (!clazz.isInterface()) {
             throw new IllegalArgumentException("extension clazz (" + clazz + ") is not interface!");
         }
+        // clazz必须有 @SPI
         if (!clazz.isAnnotationPresent(SPI.class)) {
             throw new IllegalArgumentException("extension clazz (" + clazz + ") without @" + SPI.class + " Annotation");
         }
@@ -108,7 +110,7 @@ public final class ExtensionLoader<T> {
 
     /**
      * 直接获取想要的类实例
-     * @param clazz 接口的Class实例
+     * @param clazz 接口的Class实例 扩展点对应的SPI接口
      * @param name SPI名称
      * @param <T> 泛型类型
      * @return 泛型实例
@@ -130,7 +132,7 @@ public final class ExtensionLoader<T> {
 
     /**
      * Gets default spi class instance.
-     *
+     * 获取默认的 spi instance
      * @return the default spi class instance.
      */
     public T getDefaultSpiClassInstance() {
@@ -214,7 +216,7 @@ public final class ExtensionLoader<T> {
 
     /**
      * Gets extension classes.
-     *
+     * 获取扩展类
      * @return the extension classes
      */
     public Map<String, Class<?>> getExtensionClasses() {
