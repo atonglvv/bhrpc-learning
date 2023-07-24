@@ -213,12 +213,12 @@ public class BaseServer implements Server {
 
     private void startHeartbeat() {
         executorService = Executors.newScheduledThreadPool(2);
-        //扫描并处理所有不活跃的连接
+        // 扫描并处理所有不活跃的连接
         executorService.scheduleAtFixedRate(() -> {
             logger.info("=============scanNotActiveChannel============");
             ProviderConnectionManager.scanNotActiveChannel();
         }, 10, scanNotActiveChannelInterval, TimeUnit.MILLISECONDS);
-
+        // 心跳机制 服务提供者与消费者之间的连接保活
         executorService.scheduleAtFixedRate(()->{
             logger.info("=============broadcastPingMessageFromProvoder============");
             ProviderConnectionManager.broadcastPingMessageFromProvider();
